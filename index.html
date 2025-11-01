@@ -9,7 +9,7 @@
 <meta name="author" content="Tejas Viswanath">
 <meta name="dcterms.date" content="2025-11-01">
 
-<title>Tracking Error: Daily vs Monthly – Tracking Error Notes</title>
+<title>Tracking Error Math: Daily vs Monthly, Serial Correlation, and Annualization – Tracking Error Notes</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +21,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -147,8 +182,21 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#intuition" id="toc-intuition" class="nav-link active" data-scroll-target="#intuition">Intuition</a></li>
-  <li><a href="#quick-code-demo" id="toc-quick-code-demo" class="nav-link" data-scroll-target="#quick-code-demo">Quick Code Demo</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#definitions-and-estimators" id="toc-definitions-and-estimators" class="nav-link" data-scroll-target="#definitions-and-estimators">1. Definitions and Estimators</a></li>
+  <li><a href="#aggregation-and-the-general-variance-formula" id="toc-aggregation-and-the-general-variance-formula" class="nav-link" data-scroll-target="#aggregation-and-the-general-variance-formula">2. Aggregation and the General Variance Formula</a>
+  <ul class="collapse">
+  <li><a href="#iid-special-case" id="toc-iid-special-case" class="nav-link" data-scroll-target="#iid-special-case">IID special case</a></li>
+  </ul></li>
+  <li><a href="#annualization-with-serial-correlation-correct-formula" id="toc-annualization-with-serial-correlation-correct-formula" class="nav-link" data-scroll-target="#annualization-with-serial-correlation-correct-formula">3. Annualization with Serial Correlation (Correct Formula)</a></li>
+  <li><a href="#ar1-closed-form-for-m-period-te" id="toc-ar1-closed-form-for-m-period-te" class="nav-link" data-scroll-target="#ar1-closed-form-for-m-period-te">4. AR(1) Closed-Form for <span class="math inline">\(m\)</span>-period TE</a></li>
+  <li><a href="#estimating-annualized-te-consistently-neweywest" id="toc-estimating-annualized-te-consistently-neweywest" class="nav-link" data-scroll-target="#estimating-annualized-te-consistently-neweywest">5. Estimating Annualized TE Consistently (Newey–West)</a></li>
+  <li><a href="#daily-vs-monthly-what-you-actually-compare" id="toc-daily-vs-monthly-what-you-actually-compare" class="nav-link" data-scroll-target="#daily-vs-monthly-what-you-actually-compare">6. Daily vs Monthly: What You Actually Compare</a></li>
+  <li><a href="#numerical-verification-ar1-example" id="toc-numerical-verification-ar1-example" class="nav-link" data-scroll-target="#numerical-verification-ar1-example">7. Numerical Verification (AR(1) example)</a></li>
+  <li><a href="#worked-example-when-monthly-te-daily-scaled-te" id="toc-worked-example-when-monthly-te-daily-scaled-te" class="nav-link" data-scroll-target="#worked-example-when-monthly-te-daily-scaled-te">8. Worked Example: When Monthly TE &lt; Daily-scaled TE</a></li>
+  <li><a href="#practical-guidance" id="toc-practical-guidance" class="nav-link" data-scroll-target="#practical-guidance">9. Practical Guidance</a></li>
+  <li><a href="#references-selected" id="toc-references-selected" class="nav-link" data-scroll-target="#references-selected">10. References (selected)</a></li>
+  <li><a href="#try-it-live" id="toc-try-it-live" class="nav-link" data-scroll-target="#try-it-live">Try It Live</a></li>
   </ul>
 </nav>
     </div>
@@ -157,7 +205,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tracking Error: Daily vs Monthly</h1>
+<h1 class="title">Tracking Error Math: Daily vs Monthly, Serial Correlation, and Annualization</h1>
 </div>
 
 
@@ -186,21 +234,211 @@ window.Quarto = {
 </header>
 
 
-<section id="intuition" class="level2">
-<h2 class="anchored" data-anchor-id="intuition">Intuition</h2>
-<p>Let <span class="math inline">\(a_t = r_{p,t} - r_{b,t}\)</span> be active returns for the period <span class="math inline">\(t\)</span>.</p>
-<p>The sample tracking error is: <span class="math display">\[
-\widehat{TE}
-= \sqrt{\frac{1}{T-1}\sum_{t=1}^{T}(a_t-\bar a)^2},\quad
-\bar a=\frac{1}{T}\sum_{t=1}^{T}a_t.
-\]</span></p>
-<p>Annualization under IID: <span class="math display">\[
-TE_{\text{ann}} = TE_{\text{period}} \sqrt{N},
-\]</span> with (N=252) (daily) or (12) (monthly). In practice, serial correlation means monthly-from-daily isn’t just a rescale.</p>
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<p><strong>Tracking Error (TE)</strong> is the standard deviation of <strong>active returns</strong> <span class="math inline">\(a_t = r_{p,t} - r_{b,t}\)</span>, where <span class="math inline">\(r_{p,t}\)</span> and <span class="math inline">\(r_{b,t}\)</span> are portfolio and benchmark returns at time <span class="math inline">\(t\)</span>. This article derives:</p>
+<ul>
+<li>the usual <strong>sample TE estimator</strong> and its annualization under IID,</li>
+<li>why IID <strong>fails with serial correlation</strong>, and the <strong>correct</strong> formulas,</li>
+<li>a <strong>general formula</strong> for TE when aggregating <span class="math inline">\(m\)</span> periods (e.g., daily <span class="math inline">\(\rightarrow\)</span> monthly),</li>
+<li>a <strong>closed-form AR(1)</strong> expression you can use to relate daily and monthly TE,</li>
+<li><strong>consistent (Newey–West) annualization</strong> from daily data.</li>
+</ul>
+<p>👉 <strong>Interactive App:</strong> <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/" class="uri">https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/</a><br>
+👉 <strong>GitHub Repo:</strong> <a href="https://github.com/TejasViswa/tracking-error-lab" class="uri">https://github.com/TejasViswa/tracking-error-lab</a></p>
+<hr>
 </section>
-<section id="quick-code-demo" class="level2">
-<h2 class="anchored" data-anchor-id="quick-code-demo">Quick Code Demo</h2>
-<p>import numpy as np, pandas as pd np.random.seed(0) days = 756 a = np.random.normal(0, 0.001, days) df = pd.DataFrame({‘a’: a}) te_daily = df[‘a’].std(ddof=1) te_ann = te_daily * (252**0.5) te_ann</p>
+<section id="definitions-and-estimators" class="level1">
+<h1>1. Definitions and Estimators</h1>
+<p>Let active return be <span class="math inline">\(a_t = r_{p,t} - r_{b,t}\)</span> for periods <span class="math inline">\(t=1,\dots,T\)</span>.<br>
+The <strong>sample mean</strong> and <strong>sample variance</strong> are <span class="math display">\[
+\bar a = \frac{1}{T}\sum_{t=1}^{T} a_t,
+\qquad
+\widehat{\mathrm{Var}}(a) = \frac{1}{T-1}\sum_{t=1}^{T} (a_t - \bar a)^2.
+\]</span></p>
+<p>The <strong>sample Tracking Error</strong> at the data’s native frequency is <span class="math display">\[
+\widehat{\mathrm{TE}}_{\text{period}} = \sqrt{\widehat{\mathrm{Var}}(a)}.
+\]</span></p>
+<p>If the data are <strong>daily</strong>, people often report the <strong>annualized TE</strong> by multiplying by <span class="math inline">\(\sqrt{N}\)</span>, where <span class="math inline">\(N\)</span> is periods per year:</p>
+<p><span class="math display">\[
+\widehat{\mathrm{TE}}_{\text{annual, IID}} = \widehat{\mathrm{TE}}_{\text{daily}} \sqrt{252}.
+\]</span></p>
+<p>This is <strong>correct only under IID</strong> (no serial correlation).</p>
+<hr>
+</section>
+<section id="aggregation-and-the-general-variance-formula" class="level1">
+<h1>2. Aggregation and the General Variance Formula</h1>
+<p>Suppose you aggregate <span class="math inline">\(m\)</span> consecutive periods (e.g., sum daily returns across a month). Define <span class="math display">\[
+S_m = \sum_{i=1}^{m} a_i.
+\]</span> In <strong>full generality</strong>, the variance of <span class="math inline">\(S_m\)</span> depends on the <strong>autocovariance</strong> function <span class="math inline">\(\gamma(h) = \mathrm{Cov}(a_t, a_{t+h})\)</span>: <span class="math display">\[
+\mathrm{Var}(S_m)
+= \sum_{h=-(m-1)}^{m-1} (m-|h|)\,\gamma(h)
+= m\,\gamma(0) + 2\sum_{h=1}^{m-1} (m-h)\,\gamma(h).
+\]</span></p>
+<p>Therefore, the <strong><span class="math inline">\(m\)</span>-period TE</strong> (e.g., “monthly TE” from daily data with a fixed month length <span class="math inline">\(m\)</span>) is <span class="math display">\[
+\mathrm{TE}_{(m)} = \sqrt{\,\mathrm{Var}(S_m)\,}.
+\]</span></p>
+<section id="iid-special-case" class="level3">
+<h3 class="anchored" data-anchor-id="iid-special-case">IID special case</h3>
+<p>If <span class="math inline">\(a_t\)</span> are uncorrelated with variance <span class="math inline">\(\sigma^2\)</span> (i.e., <span class="math inline">\(\gamma(0)=\sigma^2\)</span> and <span class="math inline">\(\gamma(h)=0\)</span> for <span class="math inline">\(h\neq 0\)</span>), then <span class="math display">\[
+\mathrm{Var}(S_m)=m\sigma^2
+\quad\Rightarrow\quad
+\mathrm{TE}_{(m)} = \sqrt{m}\,\sigma.
+\]</span> This gives the usual square-root-of-time scaling: - from daily to monthly (say <span class="math inline">\(m\approx 21\)</span>): <span class="math inline">\(\mathrm{TE}_{\text{monthly}}\approx \sqrt{m}\,\mathrm{TE}_{\text{daily}}\)</span>, - from daily to annual: <span class="math inline">\(\mathrm{TE}_{\text{annual}}\approx \sqrt{252}\,\mathrm{TE}_{\text{daily}}\)</span>.</p>
+<hr>
+</section>
+</section>
+<section id="annualization-with-serial-correlation-correct-formula" class="level1">
+<h1>3. Annualization with Serial Correlation (Correct Formula)</h1>
+<p>Let one <strong>year</strong> contain <span class="math inline">\(N\)</span> base periods (e.g., <span class="math inline">\(N=252\)</span> trading days).<br>
+The <strong>annual active return</strong> is <span class="math inline">\(A=\sum_{t=1}^{N} a_t\)</span>. Its variance is <span class="math display">\[
+\mathrm{Var}(A)
+= N\,\gamma(0) + 2\sum_{h=1}^{N-1} (N-h)\,\gamma(h).
+\]</span></p>
+<p>Thus the <strong>true annualized TE</strong> (standard deviation of the annual active return) is <span class="math display">\[
+\mathrm{TE}_{\text{annual,true}} = \sqrt{\,N\,\gamma(0) + 2\sum_{h=1}^{N-1} (N-h)\,\gamma(h)\,}.
+\]</span></p>
+<ul>
+<li>Under IID, <span class="math inline">\(\gamma(h)=0\)</span> for <span class="math inline">\(h\ge 1\)</span> and you recover <span class="math inline">\(\sqrt{N}\,\sqrt{\gamma(0)}\)</span>.<br>
+</li>
+<li>With <strong>positive</strong> serial correlation (<span class="math inline">\(\gamma(h)&gt;0\)</span>), annual TE is <strong>higher</strong> than the IID scaling.</li>
+<li>With <strong>negative</strong> serial correlation (mean reversion), annual TE can be <strong>lower</strong> than IID scaling.</li>
+</ul>
+<hr>
+</section>
+<section id="ar1-closed-form-for-m-period-te" class="level1">
+<h1>4. AR(1) Closed-Form for <span class="math inline">\(m\)</span>-period TE</h1>
+<p>Assume active returns follow the stationary AR(1): <span class="math display">\[
+a_t = \phi a_{t-1} + \varepsilon_t,\qquad \varepsilon_t\sim \mathcal{N}(0,\sigma_\varepsilon^2),\quad |\phi|&lt;1.
+\]</span></p>
+<p>Then <span class="math display">\[
+\gamma(0)=\frac{\sigma_\varepsilon^2}{1-\phi^2},
+\qquad
+\gamma(h)=\gamma(0)\,\phi^{\,h}\quad(h\ge 1).
+\]</span></p>
+<p>Plugging into the general formula, <span class="math display">\[
+\mathrm{Var}(S_m)
+= \gamma(0)\Bigg[m + 2\sum_{h=1}^{m-1} (m-h)\phi^{\,h}\Bigg].
+\]</span> A convenient algebraic identity for the finite sum is <span class="math display">\[
+\sum_{h=1}^{m-1} (m-h)\phi^{\,h}
+= m\frac{\phi - \phi^{\,m}}{1-\phi}
+- \frac{\phi\left(1 - m\phi^{\,m-1} + (m-1)\phi^{\,m}\right)}{(1-\phi)^2}.
+\]</span></p>
+<p>Therefore, the <strong><span class="math inline">\(m\)</span>-period TE under AR(1)</strong> is <span class="math display">\[
+\mathrm{TE}_{(m)}^{\text{AR(1)}}
+= \sqrt{\,\gamma(0)\Bigg[
+m + 2\Big(
+m\frac{\phi - \phi^{\,m}}{1-\phi}
+- \frac{\phi\left(1 - m\phi^{\,m-1} + (m-1)\phi^{\,m}\right)}{(1-\phi)^2}
+\Big)\Bigg]}\,,
+\]</span> with <span class="math inline">\(\gamma(0)=\sigma_\varepsilon^2/(1-\phi^2)\)</span>.</p>
+<p><strong>Use cases.</strong><br>
+- To convert <strong>daily TE</strong> to <strong>monthly TE</strong>, set <span class="math inline">\(m\)</span> equal to trading days per month (e.g., <span class="math inline">\(m\approx 21\)</span>).<br>
+- To get <strong>annual TE</strong> from daily, set <span class="math inline">\(m=N\)</span> (e.g., <span class="math inline">\(N=252\)</span>).<br>
+- This formula collapses to <span class="math inline">\(\sqrt{m}\,\sigma\)</span> when <span class="math inline">\(\phi=0\)</span> (IID).</p>
+<hr>
+</section>
+<section id="estimating-annualized-te-consistently-neweywest" class="level1">
+<h1>5. Estimating Annualized TE Consistently (Newey–West)</h1>
+<p>From a daily series <span class="math inline">\(\{a_t\}_{t=1}^{T}\)</span>, estimate the <strong>long-run variance</strong> (LRV) <span class="math display">\[
+\sigma^2_{\text{LR}} = \gamma(0) + 2\sum_{h=1}^{\infty}\gamma(h),
+\]</span> with a <strong>Newey–West</strong> estimator <span class="math display">\[
+\widehat{\sigma}^2_{\text{LR}}
+= \hat\gamma(0) + 2\sum_{h=1}^{L} w_h\,\hat\gamma(h),
+\qquad
+w_h = 1 - \frac{h}{L+1},
+\]</span> where <span class="math inline">\(L\)</span> is a truncation lag (e.g., <span class="math inline">\(L\approx\lfloor 4(T/100)^{2/9}\rfloor\)</span> or a simpler rule like <span class="math inline">\(L\in[5,25]\)</span> for daily data).</p>
+<p>Then the <strong>consistent annualized TE</strong> from daily data is <span class="math display">\[
+\widehat{\mathrm{TE}}_{\text{annual, NW}}
+= \sqrt{\,N\,\widehat{\sigma}^2_{\text{LR}}\,}.
+\]</span></p>
+<p>This reduces to the IID formula when serial correlation is negligible.</p>
+<hr>
+</section>
+<section id="daily-vs-monthly-what-you-actually-compare" class="level1">
+<h1>6. Daily vs Monthly: What You Actually Compare</h1>
+<p>Two common comparisons:</p>
+<ol type="1">
+<li><strong>Compute TE on daily data</strong> and report <span class="math inline">\(\widehat{\mathrm{TE}}_{\text{daily}}\sqrt{252}\)</span> (IID) or the <strong>NW-consistent</strong> version above.<br>
+</li>
+<li><strong>Aggregate to monthly</strong> returns <span class="math inline">\(S_m\)</span> and compute the standard deviation across months: <span class="math display">\[
+\widehat{\mathrm{TE}}_{\text{monthly}} = \mathrm{sd}\{S_{m,j}\}_{j=1}^{J},
+\qquad
+\widehat{\mathrm{TE}}_{\text{monthly,ann}} = \widehat{\mathrm{TE}}_{\text{monthly}}\sqrt{12}.
+\]</span> These will <strong>not</strong> necessarily match the daily-based annualization unless returns are IID.</li>
+</ol>
+<hr>
+</section>
+<section id="numerical-verification-ar1-example" class="level1">
+<h1>7. Numerical Verification (AR(1) example)</h1>
+<div id="98d0c66b" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> te_m_ar1(phi, sigma_eps, m):</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gamma0 and the finite-sum identity</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    gamma0 <span class="op">=</span> sigma_eps<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> phi<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> m<span class="op">*</span>((phi <span class="op">-</span> phi<span class="op">**</span>m)<span class="op">/</span>(<span class="dv">1</span> <span class="op">-</span> phi)) <span class="op">-</span> (phi<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> m<span class="op">*</span>phi<span class="op">**</span>(m<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> (m<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>phi<span class="op">**</span>m))<span class="op">/</span>((<span class="dv">1</span> <span class="op">-</span> phi)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    var_sm <span class="op">=</span> gamma0 <span class="op">*</span> (m <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>num)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sqrt(var_sm)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>phi <span class="op">=</span> <span class="fl">0.2</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>sigma_eps <span class="op">=</span> <span class="fl">0.0012</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>m_daily_to_month <span class="op">=</span> <span class="dv">21</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>m_daily_to_year  <span class="op">=</span> <span class="dv">252</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>te_month <span class="op">=</span> te_m_ar1(phi, sigma_eps, m_daily_to_month)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>te_year  <span class="op">=</span> te_m_ar1(phi, sigma_eps, m_daily_to_year)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>(te_month, te_year)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>(np.float64(0.0068053287944080994), np.float64(0.02379206800595526))</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="worked-example-when-monthly-te-daily-scaled-te" class="level1">
+<h1>8. Worked Example: When Monthly TE &lt; Daily-scaled TE</h1>
+<p>Let daily active returns be mean-reverting (negative serial correlation), e.g., <span class="math inline">\(\phi=-0.3\)</span> in AR(1).<br>
+Then monthly aggregation partially cancels day-to-day fluctuations, so you often observe:</p>
+<p><span class="math display">\[
+TE_{\text{monthly,ann}} &lt; TE_{\text{daily}} \sqrt{252}.
+\]</span></p>
+<p>Conversely, with trend persistence (<span class="math inline">\(\phi&gt;0\)</span>), the aggregated variance can rise faster than IID scaling.</p>
+<hr>
+</section>
+<section id="practical-guidance" class="level1">
+<h1>9. Practical Guidance</h1>
+<ul>
+<li><strong>Always state the sampling frequency</strong> used to compute TE.<br>
+</li>
+<li>If you report <strong>annualized TE from daily data</strong>, prefer the <strong>Newey–West</strong> consistent estimator when autocorrelation is present.<br>
+</li>
+<li>If comparing <strong>daily-based vs monthly-based TE</strong>, remember they are <em>different estimators</em> of different objects (sum of daily vs one-step monthly), which coincide only under IID.<br>
+</li>
+<li>For <strong>model-based conversion</strong>, the AR(1) closed form is a simple and effective approximation.</li>
+</ul>
+<hr>
+</section>
+<section id="references-selected" class="level1">
+<h1>10. References (selected)</h1>
+<ul>
+<li>Grinold, R. C., &amp; Kahn, R. N. <em>Active Portfolio Management</em> (2nd ed.).<br>
+</li>
+<li>Newey, W. K., &amp; West, K. D. (1987). <em>A Simple, Positive Semi-definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.</em><br>
+</li>
+<li>Lo, A. W. (2002). <em>The Statistics of Sharpe Ratios</em> (serial correlation &amp; scaling ideas apply to volatility and TE).<br>
+</li>
+<li>CFA Institute curriculum: <em>Tracking error, active risk, and information ratio.</em></li>
+</ul>
+<hr>
+</section>
+<section id="try-it-live" class="level1">
+<h1>Try It Live</h1>
+<ul>
+<li>🧮 <strong>Interactive App:</strong> <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/">tracking-error-lab.streamlit.app</a><br>
+</li>
+<li>💻 <strong>Source Code:</strong> <a href="https://github.com/TejasViswa/tracking-error-lab">github.com/TejasViswa/tracking-error-lab</a></li>
+</ul>
 
 
 
