@@ -44,3 +44,24 @@ git clone https://github.com/TejasViswa/tracking-error-lab.git
 cd tracking-error-lab/app
 pip install -r requirements.txt
 streamlit run app.py
+```
+Then open http://localhost:8501 in your browser.
+
+## 🧩 Dependencies
+
+- streamlit
+- pandas
+- numpy
+- altair
+- (optional) quarto CLI — if you want to build the documentation site locally
+
+## 📜 License
+
+Released under the MIT License.
+
+## ✨ Author
+
+Tejas Viswanath
+- 📬 [LinkedIn](https://www.linkedin.com/in/tejasviswa/)
+- 🧑‍💻 [Github](https://github.com/TejasViswa/)
+- 📧 Email: tejasviswa@gmail.com
