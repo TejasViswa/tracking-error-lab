@@ -6,7 +6,8 @@ date: 2025-11-01
 
 ## Intuition
 
-Let \( a_t = r_{p,t} - r_{b,t} \) be active returns for period \(t\).
+Let $a_t = r_{p,t} - r_{b,t}$ be active returns for period $t$.
+
 The sample tracking error is:
 $$
 \widehat{TE}

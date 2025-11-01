@@ -1,7 +1,7 @@
 # Tracking Error Lab
 
-- 📖 Article: https://YOUR_USERNAME.github.io/tracking-error-lab/
-- 🔬 App: https://YOUR_STREAMLIT_APP_URL
+- 📖 Article: https://TejasViswa.github.io/tracking-error-lab/
+- 🔬 App: https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/
 
 This repo contains:
 - `/site` — Quarto write-up (math, examples)
