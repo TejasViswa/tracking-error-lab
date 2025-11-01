@@ -1,0 +1,7 @@
+# Quarto build artifacts
+site/_site/
+site/.quarto/
+# Python/OS clutter
+__pycache__/
+*.pyc
+.DS_Store

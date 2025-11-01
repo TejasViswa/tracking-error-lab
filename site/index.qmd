@@ -1,0 +1,33 @@
+---
+title: "Tracking Error: Daily vs Monthly"
+author: "Tejas Viswanath"
+date: 2025-11-01
+---
+
+## Intuition
+
+Let \( a_t = r_{p,t} - r_{b,t} \) be active returns for period \(t\).
+The sample tracking error is:
+$$
+\widehat{TE}
+= \sqrt{\frac{1}{T-1}\sum_{t=1}^{T}(a_t-\bar a)^2},\quad
+\bar a=\frac{1}{T}\sum_{t=1}^{T}a_t.
+$$
+
+Annualization under IID:
+$$
+TE_{\text{ann}} = TE_{\text{period}} \sqrt{N},
+$$
+with \(N=252\) (daily) or \(12\) (monthly). In practice, serial correlation means monthly-from-daily isn’t just a rescale.
+
+## Quick Code Demo
+
+```{python}
+import numpy as np, pandas as pd
+np.random.seed(0)
+days = 756
+a = np.random.normal(0, 0.001, days)
+df = pd.DataFrame({'a': a})
+te_daily = df['a'].std(ddof=1)
+te_ann = te_daily * (252**0.5)
+te_ann
