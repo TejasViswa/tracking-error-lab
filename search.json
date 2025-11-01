@@ -4,14 +4,14 @@
     "href": "index.html",
     "title": "Tracking Error: Daily vs Monthly",
     "section": "",
-    "text": "Let ( a_t = r_{p,t} - r_{b,t} ) be active returns for period (t). The sample tracking error is: \\[\n\\widehat{TE}\n= \\sqrt{\\frac{1}{T-1}\\sum_{t=1}^{T}(a_t-\\bar a)^2},\\quad\n\\bar a=\\frac{1}{T}\\sum_{t=1}^{T}a_t.\n\\]\nAnnualization under IID: \\[\nTE_{\\text{ann}} = TE_{\\text{period}} \\sqrt{N},\n\\] with (N=252) (daily) or (12) (monthly). In practice, serial correlation means monthly-from-daily isn’t just a rescale."
+    "text": "Let \\(a_t = r_{p,t} - r_{b,t}\\) be active returns for the period \\(t\\).\nThe sample tracking error is: \\[\n\\widehat{TE}\n= \\sqrt{\\frac{1}{T-1}\\sum_{t=1}^{T}(a_t-\\bar a)^2},\\quad\n\\bar a=\\frac{1}{T}\\sum_{t=1}^{T}a_t.\n\\]\nAnnualization under IID: \\[\nTE_{\\text{ann}} = TE_{\\text{period}} \\sqrt{N},\n\\] with (N=252) (daily) or (12) (monthly). In practice, serial correlation means monthly-from-daily isn’t just a rescale."
   },
   {
     "objectID": "index.html#intuition",
     "href": "index.html#intuition",
     "title": "Tracking Error: Daily vs Monthly",
     "section": "",
-    "text": "Let ( a_t = r_{p,t} - r_{b,t} ) be active returns for period (t). The sample tracking error is: \\[\n\\widehat{TE}\n= \\sqrt{\\frac{1}{T-1}\\sum_{t=1}^{T}(a_t-\\bar a)^2},\\quad\n\\bar a=\\frac{1}{T}\\sum_{t=1}^{T}a_t.\n\\]\nAnnualization under IID: \\[\nTE_{\\text{ann}} = TE_{\\text{period}} \\sqrt{N},\n\\] with (N=252) (daily) or (12) (monthly). In practice, serial correlation means monthly-from-daily isn’t just a rescale."
+    "text": "Let \\(a_t = r_{p,t} - r_{b,t}\\) be active returns for the period \\(t\\).\nThe sample tracking error is: \\[\n\\widehat{TE}\n= \\sqrt{\\frac{1}{T-1}\\sum_{t=1}^{T}(a_t-\\bar a)^2},\\quad\n\\bar a=\\frac{1}{T}\\sum_{t=1}^{T}a_t.\n\\]\nAnnualization under IID: \\[\nTE_{\\text{ann}} = TE_{\\text{period}} \\sqrt{N},\n\\] with (N=252) (daily) or (12) (monthly). In practice, serial correlation means monthly-from-daily isn’t just a rescale."
   },
   {
     "objectID": "index.html#quick-code-demo",
