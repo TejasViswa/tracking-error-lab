@@ -84,4 +84,4 @@ if f is not None:
         st.subheader("From daily → monthly (aggregated)")
         st.write(f"Monthly TE (annualized): **{te_m2_ann*100:.2f}%**")
 
-st.sidebar.markdown("**Docs:** [Read the article](https://YOUR_GITHUB_PAGES_URL)")
+st.sidebar.markdown("**Docs:** [Read the article](https://github.com/TejasViswa/tracking-error-lab)")

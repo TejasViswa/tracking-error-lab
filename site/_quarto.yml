@@ -5,7 +5,7 @@ website:
   navbar:
     right:
       - text: "Interactive App"
-        href: https://YOUR_STREAMLIT_APP_URL
+        href: https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/
 format:
   html:
     theme: flatly
