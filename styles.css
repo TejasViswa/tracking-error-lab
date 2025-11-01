@@ -1,15 +1,27 @@
 /* Import Montserrat with heavier weights to avoid faint appearance */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 
-/* Make Quarto use the full width */
+/* Modern full-width layout */
 :root {
-    /* expand the built-in content width variable */
-    --content-max-width: 1200px;   /* try 1400px or 100% if you like */
+    --bs-body-max-width: 100%;
   }
-  
-  /* When using page-layout: full, ensure content expands */
-  .page-layout-full .content {
-    max-width: var(--content-max-width);
+
+  /* Full-width container with max-width for readability */
+  .page-columns {
+    max-width: 1800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Ensure body takes full width */
+  body {
+    max-width: 100% !important;
+  }
+
+  /* Make main content area wider */
+  .page-body {
+    max-width: 100%;
   }
   
   /* Optional: let the embedded app span the width */
@@ -112,8 +124,9 @@
     padding-top: 2rem;
     padding-bottom: 2rem;
     margin-top: 4rem;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #5a6c7d;
+    text-align: center;
   }
 
   .page-footer a {
@@ -127,37 +140,122 @@
   }
 
   .page-footer i.bi {
-    margin-right: 0.3rem;
+    font-size: 1.4rem;
+    vertical-align: middle;
+  }
+  
+  .page-footer .footer-icon {
+    display: inline-block;
+    padding: 0 0.5rem;
+  }
+  
+  .page-footer .footer-icon:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
   }
 
-  /* Author byline styling */
-  .author-byline {
-    font-size: 0.95rem;
-    color: #5a6c7d;
-    margin-top: -1rem;
-    margin-bottom: 2.5rem;
+  /* Quarto's built-in author/date metadata styling */
+  .quarto-title-meta {
+    margin-top: 1rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid #e8eaed;
+    margin-bottom: 2.5rem;
   }
 
-  .author-byline a {
+  .quarto-title-meta-heading {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #7a8a9d;
+    font-weight: 600;
+  }
+
+  .quarto-title-meta-contents {
+    font-size: 0.95rem;
     color: #2c3e50;
-    text-decoration: none;
-    transition: color 0.2s ease;
   }
 
-  .author-byline a:hover {
-    color: #3498db;
-  }
-
-  .author-byline i.bi {
-    font-size: 0.9rem;
-    margin-left: 0.3rem;
-    margin-right: 0.3rem;
+  /* Make author name stand out */
+  #title-block-header .author {
+    font-weight: 600;
   }
 
   /* Navbar icons */
   .navbar .bi {
     margin-right: 0.4rem;
+  }
+
+  /* Modern sidebar styling */
+  .sidebar-navigation {
+    background-color: #fafbfc;
+    border-right: 1px solid #e1e4e8;
+    padding: 2rem 1.5rem;
+  }
+
+  .sidebar-title {
+    font-weight: 700;
+    color: #24292e;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    letter-spacing: -0.01em;
+  }
+
+  .sidebar-section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6a737d;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e1e4e8;
+  }
+
+  .sidebar-item {
+    font-size: 0.95rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .sidebar-item a {
+    color: #24292e;
+    text-decoration: none;
+    padding: 0.6rem 1rem;
+    display: block;
+    transition: all 0.15s ease;
+    border-radius: 6px;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+  }
+
+  .sidebar-item a:hover {
+    color: #0366d6;
+    background-color: #f1f8ff;
+    border-left: 3px solid #0366d6;
+    transform: translateX(2px);
+  }
+
+  .sidebar-item.active a,
+  .sidebar-item-active a {
+    background-color: #0366d6;
+    color: white !important;
+    font-weight: 600;
+    border-left: 3px solid #0366d6;
+  }
+
+  .sidebar-item.active a:hover,
+  .sidebar-item-active a:hover {
+    background-color: #0256c7;
+  }
+
+  
+  /* Ensure links are clickable and not blocked */
+  .sidebar-item a {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+  }
+  
+  .sidebar, .sidebar *, .sidebar-navigation, .sidebar-navigation * {
+    pointer-events: auto !important;
   }
   
