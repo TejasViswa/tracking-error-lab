@@ -21,6 +21,7 @@ format:
 Portfolio managers and risk professionals routinely calculate tracking error (TE) — the standard deviation of active returns (portfolio minus benchmark). A common challenge arises when comparing annualized tracking error across different measurement frequencies:
 
 **The Issue:**
+
 - You calculate daily TE and annualize it: $TE_{\text{daily}} \times \sqrt{252} = 8.5\%$
 - You calculate monthly TE and annualize it: $TE_{\text{monthly}} \times \sqrt{12} = 10.1\%$
 - **Both are "annualized," yet they differ by 19%**
@@ -66,11 +67,13 @@ Understanding this relationship is critical for:
 ### 1. Persistent Drift (Trending Positions)
 
 **What it looks like:**
+
 - You're overweight Tech, Growth stocks, or Momentum factors
 - These positions keep outperforming (or underperforming) day after day
 - When they're up, they tend to stay up; when they're down, they tend to stay down
 
 **What happens to TE:**
+
 - Daily TE looks manageable: 0.50% per day → 7.9% annualized
 - Monthly TE surprises you: 9.5% annualized → **20% higher than daily suggested**
 - Risk reports show escalating monthly numbers
@@ -79,6 +82,7 @@ Understanding this relationship is critical for:
 A portfolio with 20% overweight in FAANG stocks during 2020-2021. Tech kept winning. Daily TE of 0.6% suggested 9.5% annual TE. Actual monthly aggregation showed 11.4% annual TE.
 
 **Client impact:**
+
 - Your portfolio appears riskier on monthly statements than daily reports suggested
 - Clients may see larger deviations from benchmark in quarterly reviews
 - Risk limits based on daily TE may be inadequate
@@ -86,11 +90,13 @@ A portfolio with 20% overweight in FAANG stocks during 2020-2021. Tech kept winn
 ### 2. Mean Reversion (Oscillating Positions)
 
 **What it looks like:**
+
 - You're overweight Energy, Value stocks, or Defensive sectors
 - These positions spike one day, then reverse the next
 - Your outperformance today tends to become underperformance tomorrow
 
 **What happens to TE:**
+
 - Daily TE looks elevated: 0.65% per day → 10.3% annualized
 - Monthly TE is lower: 8.7% annualized → **15% lower than daily suggested**
 - The daily ups and downs cancel out over the month
@@ -99,6 +105,7 @@ A portfolio with 20% overweight in FAANG stocks during 2020-2021. Tech kept winn
 A portfolio tilted toward Energy and Financials. High daily volatility (0.70% TE) but reversals meant monthly TE was only 8.9% annualized vs. 11.1% predicted from daily.
 
 **Client impact:**
+
 - Your portfolio appears less risky on monthly statements than daily reports suggested
 - You may have more room for active bets than daily TE indicates
 - Risk budgets based on daily TE may be too conservative
@@ -106,16 +113,19 @@ A portfolio tilted toward Energy and Financials. High daily volatility (0.70% TE
 ### 3. Random Walk (Neutral Positions)
 
 **What it looks like:**
+
 - Broad ESG screens, minor sector tilts, or diversified active bets
 - No particular trend or reversal pattern
 - Each day is independent of the last
 
 **What happens to TE:**
+
 - Daily and monthly TE align as expected
 - Your risk systems' standard calculations work fine
 - No surprises in risk reporting
 
 **Client impact:**
+
 - Risk reporting is consistent across time periods
 - Standard TE budgeting approaches work well
 
@@ -128,26 +138,31 @@ A portfolio tilted toward Energy and Financials. High daily volatility (0.70% TE
 When reviewing risk reports, ask yourself:
 
 **"What am I overweight in?"**
+
 - Tech/Growth/Momentum → Expect monthly TE higher than daily predicts
 - Energy/Value/Defensive → Expect monthly TE lower than daily predicts
 - Broad diversified tilts → Expect monthly and daily to align
 
 **Don't be alarmed if:**
+
 - Monthly TE exceeds daily projections for a trending portfolio — it's expected
 - Monthly TE comes in lower for a mean-reverting portfolio — also expected
 
 **Do be concerned if:**
+
 - A trending portfolio shows lower monthly TE (position may have reversed)
 - A defensive portfolio shows higher monthly TE (market regime may have changed)
 
 ### 2. Setting Risk Budgets
 
 **For Momentum/Growth Portfolios:**
+
 - Your daily TE of 0.50% might imply 7.9% annual, but monthly could show 9-10%
 - Build in a **buffer** — if targeting 8% TE, set daily limit around 0.45%
 - Rebalance more frequently to prevent drift accumulation
 
 **For Value/Energy Portfolios:**
+
 - Your daily TE of 0.60% might imply 9.5% annual, but monthly could show 8%
 - You may have **more room** — if targeting 8% TE, daily limit could be 0.65%
 - Less frequent rebalancing may be acceptable
@@ -165,11 +180,13 @@ When reviewing risk reports, ask yourself:
 ### 4. Rebalancing Decisions
 
 **High persistence (trending) portfolios:**
+
 - More frequent rebalancing helps control drift
 - Consider weekly or bi-weekly rebalancing
 - Monitor for extended trending periods
 
 **High reversion (oscillating) portfolios:**
+
 - Less frequent rebalancing may be optimal
 - Monthly or quarterly rebalancing often sufficient
 - Don't over-trade in response to daily volatility
@@ -199,6 +216,7 @@ where $a_t$ is the active return on day $t$, and $k$ is the lag in days.
 Consider a simplified example to build intuition:
 
 **Persistent drift (positive γₖ):**
+
 - Day 1: +0.5% active return
 - Day 2: +0.4% (cumulative: +0.9%)
 - Day 3: +0.6% (cumulative: +1.5%)
@@ -211,6 +229,7 @@ Monthly observation: 8.7% → if this persists, annualized monthly TE ≈ 7.5%
 **Monthly TE exceeds daily TE prediction by ~19%**
 
 **Mean reversion (negative γₖ):**
+
 - Day 1: +0.8% active return
 - Day 2: -0.6% (cumulative: +0.2%)
 - Day 3: +0.5% (cumulative: +0.7%)
@@ -225,12 +244,14 @@ Monthly observation: 1.2% → if this persists, annualized monthly TE ≈ 8.0%
 ### Why Does This Happen?
 
 **Economic drivers of positive autocovariance:**
+
 - Momentum in equity returns
 - Sector leadership that persists for weeks/months
 - Factor exposures (growth, quality, momentum) with slow mean reversion
 - Low rebalancing frequency allowing positions to drift
 
 **Economic drivers of negative autocovariance:**
+
 - Short-term price reversals (bid-ask bounce, microstructure effects)
 - Mean-reverting factors (value, defensive)
 - High rebalancing frequency that cuts off drift
@@ -245,6 +266,7 @@ Monthly observation: 1.2% → if this persists, annualized monthly TE ≈ 8.0%
 **Holdings:** 25% overweight in FAANG + cloud computing + semiconductors
 
 **What happened:**
+
 - Tech leadership persisted throughout the period
 - Daily TE averaged 0.55% → implied 8.7% annual
 - Actual monthly TE: 10.2% annual → **17% higher than daily predicted**
@@ -260,6 +282,7 @@ Monthly observation: 1.2% → if this persists, annualized monthly TE ≈ 8.0%
 **Holdings:** Overweight energy, financials, materials; underweight tech
 
 **What happened:**
+
 - High daily volatility as energy spiked and reversed weekly
 - Daily TE averaged 0.70% → implied 11.1% annual
 - Actual monthly TE: 9.3% annual → **16% lower than daily predicted**
@@ -275,6 +298,7 @@ Monthly observation: 1.2% → if this persists, annualized monthly TE ≈ 8.0%
 **Holdings:** S&P 500 excluding tobacco, weapons, fossil fuels
 
 **What happened:**
+
 - Stable, diversified tilts with no strong trends
 - Daily TE averaged 0.32% → implied 5.1% annual
 - Actual monthly TE: 5.0% annual → **Matched predictions**
