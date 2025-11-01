@@ -6,6 +6,8 @@ website:
     right:
       - text: "Interactive App"
         href: https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/
+      - text: "GitHub Repo"
+        href: https://github.com/TejasViswa/tracking-error-lab
 format:
   html:
     theme: flatly
