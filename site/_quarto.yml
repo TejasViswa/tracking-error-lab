@@ -1,7 +1,7 @@
 project:
   type: website
 website:
-  title: "Tracking Error Notes"
+  title: "Tracking Error Lab"
   navbar:
     left:
       - text: "Overview"
@@ -11,10 +11,21 @@ website:
       - text: "Technical Math"
         href: technical_math.qmd
     right:
-      - text: "Interactive App"
+      - icon: box-arrow-up-right
+        text: "Interactive App"
         href: https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/
-      - text: "GitHub Repo"
+      - icon: github
+        text: "GitHub"
         href: https://github.com/TejasViswa/tracking-error-lab
+  page-footer:
+    left: |
+      **Tejas Viswanath** | 
+      [<i class="bi bi-linkedin"></i> LinkedIn](https://www.linkedin.com/in/tejasviswa/) | 
+      [<i class="bi bi-github"></i> GitHub](https://github.com/TejasViswa/) | 
+      [<i class="bi bi-envelope"></i> Email](mailto:tejasviswa@gmail.com)
+    center: "© 2025 Tracking Error Lab"
+    right: |
+      Built with [Quarto](https://quarto.org)
 format:
   html:
     theme: cosmo

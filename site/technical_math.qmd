@@ -1,11 +1,20 @@
 ---
 title: "Advanced Topics: AR(1) Processes, Newey-West Estimation, and Consistent Annualization"
 subtitle: "Rigorous mathematical treatment with closed-form solutions and estimation procedures"
+author: "Tejas Viswanath"
+date: "2025-11-01"
 format:
   html:
     toc: true
     code-fold: true
 ---
+
+::: {.author-byline}
+**By [Tejas Viswanath](https://www.linkedin.com/in/tejasviswa/)** • November 1, 2025 • 
+[<i class="bi bi-linkedin"></i>](https://www.linkedin.com/in/tejasviswa/)
+[<i class="bi bi-github"></i>](https://github.com/TejasViswa/)
+[<i class="bi bi-envelope"></i>](mailto:tejasviswa@gmail.com)
+:::
 
 ## Overview
 
@@ -57,6 +66,8 @@ $$
 $$
 
 where $\mu = \mathbb{E}[a_t]$ is the population mean.
+
+**Notation note:** We use $\gamma(h)$ here (function notation), which is equivalent to $\gamma_h$ or $\gamma_k$ used in previous pages (subscript notation). These all refer to the lag-h autocovariance.
 
 **Key properties:**
 
