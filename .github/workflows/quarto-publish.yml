@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'site/**'        # only rebuild when site/ changes
+      - 'site/**'
   workflow_dispatch:
 
 jobs:
@@ -14,30 +14,29 @@ jobs:
       contents: write
       pages: write
       id-token: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install Python deps (if any code chunks need them)
-        run: |
-          if [ -f site/requirements.txt ]; then pip install -r site/requirements.txt; fi
-
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Render Quarto site
-        run: |
-          cd site
-          quarto render
+      # (Optional) If your .qmd runs Python code, install deps here.
+      - name: Install Python deps for site
+        if: hashFiles('site/requirements.txt') != ''
+        run: pip install -r site/requirements.txt
 
+      # Render the Quarto site inside site/
+      - name: Render Quarto site
+        working-directory: site
+        run: quarto render
+
+      # Publish from site/ (this is what fixes your error)
       - name: Publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
+          path: site
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
