@@ -1,34 +1,248 @@
 ---
-title: "Tracking Error: Daily vs Monthly"
+title: "Tracking Error Math: Daily vs Monthly, Serial Correlation, and Annualization"
 author: "Tejas Viswanath"
-date: 2025-11-01
+date: "2025-11-01"
+format:
+  html:
+    theme: flatly
+    toc: true
+    math: mathjax
+    mainfont: "Roboto"
 ---
 
-## Intuition
+# Overview
 
-Let $a_t = r_{p,t} - r_{b,t}$ be active returns for the period $t$.
+**Tracking Error (TE)** is the standard deviation of **active returns** $a_t = r_{p,t} - r_{b,t}$, where $r_{p,t}$ and $r_{b,t}$ are portfolio and benchmark returns at time $t$.
+This article derives:
 
-The sample tracking error is:
+- the usual **sample TE estimator** and its annualization under IID,
+- why IID **fails with serial correlation**, and the **correct** formulas,
+- a **general formula** for TE when aggregating $m$ periods (e.g., daily $\rightarrow$ monthly),
+- a **closed-form AR(1)** expression you can use to relate daily and monthly TE,
+- **consistent (Newey–West) annualization** from daily data.
+
+👉 **Interactive App:** <https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/>  
+👉 **GitHub Repo:** <https://github.com/TejasViswa/tracking-error-lab>
+
+---
+
+# 1. Definitions and Estimators
+
+Let active return be $a_t = r_{p,t} - r_{b,t}$ for periods $t=1,\dots,T$.  
+The **sample mean** and **sample variance** are
 $$
-\widehat{TE}
-= \sqrt{\frac{1}{T-1}\sum_{t=1}^{T}(a_t-\bar a)^2},\quad
-\bar a=\frac{1}{T}\sum_{t=1}^{T}a_t.
+\bar a = \frac{1}{T}\sum_{t=1}^{T} a_t, 
+\qquad
+\widehat{\mathrm{Var}}(a) = \frac{1}{T-1}\sum_{t=1}^{T} (a_t - \bar a)^2.
 $$
 
-Annualization under IID:
+The **sample Tracking Error** at the data’s native frequency is
 $$
-TE_{\text{ann}} = TE_{\text{period}} \sqrt{N},
+\widehat{\mathrm{TE}}_{\text{period}} = \sqrt{\widehat{\mathrm{Var}}(a)}.
 $$
-with \(N=252\) (daily) or \(12\) (monthly). In practice, serial correlation means monthly-from-daily isn’t just a rescale.
 
-## Quick Code Demo
+If the data are **daily**, people often report the **annualized TE** by multiplying by $\sqrt{N}$, where $N$ is periods per year:
+
+$$
+\widehat{\mathrm{TE}}_{\text{annual, IID}} = \widehat{\mathrm{TE}}_{\text{daily}} \sqrt{252}.
+$$
+
+This is **correct only under IID** (no serial correlation).
+
+---
+
+# 2. Aggregation and the General Variance Formula
+
+Suppose you aggregate $m$ consecutive periods (e.g., sum daily returns across a month). Define
+$$
+S_m = \sum_{i=1}^{m} a_i.
+$$
+In **full generality**, the variance of $S_m$ depends on the **autocovariance** function $\gamma(h) = \mathrm{Cov}(a_t, a_{t+h})$:
+$$
+\mathrm{Var}(S_m) 
+= \sum_{h=-(m-1)}^{m-1} (m-|h|)\,\gamma(h)
+= m\,\gamma(0) + 2\sum_{h=1}^{m-1} (m-h)\,\gamma(h).
+$$
+
+Therefore, the **$m$-period TE** (e.g., “monthly TE” from daily data with a fixed month length $m$) is
+$$
+\mathrm{TE}_{(m)} = \sqrt{\,\mathrm{Var}(S_m)\,}.
+$$
+
+### IID special case
+If $a_t$ are uncorrelated with variance $\sigma^2$ (i.e., $\gamma(0)=\sigma^2$ and $\gamma(h)=0$ for $h\neq 0$), then
+$$
+\mathrm{Var}(S_m)=m\sigma^2
+\quad\Rightarrow\quad
+\mathrm{TE}_{(m)} = \sqrt{m}\,\sigma.
+$$
+This gives the usual square-root-of-time scaling:
+- from daily to monthly (say $m\approx 21$): $\mathrm{TE}_{\text{monthly}}\approx \sqrt{m}\,\mathrm{TE}_{\text{daily}}$,
+- from daily to annual: $\mathrm{TE}_{\text{annual}}\approx \sqrt{252}\,\mathrm{TE}_{\text{daily}}$.
+
+---
+
+# 3. Annualization with Serial Correlation (Correct Formula)
+
+Let one **year** contain $N$ base periods (e.g., $N=252$ trading days).  
+The **annual active return** is $A=\sum_{t=1}^{N} a_t$. Its variance is
+$$
+\mathrm{Var}(A)
+= N\,\gamma(0) + 2\sum_{h=1}^{N-1} (N-h)\,\gamma(h).
+$$
+
+Thus the **true annualized TE** (standard deviation of the annual active return) is
+$$
+\mathrm{TE}_{\text{annual,true}} = \sqrt{\,N\,\gamma(0) + 2\sum_{h=1}^{N-1} (N-h)\,\gamma(h)\,}.
+$$
+
+- Under IID, $\gamma(h)=0$ for $h\ge 1$ and you recover $\sqrt{N}\,\sqrt{\gamma(0)}$.  
+- With **positive** serial correlation ($\gamma(h)>0$), annual TE is **higher** than the IID scaling.
+- With **negative** serial correlation (mean reversion), annual TE can be **lower** than IID scaling.
+
+---
+
+# 4. AR(1) Closed-Form for $m$-period TE
+
+Assume active returns follow the stationary AR(1):
+$$
+a_t = \phi a_{t-1} + \varepsilon_t,\qquad \varepsilon_t\sim \mathcal{N}(0,\sigma_\varepsilon^2),\quad |\phi|<1.
+$$
+
+Then
+$$
+\gamma(0)=\frac{\sigma_\varepsilon^2}{1-\phi^2}, 
+\qquad
+\gamma(h)=\gamma(0)\,\phi^{\,h}\quad(h\ge 1).
+$$
+
+Plugging into the general formula,
+$$
+\mathrm{Var}(S_m)
+= \gamma(0)\Bigg[m + 2\sum_{h=1}^{m-1} (m-h)\phi^{\,h}\Bigg].
+$$
+A convenient algebraic identity for the finite sum is
+$$
+\sum_{h=1}^{m-1} (m-h)\phi^{\,h}
+= m\frac{\phi - \phi^{\,m}}{1-\phi}
+- \frac{\phi\left(1 - m\phi^{\,m-1} + (m-1)\phi^{\,m}\right)}{(1-\phi)^2}.
+$$
+
+Therefore, the **$m$-period TE under AR(1)** is
+$$
+\mathrm{TE}_{(m)}^{\text{AR(1)}} 
+= \sqrt{\,\gamma(0)\Bigg[
+m + 2\Big(
+m\frac{\phi - \phi^{\,m}}{1-\phi}
+- \frac{\phi\left(1 - m\phi^{\,m-1} + (m-1)\phi^{\,m}\right)}{(1-\phi)^2}
+\Big)\Bigg]}\,,
+$$
+with $\gamma(0)=\sigma_\varepsilon^2/(1-\phi^2)$.
+
+**Use cases.**  
+- To convert **daily TE** to **monthly TE**, set $m$ equal to trading days per month (e.g., $m\approx 21$).  
+- To get **annual TE** from daily, set $m=N$ (e.g., $N=252$).  
+- This formula collapses to $\sqrt{m}\,\sigma$ when $\phi=0$ (IID).
+
+---
+
+# 5. Estimating Annualized TE Consistently (Newey–West)
+
+From a daily series $\{a_t\}_{t=1}^{T}$, estimate the **long-run variance** (LRV)
+$$
+\sigma^2_{\text{LR}} = \gamma(0) + 2\sum_{h=1}^{\infty}\gamma(h),
+$$
+with a **Newey–West** estimator
+$$
+\widehat{\sigma}^2_{\text{LR}} 
+= \hat\gamma(0) + 2\sum_{h=1}^{L} w_h\,\hat\gamma(h), 
+\qquad
+w_h = 1 - \frac{h}{L+1},
+$$
+where $L$ is a truncation lag (e.g., $L\approx\lfloor 4(T/100)^{2/9}\rfloor$ or a simpler rule like $L\in[5,25]$ for daily data).
+
+Then the **consistent annualized TE** from daily data is
+$$
+\widehat{\mathrm{TE}}_{\text{annual, NW}} 
+= \sqrt{\,N\,\widehat{\sigma}^2_{\text{LR}}\,}.
+$$
+
+This reduces to the IID formula when serial correlation is negligible.
+
+---
+
+# 6. Daily vs Monthly: What You Actually Compare
+
+Two common comparisons:
+
+1. **Compute TE on daily data** and report $\widehat{\mathrm{TE}}_{\text{daily}}\sqrt{252}$ (IID) or the **NW-consistent** version above.  
+2. **Aggregate to monthly** returns $S_m$ and compute the standard deviation across months:
+   $$
+   \widehat{\mathrm{TE}}_{\text{monthly}} = \mathrm{sd}\{S_{m,j}\}_{j=1}^{J}, 
+   \qquad
+   \widehat{\mathrm{TE}}_{\text{monthly,ann}} = \widehat{\mathrm{TE}}_{\text{monthly}}\sqrt{12}.
+   $$
+   These will **not** necessarily match the daily-based annualization unless returns are IID.
+
+---
+
+# 7. Numerical Verification (AR(1) example)
 
 ```{python}
-import numpy as np, pandas as pd
-np.random.seed(0)
-days = 756
-a = np.random.normal(0, 0.001, days)
-df = pd.DataFrame({'a': a})
-te_daily = df['a'].std(ddof=1)
-te_ann = te_daily * (252**0.5)
-te_ann
+import numpy as np
+
+def te_m_ar1(phi, sigma_eps, m):
+    # gamma0 and the finite-sum identity
+    gamma0 = sigma_eps**2 / (1 - phi**2)
+    num = m*((phi - phi**m)/(1 - phi)) - (phi*(1 - m*phi**(m-1) + (m-1)*phi**m))/((1 - phi)**2)
+    var_sm = gamma0 * (m + 2*num)
+    return np.sqrt(var_sm)
+
+phi = 0.2
+sigma_eps = 0.0012
+m_daily_to_month = 21
+m_daily_to_year  = 252
+
+te_month = te_m_ar1(phi, sigma_eps, m_daily_to_month)
+te_year  = te_m_ar1(phi, sigma_eps, m_daily_to_year)
+
+(te_month, te_year)
+```
+
+---
+
+# 8. Worked Example: When Monthly TE < Daily-scaled TE
+
+Let daily active returns be mean-reverting (negative serial correlation), e.g., $\phi=-0.3$ in AR(1).  
+Then monthly aggregation partially cancels day-to-day fluctuations, so you often observe:
+
+$$
+TE_{\text{monthly,ann}} < TE_{\text{daily}} \sqrt{252}.
+$$
+
+Conversely, with trend persistence ($\phi>0$), the aggregated variance can rise faster than IID scaling.
+
+---
+
+# 9. Practical Guidance
+
+- **Always state the sampling frequency** used to compute TE.  
+- If you report **annualized TE from daily data**, prefer the **Newey–West** consistent estimator when autocorrelation is present.  
+- If comparing **daily-based vs monthly-based TE**, remember they are *different estimators* of different objects (sum of daily vs one-step monthly), which coincide only under IID.  
+- For **model-based conversion**, the AR(1) closed form is a simple and effective approximation.
+
+---
+
+# 10. References (select)
+
+- Grinold, R. C., & Kahn, R. N. *Active Portfolio Management* (2nd ed.).  
+- Newey, W. K., & West, K. D. (1987). *A Simple, Positive Semi-definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.*  
+- Lo, A. W. (2002). *The Statistics of Sharpe Ratios* (serial correlation & scaling ideas apply to volatility and TE).  
+- CFA Institute curriculum: *Tracking error, active risk, and information ratio.*
+
+---
+
+# Try It Live
+
+- 🧮 **Interactive App:** [tracking-error-lab.streamlit.app](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)  
+- 💻 **Source Code:** [github.com/TejasViswa/tracking-error-lab](https://github.com/TejasViswa/tracking-error-lab)
