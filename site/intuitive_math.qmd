@@ -9,13 +9,6 @@ format:
     code-fold: true
 ---
 
-::: {.author-byline}
-**By [Tejas Viswanath](https://www.linkedin.com/in/tejasviswa/)** • November 1, 2025 • 
-[<i class="bi bi-linkedin"></i>](https://www.linkedin.com/in/tejasviswa/)
-[<i class="bi bi-github"></i>](https://github.com/TejasViswa/)
-[<i class="bi bi-envelope"></i>](mailto:tejasviswa@gmail.com)
-:::
-
 ## Overview
 
 This document provides a comprehensive derivation of how tracking error scales from daily to monthly horizons. We'll see that the relationship isn't just about square-root-of-time scaling — it fundamentally depends on the **autocovariance structure** of active returns.

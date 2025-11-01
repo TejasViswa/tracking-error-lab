@@ -2,6 +2,37 @@ project:
   type: website
 website:
   title: "Tracking Error Lab"
+  sidebar:
+    style: "docked"
+    background: light
+    contents:
+      - section: "Navigation"
+        contents:
+          - text: "Overview"
+            file: index.qmd
+          - text: "Intuitive Math"
+            file: intuitive_math.qmd
+          - text: "Technical Math"
+            file: technical_math.qmd
+      - section: "Resources"
+        contents:
+          - text: "Interactive Simulator"
+            href: https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/
+            icon: play-circle
+          - text: "Source Code"
+            href: https://github.com/TejasViswa/tracking-error-lab
+            icon: github
+      - section: "Contact"
+        contents:
+          - text: "LinkedIn"
+            href: https://www.linkedin.com/in/tejasviswa/
+            icon: linkedin
+          - text: "GitHub"
+            href: https://github.com/TejasViswa/
+            icon: github
+          - text: "Email"
+            href: mailto:tejasviswa@gmail.com
+            icon: envelope
   navbar:
     left:
       - text: "Overview"
@@ -11,25 +42,24 @@ website:
       - text: "Technical Math"
         href: technical_math.qmd
     right:
-      - icon: box-arrow-up-right
-        text: "Interactive App"
+      - icon: play-circle
+        text: "Interactive Simulator"
         href: https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/
       - icon: github
-        text: "GitHub"
+        text: "Source Code"
         href: https://github.com/TejasViswa/tracking-error-lab
   page-footer:
-    left: |
-      **Tejas Viswanath** | 
-      [<i class="bi bi-linkedin"></i> LinkedIn](https://www.linkedin.com/in/tejasviswa/) | 
-      [<i class="bi bi-github"></i> GitHub](https://github.com/TejasViswa/) | 
-      [<i class="bi bi-envelope"></i> Email](mailto:tejasviswa@gmail.com)
-    center: "© 2025 Tracking Error Lab"
-    right: |
-      Built with [Quarto](https://quarto.org)
+    center: "© 2025 Tejas Viswanath   •   [<i class='bi bi-linkedin'></i>](https://www.linkedin.com/in/tejasviswa/){.footer-icon} [<i class='bi bi-github'></i>](https://github.com/TejasViswa/){.footer-icon} [<i class='bi bi-envelope'></i>](mailto:tejasviswa@gmail.com){.footer-icon}"
 format:
   html:
     theme: cosmo
     toc: true
+    toc-location: right
     math: mathjax
-    page-layout: full
+    page-layout: article
+    grid:
+      sidebar-width: 280px
+      body-width: 1100px
+      margin-width: 280px
+      gutter-width: 1.5rem
     css: styles.css

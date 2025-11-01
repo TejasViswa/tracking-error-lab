@@ -9,13 +9,6 @@ format:
     code-fold: true
 ---
 
-::: {.author-byline}
-**By [Tejas Viswanath](https://www.linkedin.com/in/tejasviswa/)** • November 1, 2025 • 
-[<i class="bi bi-linkedin"></i>](https://www.linkedin.com/in/tejasviswa/)
-[<i class="bi bi-github"></i>](https://github.com/TejasViswa/)
-[<i class="bi bi-envelope"></i>](mailto:tejasviswa@gmail.com)
-:::
-
 ## The Problem: Annualized Tracking Error Inconsistencies
 
 Portfolio managers and risk professionals routinely calculate tracking error (TE) — the standard deviation of active returns (portfolio minus benchmark). A common challenge arises when comparing annualized tracking error across different measurement frequencies:

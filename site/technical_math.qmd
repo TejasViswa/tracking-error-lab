@@ -9,13 +9,6 @@ format:
     code-fold: true
 ---
 
-::: {.author-byline}
-**By [Tejas Viswanath](https://www.linkedin.com/in/tejasviswa/)** • November 1, 2025 • 
-[<i class="bi bi-linkedin"></i>](https://www.linkedin.com/in/tejasviswa/)
-[<i class="bi bi-github"></i>](https://github.com/TejasViswa/)
-[<i class="bi bi-envelope"></i>](mailto:tejasviswa@gmail.com)
-:::
-
 ## Overview
 
 This page provides advanced mathematical tools for tracking error analysis, building on the intuitive derivations from the previous pages. We cover:
