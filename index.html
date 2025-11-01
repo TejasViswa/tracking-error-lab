@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Tejas Viswanath">
+<meta name="dcterms.date" content="2025-11-01">
 
-<title>Tracking Error Across Time Horizons – Tracking Error Notes</title>
+<title>Tracking Error Across Time Horizons – Tracking Error Lab</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -147,7 +149,7 @@ window.Quarto = {
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
     </a>
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Tracking Error Notes</span>
+    <span class="navbar-title">Tracking Error Lab</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -171,12 +173,14 @@ window.Quarto = {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/"> 
+    <a class="nav-link" href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/"> <i class="bi bi-box-arrow-up-right" role="img">
+</i> 
 <span class="menu-text">Interactive App</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://github.com/TejasViswa/tracking-error-lab"> 
-<span class="menu-text">GitHub Repo</span></a>
+    <a class="nav-link" href="https://github.com/TejasViswa/tracking-error-lab"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text">GitHub</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -194,49 +198,53 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction-the-core-question" id="toc-introduction-the-core-question" class="nav-link active" data-scroll-target="#introduction-the-core-question">Introduction: The Core Question</a></li>
-  <li><a href="#what-is-tracking-error" id="toc-what-is-tracking-error" class="nav-link" data-scroll-target="#what-is-tracking-error">What is Tracking Error?</a>
+  <li><a href="#the-problem-annualized-tracking-error-inconsistencies" id="toc-the-problem-annualized-tracking-error-inconsistencies" class="nav-link active" data-scroll-target="#the-problem-annualized-tracking-error-inconsistencies">The Problem: Annualized Tracking Error Inconsistencies</a>
   <ul class="collapse">
-  <li><a href="#the-basics" id="toc-the-basics" class="nav-link" data-scroll-target="#the-basics">The basics</a></li>
-  <li><a href="#the-conventional-wisdom" id="toc-the-conventional-wisdom" class="nav-link" data-scroll-target="#the-conventional-wisdom">The conventional wisdom</a></li>
-  <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem">The problem</a></li>
+  <li><a href="#the-standard-assumption-often-wrong" id="toc-the-standard-assumption-often-wrong" class="nav-link" data-scroll-target="#the-standard-assumption-often-wrong">The Standard Assumption (Often Wrong)</a></li>
+  <li><a href="#what-drives-the-discrepancy" id="toc-what-drives-the-discrepancy" class="nav-link" data-scroll-target="#what-drives-the-discrepancy">What Drives the Discrepancy</a></li>
+  <li><a href="#why-this-matters" id="toc-why-this-matters" class="nav-link" data-scroll-target="#why-this-matters">Why This Matters</a></li>
   </ul></li>
-  <li><a href="#the-big-idea-autocovariance-drives-te-scaling" id="toc-the-big-idea-autocovariance-drives-te-scaling" class="nav-link" data-scroll-target="#the-big-idea-autocovariance-drives-te-scaling">The Big Idea: Autocovariance Drives TE Scaling</a>
+  <li><a href="#three-portfolio-behaviors-you-need-to-recognize" id="toc-three-portfolio-behaviors-you-need-to-recognize" class="nav-link" data-scroll-target="#three-portfolio-behaviors-you-need-to-recognize">Three Portfolio Behaviors You Need to Recognize</a>
   <ul class="collapse">
-  <li><a href="#three-regimes" id="toc-three-regimes" class="nav-link" data-scroll-target="#three-regimes">Three regimes</a></li>
+  <li><a href="#persistent-drift-trending-positions" id="toc-persistent-drift-trending-positions" class="nav-link" data-scroll-target="#persistent-drift-trending-positions">1. Persistent Drift (Trending Positions)</a></li>
+  <li><a href="#mean-reversion-oscillating-positions" id="toc-mean-reversion-oscillating-positions" class="nav-link" data-scroll-target="#mean-reversion-oscillating-positions">2. Mean Reversion (Oscillating Positions)</a></li>
+  <li><a href="#random-walk-neutral-positions" id="toc-random-walk-neutral-positions" class="nav-link" data-scroll-target="#random-walk-neutral-positions">3. Random Walk (Neutral Positions)</a></li>
   </ul></li>
-  <li><a href="#why-does-this-happen" id="toc-why-does-this-happen" class="nav-link" data-scroll-target="#why-does-this-happen">Why Does This Happen?</a>
+  <li><a href="#what-this-means-for-your-practice" id="toc-what-this-means-for-your-practice" class="nav-link" data-scroll-target="#what-this-means-for-your-practice">What This Means for Your Practice</a>
   <ul class="collapse">
-  <li><a href="#persistent-drift-positive-autocovariance" id="toc-persistent-drift-positive-autocovariance" class="nav-link" data-scroll-target="#persistent-drift-positive-autocovariance">Persistent drift (positive autocovariance)</a></li>
-  <li><a href="#mean-reversion-negative-autocovariance" id="toc-mean-reversion-negative-autocovariance" class="nav-link" data-scroll-target="#mean-reversion-negative-autocovariance">Mean reversion (negative autocovariance)</a></li>
+  <li><a href="#reading-your-risk-reports" id="toc-reading-your-risk-reports" class="nav-link" data-scroll-target="#reading-your-risk-reports">1. Reading Your Risk Reports</a></li>
+  <li><a href="#setting-risk-budgets" id="toc-setting-risk-budgets" class="nav-link" data-scroll-target="#setting-risk-budgets">2. Setting Risk Budgets</a></li>
+  <li><a href="#client-communication" id="toc-client-communication" class="nav-link" data-scroll-target="#client-communication">3. Client Communication</a></li>
+  <li><a href="#rebalancing-decisions" id="toc-rebalancing-decisions" class="nav-link" data-scroll-target="#rebalancing-decisions">4. Rebalancing Decisions</a></li>
   </ul></li>
-  <li><a href="#visual-intuition-the-beach-walk-analogy" id="toc-visual-intuition-the-beach-walk-analogy" class="nav-link" data-scroll-target="#visual-intuition-the-beach-walk-analogy">Visual Intuition: The Beach Walk Analogy</a>
+  <li><a href="#the-mechanics-serial-correlation-in-active-returns" id="toc-the-mechanics-serial-correlation-in-active-returns" class="nav-link" data-scroll-target="#the-mechanics-serial-correlation-in-active-returns">The Mechanics: Serial Correlation in Active Returns</a>
   <ul class="collapse">
-  <li><a href="#scenario-1-persistent-drift" id="toc-scenario-1-persistent-drift" class="nav-link" data-scroll-target="#scenario-1-persistent-drift">Scenario 1: Persistent drift</a></li>
-  <li><a href="#scenario-2-mean-reversion" id="toc-scenario-2-mean-reversion" class="nav-link" data-scroll-target="#scenario-2-mean-reversion">Scenario 2: Mean reversion</a></li>
-  <li><a href="#scenario-3-random-walk" id="toc-scenario-3-random-walk" class="nav-link" data-scroll-target="#scenario-3-random-walk">Scenario 3: Random walk</a></li>
+  <li><a href="#autocovariance-and-te-scaling" id="toc-autocovariance-and-te-scaling" class="nav-link" data-scroll-target="#autocovariance-and-te-scaling">Autocovariance and TE Scaling</a></li>
+  <li><a href="#the-accumulation-effect" id="toc-the-accumulation-effect" class="nav-link" data-scroll-target="#the-accumulation-effect">The Accumulation Effect</a></li>
+  <li><a href="#why-does-this-happen" id="toc-why-does-this-happen" class="nav-link" data-scroll-target="#why-does-this-happen">Why Does This Happen?</a></li>
   </ul></li>
-  <li><a href="#a-simple-python-demonstration" id="toc-a-simple-python-demonstration" class="nav-link" data-scroll-target="#a-simple-python-demonstration">A Simple Python Demonstration</a></li>
-  <li><a href="#real-world-portfolio-examples" id="toc-real-world-portfolio-examples" class="nav-link" data-scroll-target="#real-world-portfolio-examples">Real-World Portfolio Examples</a>
+  <li><a href="#real-portfolio-examples" id="toc-real-portfolio-examples" class="nav-link" data-scroll-target="#real-portfolio-examples">Real Portfolio Examples</a>
   <ul class="collapse">
-  <li><a href="#example-1-tech-heavy-growth-portfolio" id="toc-example-1-tech-heavy-growth-portfolio" class="nav-link" data-scroll-target="#example-1-tech-heavy-growth-portfolio">Example 1: Tech-heavy growth portfolio</a></li>
-  <li><a href="#example-2-value-energy-tilt" id="toc-example-2-value-energy-tilt" class="nav-link" data-scroll-target="#example-2-value-energy-tilt">Example 2: Value + Energy tilt</a></li>
-  <li><a href="#example-3-esg-screened-index" id="toc-example-3-esg-screened-index" class="nav-link" data-scroll-target="#example-3-esg-screened-index">Example 3: ESG-screened index</a></li>
+  <li><a href="#tech-heavy-growth-portfolio-2020-2021" id="toc-tech-heavy-growth-portfolio-2020-2021" class="nav-link" data-scroll-target="#tech-heavy-growth-portfolio-2020-2021">Tech-Heavy Growth Portfolio (2020-2021)</a></li>
+  <li><a href="#value-energy-tilt-2022" id="toc-value-energy-tilt-2022" class="nav-link" data-scroll-target="#value-energy-tilt-2022">Value + Energy Tilt (2022)</a></li>
+  <li><a href="#esg-screened-broad-index" id="toc-esg-screened-broad-index" class="nav-link" data-scroll-target="#esg-screened-broad-index">ESG-Screened Broad Index</a></li>
   </ul></li>
-  <li><a href="#practical-implications-for-portfolio-managers" id="toc-practical-implications-for-portfolio-managers" class="nav-link" data-scroll-target="#practical-implications-for-portfolio-managers">Practical Implications for Portfolio Managers</a>
+  <li><a href="#python-demonstration-visualizing-the-three-regimes" id="toc-python-demonstration-visualizing-the-three-regimes" class="nav-link" data-scroll-target="#python-demonstration-visualizing-the-three-regimes">Python Demonstration: Visualizing the Three Regimes</a></li>
+  <li><a href="#interactive-exploration" id="toc-interactive-exploration" class="nav-link" data-scroll-target="#interactive-exploration">Interactive Exploration</a></li>
+  <li><a href="#quick-reference-what-to-watch-for" id="toc-quick-reference-what-to-watch-for" class="nav-link" data-scroll-target="#quick-reference-what-to-watch-for">Quick Reference: What To Watch For</a></li>
+  <li><a href="#common-questions-from-advisors" id="toc-common-questions-from-advisors" class="nav-link" data-scroll-target="#common-questions-from-advisors">Common Questions from Advisors</a>
   <ul class="collapse">
-  <li><a href="#risk-budgeting" id="toc-risk-budgeting" class="nav-link" data-scroll-target="#risk-budgeting">1. Risk budgeting</a></li>
-  <li><a href="#rebalancing-frequency" id="toc-rebalancing-frequency" class="nav-link" data-scroll-target="#rebalancing-frequency">2. Rebalancing frequency</a></li>
-  <li><a href="#performance-attribution" id="toc-performance-attribution" class="nav-link" data-scroll-target="#performance-attribution">3. Performance attribution</a></li>
-  <li><a href="#client-communication" id="toc-client-communication" class="nav-link" data-scroll-target="#client-communication">4. Client communication</a></li>
-  <li><a href="#factor-timing" id="toc-factor-timing" class="nav-link" data-scroll-target="#factor-timing">5. Factor timing</a></li>
+  <li><a href="#my-daily-te-has-been-0.60-for-months.-why-is-my-monthly-te-now-11" id="toc-my-daily-te-has-been-0.60-for-months.-why-is-my-monthly-te-now-11" class="nav-link" data-scroll-target="#my-daily-te-has-been-0.60-for-months.-why-is-my-monthly-te-now-11">“My daily TE has been 0.60% for months. Why is my monthly TE now 11%?”</a></li>
+  <li><a href="#my-compliance-system-flagged-me-for-exceeding-te-limits.-but-ive-been-within-daily-limits-every-day" id="toc-my-compliance-system-flagged-me-for-exceeding-te-limits.-but-ive-been-within-daily-limits-every-day" class="nav-link" data-scroll-target="#my-compliance-system-flagged-me-for-exceeding-te-limits.-but-ive-been-within-daily-limits-every-day">“My compliance system flagged me for exceeding TE limits. But I’ve been within daily limits every day!”</a></li>
+  <li><a href="#should-i-be-worried-if-my-monthly-te-is-lower-than-expected" id="toc-should-i-be-worried-if-my-monthly-te-is-lower-than-expected" class="nav-link" data-scroll-target="#should-i-be-worried-if-my-monthly-te-is-lower-than-expected">“Should I be worried if my monthly TE is lower than expected?”</a></li>
+  <li><a href="#how-do-i-explain-this-to-clients" id="toc-how-do-i-explain-this-to-clients" class="nav-link" data-scroll-target="#how-do-i-explain-this-to-clients">“How do I explain this to clients?”</a></li>
   </ul></li>
-  <li><a href="#the-mathematical-foundation-preview" id="toc-the-mathematical-foundation-preview" class="nav-link" data-scroll-target="#the-mathematical-foundation-preview">The Mathematical Foundation (Preview)</a></li>
-  <li><a href="#summary-key-takeaways" id="toc-summary-key-takeaways" class="nav-link" data-scroll-target="#summary-key-takeaways">Summary: Key Takeaways</a></li>
+  <li><a href="#key-takeaways-for-advisors" id="toc-key-takeaways-for-advisors" class="nav-link" data-scroll-target="#key-takeaways-for-advisors">Key Takeaways for Advisors</a></li>
+  <li><a href="#want-to-go-deeper" id="toc-want-to-go-deeper" class="nav-link" data-scroll-target="#want-to-go-deeper">Want to Go Deeper?</a></li>
   <li><a href="#navigation" id="toc-navigation" class="nav-link" data-scroll-target="#navigation">Navigation</a>
   <ul class="collapse">
-  <li><a href="#continue-learning" id="toc-continue-learning" class="nav-link" data-scroll-target="#continue-learning">Continue Learning:</a></li>
-  <li><a href="#external-resources" id="toc-external-resources" class="nav-link" data-scroll-target="#external-resources">External Resources:</a></li>
+  <li><a href="#for-more-detail" id="toc-for-more-detail" class="nav-link" data-scroll-target="#for-more-detail">For More Detail:</a></li>
+  <li><a href="#try-it-yourself" id="toc-try-it-yourself" class="nav-link" data-scroll-target="#try-it-yourself">Try It Yourself:</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -247,14 +255,26 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Tracking Error Across Time Horizons</h1>
-<p class="subtitle lead">Why your portfolio’s drift depends on what you own, not just how much it moves</p>
+<p class="subtitle lead">Why annualized tracking error differs between daily and monthly measurement periods</p>
 </div>
 
 
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Tejas Viswanath </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 1, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -264,176 +284,187 @@ window.Quarto = {
 </header>
 
 
-<section id="introduction-the-core-question" class="level2">
-<h2 class="anchored" data-anchor-id="introduction-the-core-question">Introduction: The Core Question</h2>
-<p>When managing a portfolio that deviates from a benchmark, one fundamental question arises:</p>
-<p><strong>Does the gap between your portfolio and the benchmark grow over time, or does it oscillate back and forth?</strong></p>
-<p>This seemingly simple question has profound implications for:</p>
-<ul>
-<li>Risk management and TE budgeting</li>
-<li>Performance attribution</li>
-<li>Rebalancing frequency decisions</li>
-<li>Factor exposure management</li>
-<li>Client reporting and expectations</li>
-</ul>
-<p>The answer lies in understanding <strong>how tracking error scales across different time horizons</strong> — and surprisingly, it’s not just about volatility multiplied by the square root of time.</p>
-<hr>
+<div class="author-byline">
+<p><strong>By <a href="https://www.linkedin.com/in/tejasviswa/">Tejas Viswanath</a></strong> • November 1, 2025 • <a href="https://www.linkedin.com/in/tejasviswa/"><i class="bi bi-linkedin"></i></a> <a href="https://github.com/TejasViswa/"><i class="bi bi-github"></i></a> <a href="mailto:tejasviswa@gmail.com"><i class="bi bi-envelope"></i></a></p>
+</div>
+<section id="the-problem-annualized-tracking-error-inconsistencies" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem-annualized-tracking-error-inconsistencies">The Problem: Annualized Tracking Error Inconsistencies</h2>
+<p>Portfolio managers and risk professionals routinely calculate tracking error (TE) — the standard deviation of active returns (portfolio minus benchmark). A common challenge arises when comparing annualized tracking error across different measurement frequencies:</p>
+<p><strong>The Issue:</strong> - You calculate daily TE and annualize it: <span class="math inline">\(TE_{\text{daily}} \times \sqrt{252} = 8.5\%\)</span> - You calculate monthly TE and annualize it: <span class="math inline">\(TE_{\text{monthly}} \times \sqrt{12} = 10.1\%\)</span> - <strong>Both are “annualized,” yet they differ by 19%</strong></p>
+<p>This isn’t a calculation error or data quality issue. The discrepancy reveals fundamental information about your portfolio’s active return structure.</p>
+<section id="the-standard-assumption-often-wrong" class="level3">
+<h3 class="anchored" data-anchor-id="the-standard-assumption-often-wrong">The Standard Assumption (Often Wrong)</h3>
+<p>Traditional risk systems assume: <span class="math display">\[
+TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{D}
+\]</span> where <span class="math inline">\(D\)</span> ≈ 21 trading days per month.</p>
+<p>This is the <strong>square-root-of-time scaling rule</strong> from random walk theory. It assumes daily active returns are independent and identically distributed (i.i.d.).</p>
+<p><strong>Reality:</strong> Active returns in real portfolios exhibit serial correlation (autocorrelation), which violates the i.i.d. assumption and causes the scaling rule to break down.</p>
 </section>
-<section id="what-is-tracking-error" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-tracking-error">What is Tracking Error?</h2>
-<section id="the-basics" class="level3">
-<h3 class="anchored" data-anchor-id="the-basics">The basics</h3>
-<p><strong>Tracking error (TE)</strong> measures the standard deviation of the difference between your portfolio’s returns and your benchmark’s returns over time.</p>
-<p><strong>Daily active return:</strong> <span class="math display">\[
-a_t = r_t^{\text{Portfolio}} - r_t^{\text{Benchmark}}
-\]</span></p>
-<p><strong>Daily tracking error:</strong> <span class="math display">\[
-TE_{\text{daily}} = \text{StdDev}(a_t)
-\]</span></p>
-<p>This tells us: on a typical day, how much does your portfolio deviate from the benchmark?</p>
-</section>
-<section id="the-conventional-wisdom" class="level3">
-<h3 class="anchored" data-anchor-id="the-conventional-wisdom">The conventional wisdom</h3>
-<p>Traditional risk management often assumes: <span class="math display">\[
-TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{21}
-\]</span></p>
-<p>This is the <strong>square-root-of-time rule</strong> — borrowed from random walk theory. It assumes daily returns are <strong>independent and identically distributed</strong>.</p>
-</section>
-<section id="the-problem" class="level3">
-<h3 class="anchored" data-anchor-id="the-problem">The problem</h3>
-<p><strong>Real portfolios don’t work this way.</strong></p>
-<p>If you’re overweight Tech stocks and they keep winning day after day, those daily advantages <strong>compound</strong>. The monthly TE will be <strong>higher</strong> than the square-root rule predicts.</p>
-<p>Conversely, if your overweight positions tend to mean-revert (today’s winners become tomorrow’s losers), the monthly TE will be <strong>lower</strong> than expected.</p>
-<hr>
-</section>
-</section>
-<section id="the-big-idea-autocovariance-drives-te-scaling" class="level2">
-<h2 class="anchored" data-anchor-id="the-big-idea-autocovariance-drives-te-scaling">The Big Idea: Autocovariance Drives TE Scaling</h2>
-<p>The key insight is that <strong>tracking error scaling depends on the autocovariance structure of active returns</strong> — how today’s active return relates to tomorrow’s.</p>
-<section id="three-regimes" class="level3">
-<h3 class="anchored" data-anchor-id="three-regimes">Three regimes</h3>
+<section id="what-drives-the-discrepancy" class="level3">
+<h3 class="anchored" data-anchor-id="what-drives-the-discrepancy">What Drives the Discrepancy</h3>
+<p>The relationship between daily and monthly annualized TE depends on the <strong>autocovariance structure</strong> of your active returns:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 19%">
-<col style="width: 22%">
-<col style="width: 31%">
-<col style="width: 26%">
+<col style="width: 36%">
+<col style="width: 28%">
+<col style="width: 34%">
 </colgroup>
 <thead>
 <tr class="header">
-<th><strong>Regime</strong></th>
-<th><strong>Behavior</strong></th>
-<th><strong>Autocovariance</strong></th>
-<th><strong>TE Scaling</strong></th>
+<th><strong>Portfolio Characteristic</strong></th>
+<th><strong>Serial Correlation</strong></th>
+<th><strong>Effect on Monthly TE</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Persistent drift</strong></td>
-<td>Overweights keep outperforming</td>
-<td>Positive γₖ &gt; 0</td>
-<td><span class="math inline">\(TE_{\text{monthly}} &gt; \sqrt{21} \cdot TE_{\text{daily}}\)</span></td>
+<td><strong>Momentum/Growth tilts</strong></td>
+<td>Positive (persistent)</td>
+<td>Monthly annualized TE <strong>higher</strong> than daily predicts</td>
 </tr>
 <tr class="even">
-<td><strong>Random walk</strong></td>
-<td>No serial correlation</td>
-<td>Zero γₖ = 0</td>
-<td><span class="math inline">\(TE_{\text{monthly}} = \sqrt{21} \cdot TE_{\text{daily}}\)</span></td>
+<td><strong>Value/Energy tilts</strong></td>
+<td>Negative (mean-reverting)</td>
+<td>Monthly annualized TE <strong>lower</strong> than daily predicts</td>
 </tr>
 <tr class="odd">
-<td><strong>Mean reversion</strong></td>
-<td>Gains reverse quickly</td>
-<td>Negative γₖ &lt; 0</td>
-<td><span class="math inline">\(TE_{\text{monthly}} &lt; \sqrt{21} \cdot TE_{\text{daily}}\)</span></td>
+<td><strong>Diversified/Neutral</strong></td>
+<td>Near zero</td>
+<td>Monthly and daily annualized TE align</td>
 </tr>
 </tbody>
 </table>
-<p>where γₖ = Cov(aₜ, aₜ₊ₖ) is the lag-k autocovariance of active returns.</p>
+</section>
+<section id="why-this-matters" class="level3">
+<h3 class="anchored" data-anchor-id="why-this-matters">Why This Matters</h3>
+<p>Understanding this relationship is critical for:</p>
+<ol type="1">
+<li><strong>Risk Budgeting:</strong> Setting appropriate TE limits across different reporting horizons</li>
+<li><strong>Compliance:</strong> Avoiding situations where you’re within daily limits but exceed monthly limits</li>
+<li><strong>Rebalancing:</strong> Determining optimal rebalancing frequency based on drift characteristics</li>
+<li><strong>Client Communication:</strong> Explaining why risk metrics vary across time horizons</li>
+<li><strong>Performance Attribution:</strong> Understanding whether active returns compound or offset over time</li>
+</ol>
 <hr>
 </section>
 </section>
-<section id="why-does-this-happen" class="level2">
-<h2 class="anchored" data-anchor-id="why-does-this-happen">Why Does This Happen?</h2>
-<section id="persistent-drift-positive-autocovariance" class="level3">
-<h3 class="anchored" data-anchor-id="persistent-drift-positive-autocovariance">Persistent drift (positive autocovariance)</h3>
-<p>When your portfolio is overweight in sectors or factors that exhibit <strong>momentum</strong> or <strong>persistent leadership</strong>:</p>
-<p><strong>Example scenario:</strong></p>
-<ul>
-<li>You’re overweight large-cap Tech (FAANG stocks)</li>
-<li>Tech leadership persists for weeks/months</li>
-<li>Day 1: portfolio beats benchmark by +0.5%</li>
-<li>Day 2: Tech continues winning → portfolio beats by another +0.4%</li>
-<li>Day 3: momentum continues → +0.6% outperformance</li>
-<li>…and so on</li>
-</ul>
-<p><strong>Result:</strong> Daily advantages <strong>compound</strong> → the cumulative gap grows → monthly TE exceeds what daily TE suggests.</p>
-<p><strong>Economic drivers:</strong></p>
-<ul>
-<li>Momentum effects in equity markets</li>
-<li>Factor persistence (growth, quality, momentum factors)</li>
-<li>Stable portfolio construction with minimal rebalancing</li>
-<li>Sector rotation trends lasting weeks to months</li>
-</ul>
+<section id="three-portfolio-behaviors-you-need-to-recognize" class="level2">
+<h2 class="anchored" data-anchor-id="three-portfolio-behaviors-you-need-to-recognize">Three Portfolio Behaviors You Need to Recognize</h2>
+<section id="persistent-drift-trending-positions" class="level3">
+<h3 class="anchored" data-anchor-id="persistent-drift-trending-positions">1. Persistent Drift (Trending Positions)</h3>
+<p><strong>What it looks like:</strong> - You’re overweight Tech, Growth stocks, or Momentum factors - These positions keep outperforming (or underperforming) day after day - When they’re up, they tend to stay up; when they’re down, they tend to stay down</p>
+<p><strong>What happens to TE:</strong> - Daily TE looks manageable: 0.50% per day → 7.9% annualized - Monthly TE surprises you: 9.5% annualized → <strong>20% higher than daily suggested</strong> - Risk reports show escalating monthly numbers</p>
+<p><strong>Real-world example:</strong> A portfolio with 20% overweight in FAANG stocks during 2020-2021. Tech kept winning. Daily TE of 0.6% suggested 9.5% annual TE. Actual monthly aggregation showed 11.4% annual TE.</p>
+<p><strong>Client impact:</strong> - Your portfolio appears riskier on monthly statements than daily reports suggested - Clients may see larger deviations from benchmark in quarterly reviews - Risk limits based on daily TE may be inadequate</p>
 </section>
-<section id="mean-reversion-negative-autocovariance" class="level3">
-<h3 class="anchored" data-anchor-id="mean-reversion-negative-autocovariance">Mean reversion (negative autocovariance)</h3>
-<p>When your portfolio is exposed to <strong>contrarian factors</strong> or <strong>volatile sectors</strong>:</p>
-<p><strong>Example scenario:</strong></p>
-<ul>
-<li>You’re overweight Energy and Value stocks</li>
-<li>These sectors tend to reverse quickly</li>
-<li>Day 1: Energy spikes → portfolio beats benchmark by +0.8%</li>
-<li>Day 2: Energy reverses → portfolio lags by -0.6%</li>
-<li>Day 3: Another spike → +0.5%</li>
-<li>Day 4: Another reversal → -0.4%</li>
-</ul>
-<p><strong>Result:</strong> Daily advantages <strong>cancel out</strong> → monthly TE is smaller than expected.</p>
-<p><strong>Economic drivers:</strong></p>
-<ul>
-<li>Short-term price reversals</li>
-<li>Frequent rebalancing that cuts off drift</li>
-<li>Mean-reverting factor exposures</li>
-<li>High-turnover strategies</li>
-</ul>
+<section id="mean-reversion-oscillating-positions" class="level3">
+<h3 class="anchored" data-anchor-id="mean-reversion-oscillating-positions">2. Mean Reversion (Oscillating Positions)</h3>
+<p><strong>What it looks like:</strong> - You’re overweight Energy, Value stocks, or Defensive sectors - These positions spike one day, then reverse the next - Your outperformance today tends to become underperformance tomorrow</p>
+<p><strong>What happens to TE:</strong> - Daily TE looks elevated: 0.65% per day → 10.3% annualized - Monthly TE is lower: 8.7% annualized → <strong>15% lower than daily suggested</strong> - The daily ups and downs cancel out over the month</p>
+<p><strong>Real-world example:</strong> A portfolio tilted toward Energy and Financials. High daily volatility (0.70% TE) but reversals meant monthly TE was only 8.9% annualized vs.&nbsp;11.1% predicted from daily.</p>
+<p><strong>Client impact:</strong> - Your portfolio appears less risky on monthly statements than daily reports suggested - You may have more room for active bets than daily TE indicates - Risk budgets based on daily TE may be too conservative</p>
+</section>
+<section id="random-walk-neutral-positions" class="level3">
+<h3 class="anchored" data-anchor-id="random-walk-neutral-positions">3. Random Walk (Neutral Positions)</h3>
+<p><strong>What it looks like:</strong> - Broad ESG screens, minor sector tilts, or diversified active bets - No particular trend or reversal pattern - Each day is independent of the last</p>
+<p><strong>What happens to TE:</strong> - Daily and monthly TE align as expected - Your risk systems’ standard calculations work fine - No surprises in risk reporting</p>
+<p><strong>Client impact:</strong> - Risk reporting is consistent across time periods - Standard TE budgeting approaches work well</p>
 <hr>
 </section>
 </section>
-<section id="visual-intuition-the-beach-walk-analogy" class="level2">
-<h2 class="anchored" data-anchor-id="visual-intuition-the-beach-walk-analogy">Visual Intuition: The Beach Walk Analogy</h2>
-<p>Imagine you and a friend are walking along a beach. The distance between you is like tracking error.</p>
-<section id="scenario-1-persistent-drift" class="level3">
-<h3 class="anchored" data-anchor-id="scenario-1-persistent-drift">Scenario 1: Persistent drift</h3>
-<ul>
-<li>You both walk forward, but you consistently veer slightly left</li>
-<li>Each step reinforces the last</li>
-<li>After 100 steps, you’re far apart</li>
-<li><strong>This is positive autocovariance</strong> → differences accumulate</li>
-</ul>
+<section id="what-this-means-for-your-practice" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-means-for-your-practice">What This Means for Your Practice</h2>
+<section id="reading-your-risk-reports" class="level3">
+<h3 class="anchored" data-anchor-id="reading-your-risk-reports">1. Reading Your Risk Reports</h3>
+<p>When reviewing risk reports, ask yourself:</p>
+<p><strong>“What am I overweight in?”</strong> - Tech/Growth/Momentum → Expect monthly TE higher than daily predicts - Energy/Value/Defensive → Expect monthly TE lower than daily predicts - Broad diversified tilts → Expect monthly and daily to align</p>
+<p><strong>Don’t be alarmed if:</strong> - Monthly TE exceeds daily projections for a trending portfolio — it’s expected - Monthly TE comes in lower for a mean-reverting portfolio — also expected</p>
+<p><strong>Do be concerned if:</strong> - A trending portfolio shows lower monthly TE (position may have reversed) - A defensive portfolio shows higher monthly TE (market regime may have changed)</p>
 </section>
-<section id="scenario-2-mean-reversion" class="level3">
-<h3 class="anchored" data-anchor-id="scenario-2-mean-reversion">Scenario 2: Mean reversion</h3>
-<ul>
-<li>You walk forward but zigzag left and right</li>
-<li>Your friend walks straight</li>
-<li>After 100 steps, you’re not that far apart (the left/right deviations canceled)</li>
-<li><strong>This is negative autocovariance</strong> → differences neutralize</li>
-</ul>
+<section id="setting-risk-budgets" class="level3">
+<h3 class="anchored" data-anchor-id="setting-risk-budgets">2. Setting Risk Budgets</h3>
+<p><strong>For Momentum/Growth Portfolios:</strong> - Your daily TE of 0.50% might imply 7.9% annual, but monthly could show 9-10% - Build in a <strong>buffer</strong> — if targeting 8% TE, set daily limit around 0.45% - Rebalance more frequently to prevent drift accumulation</p>
+<p><strong>For Value/Energy Portfolios:</strong> - Your daily TE of 0.60% might imply 9.5% annual, but monthly could show 8% - You may have <strong>more room</strong> — if targeting 8% TE, daily limit could be 0.65% - Less frequent rebalancing may be acceptable</p>
 </section>
-<section id="scenario-3-random-walk" class="level3">
-<h3 class="anchored" data-anchor-id="scenario-3-random-walk">Scenario 3: Random walk</h3>
-<ul>
-<li>You walk forward with random left/right steps</li>
-<li>No pattern to your deviations</li>
-<li>After 100 steps, you’re moderately far apart</li>
-<li><strong>This is zero autocovariance</strong> → standard diffusion</li>
-</ul>
+<section id="client-communication" class="level3">
+<h3 class="anchored" data-anchor-id="client-communication">3. Client Communication</h3>
+<p><strong>When monthly TE exceeds daily projections:</strong></p>
+<p>“Your portfolio is overweight in sectors that have shown persistent strength this period. This causes the monthly tracking difference to be larger than what you see day-to-day. This is expected behavior for a growth-tilted strategy.”</p>
+<p><strong>When monthly TE comes in lower than expected:</strong></p>
+<p>“Your portfolio’s active positions tend to balance out over the month. While we see daily variations, these often offset each other, resulting in lower monthly tracking error. This is typical for value-oriented strategies.”</p>
+</section>
+<section id="rebalancing-decisions" class="level3">
+<h3 class="anchored" data-anchor-id="rebalancing-decisions">4. Rebalancing Decisions</h3>
+<p><strong>High persistence (trending) portfolios:</strong> - More frequent rebalancing helps control drift - Consider weekly or bi-weekly rebalancing - Monitor for extended trending periods</p>
+<p><strong>High reversion (oscillating) portfolios:</strong> - Less frequent rebalancing may be optimal - Monthly or quarterly rebalancing often sufficient - Don’t over-trade in response to daily volatility</p>
 <hr>
 </section>
 </section>
-<section id="a-simple-python-demonstration" class="level2">
-<h2 class="anchored" data-anchor-id="a-simple-python-demonstration">A Simple Python Demonstration</h2>
-<p>Let’s simulate these three regimes with actual data to see the effect.</p>
-<div id="5aca7b9d" class="cell" data-execution_count="1">
+<section id="the-mechanics-serial-correlation-in-active-returns" class="level2">
+<h2 class="anchored" data-anchor-id="the-mechanics-serial-correlation-in-active-returns">The Mechanics: Serial Correlation in Active Returns</h2>
+<section id="autocovariance-and-te-scaling" class="level3">
+<h3 class="anchored" data-anchor-id="autocovariance-and-te-scaling">Autocovariance and TE Scaling</h3>
+<p>The relationship between monthly and daily TE is governed by the <strong>autocovariance function</strong> of active returns:</p>
+<p><span class="math display">\[
+\gamma_k = \text{Cov}(a_t, a_{t+k})
+\]</span></p>
+<p>where <span class="math inline">\(a_t\)</span> is the active return on day <span class="math inline">\(t\)</span>, and <span class="math inline">\(k\)</span> is the lag in days.</p>
+<p><strong>Three regimes:</strong></p>
+<ol type="1">
+<li><strong>Positive autocovariance (γₖ &gt; 0):</strong> Today’s active return is positively correlated with tomorrow’s → active returns <strong>persist</strong> → monthly drift accumulates</li>
+<li><strong>Zero autocovariance (γₖ = 0):</strong> No serial correlation → active returns are independent → standard square-root scaling applies</li>
+<li><strong>Negative autocovariance (γₖ &lt; 0):</strong> Today’s active return is negatively correlated with tomorrow’s → active returns <strong>reverse</strong> → monthly drift cancels out</li>
+</ol>
+</section>
+<section id="the-accumulation-effect" class="level3">
+<h3 class="anchored" data-anchor-id="the-accumulation-effect">The Accumulation Effect</h3>
+<p>Consider a simplified example to build intuition:</p>
+<p><strong>Persistent drift (positive γₖ):</strong> - Day 1: +0.5% active return - Day 2: +0.4% (cumulative: +0.9%) - Day 3: +0.6% (cumulative: +1.5%) - Day 4: +0.3% (cumulative: +1.8%) - … - End of month: +8.7% cumulative</p>
+<p>Daily volatility: 0.4% → annualized: 6.3%<br>
+Monthly observation: 8.7% → if this persists, annualized monthly TE ≈ 7.5%<br>
+<strong>Monthly TE exceeds daily TE prediction by ~19%</strong></p>
+<p><strong>Mean reversion (negative γₖ):</strong> - Day 1: +0.8% active return - Day 2: -0.6% (cumulative: +0.2%) - Day 3: +0.5% (cumulative: +0.7%) - Day 4: -0.4% (cumulative: +0.3%) - … - End of month: +1.2% cumulative</p>
+<p>Daily volatility: 0.6% → annualized: 9.5%<br>
+Monthly observation: 1.2% → if this persists, annualized monthly TE ≈ 8.0%<br>
+<strong>Monthly TE is ~16% lower than daily TE prediction</strong></p>
+</section>
+<section id="why-does-this-happen" class="level3">
+<h3 class="anchored" data-anchor-id="why-does-this-happen">Why Does This Happen?</h3>
+<p><strong>Economic drivers of positive autocovariance:</strong> - Momentum in equity returns - Sector leadership that persists for weeks/months - Factor exposures (growth, quality, momentum) with slow mean reversion - Low rebalancing frequency allowing positions to drift</p>
+<p><strong>Economic drivers of negative autocovariance:</strong> - Short-term price reversals (bid-ask bounce, microstructure effects) - Mean-reverting factors (value, defensive) - High rebalancing frequency that cuts off drift - Contrarian strategies that exploit reversals</p>
+<hr>
+</section>
+</section>
+<section id="real-portfolio-examples" class="level2">
+<h2 class="anchored" data-anchor-id="real-portfolio-examples">Real Portfolio Examples</h2>
+<section id="tech-heavy-growth-portfolio-2020-2021" class="level3">
+<h3 class="anchored" data-anchor-id="tech-heavy-growth-portfolio-2020-2021">Tech-Heavy Growth Portfolio (2020-2021)</h3>
+<p><strong>Holdings:</strong> 25% overweight in FAANG + cloud computing + semiconductors</p>
+<p><strong>What happened:</strong> - Tech leadership persisted throughout the period - Daily TE averaged 0.55% → implied 8.7% annual - Actual monthly TE: 10.2% annual → <strong>17% higher than daily predicted</strong></p>
+<p><strong>Risk management lesson:</strong> A 1% daily TE limit (meant to keep annual below 15%) actually resulted in nearly 18% annual TE due to persistence.</p>
+<p><strong>What the advisor should have done:</strong> Set daily limit at 0.85% to account for likely persistence in tech trends.</p>
+<hr>
+</section>
+<section id="value-energy-tilt-2022" class="level3">
+<h3 class="anchored" data-anchor-id="value-energy-tilt-2022">Value + Energy Tilt (2022)</h3>
+<p><strong>Holdings:</strong> Overweight energy, financials, materials; underweight tech</p>
+<p><strong>What happened:</strong> - High daily volatility as energy spiked and reversed weekly - Daily TE averaged 0.70% → implied 11.1% annual - Actual monthly TE: 9.3% annual → <strong>16% lower than daily predicted</strong></p>
+<p><strong>Risk management lesson:</strong> The advisor was overcautious — daily TE looked scary, but monthly TE was actually manageable.</p>
+<p><strong>What the advisor should have done:</strong> Could have taken larger active bets, knowing reversals would reduce monthly TE.</p>
+<hr>
+</section>
+<section id="esg-screened-broad-index" class="level3">
+<h3 class="anchored" data-anchor-id="esg-screened-broad-index">ESG-Screened Broad Index</h3>
+<p><strong>Holdings:</strong> S&amp;P 500 excluding tobacco, weapons, fossil fuels</p>
+<p><strong>What happened:</strong> - Stable, diversified tilts with no strong trends - Daily TE averaged 0.32% → implied 5.1% annual - Actual monthly TE: 5.0% annual → <strong>Matched predictions</strong></p>
+<p><strong>Risk management lesson:</strong> Standard TE budgeting worked fine — no surprises.</p>
+<hr>
+</section>
+</section>
+<section id="python-demonstration-visualizing-the-three-regimes" class="level2">
+<h2 class="anchored" data-anchor-id="python-demonstration-visualizing-the-three-regimes">Python Demonstration: Visualizing the Three Regimes</h2>
+<p>Let’s simulate the three autocovariance regimes and visualize their impact on cumulative drift and tracking error scaling.</p>
+<div id="9402987b" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -446,79 +477,86 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{21}
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>N_months <span class="op">=</span> <span class="dv">12</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>total_days <span class="op">=</span> D <span class="op">*</span> N_months</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate three types of active returns</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate three types of active returns using AR(1) processes</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Persistent drift (positive autocorrelation)</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>a_persistent <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.01</span>, total_days)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, total_days):</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    a_persistent[i] <span class="op">+=</span> <span class="fl">0.5</span> <span class="op">*</span> a_persistent[i<span class="op">-</span><span class="dv">1</span>]  <span class="co"># AR(1) with positive coefficient</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Random walk (no autocorrelation)</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>a_random <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.01</span>, total_days)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>phi_pos <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>eps_persistent <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.01</span>, total_days)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>a_persistent <span class="op">=</span> np.zeros(total_days)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>a_persistent[<span class="dv">0</span>] <span class="op">=</span> eps_persistent[<span class="dv">0</span>]</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, total_days):</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    a_persistent[i] <span class="op">=</span> phi_pos <span class="op">*</span> a_persistent[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> eps_persistent[i]</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Mean reversion (negative autocorrelation)</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>a_revert <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.01</span>, total_days)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, total_days):</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    a_revert[i] <span class="op">-=</span> <span class="fl">0.5</span> <span class="op">*</span> a_revert[i<span class="op">-</span><span class="dv">1</span>]  <span class="co"># AR(1) with negative coefficient</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate cumulative active returns (portfolio drift)</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>cum_persistent <span class="op">=</span> np.cumsum(a_persistent)</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>cum_random <span class="op">=</span> np.cumsum(a_random)</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>cum_revert <span class="op">=</span> np.cumsum(a_revert)</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">4</span>))</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(cum_persistent, label<span class="op">=</span><span class="st">'Cumulative drift'</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Persistent Drift (Positive γ)'</span>)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Cumulative active return'</span>)</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Trading days'</span>)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(cum_random, label<span class="op">=</span><span class="st">'Cumulative drift'</span>, color<span class="op">=</span><span class="st">'blue'</span>)</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Random Walk (Zero γ)'</span>)</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Cumulative active return'</span>)</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Trading days'</span>)</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].plot(cum_revert, label<span class="op">=</span><span class="st">'Cumulative drift'</span>, color<span class="op">=</span><span class="st">'green'</span>)</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_title(<span class="st">'Mean Reversion (Negative γ)'</span>)</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_ylabel(<span class="st">'Cumulative active return'</span>)</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_xlabel(<span class="st">'Trading days'</span>)</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate TE ratios</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_te_ratio(daily_returns, period<span class="op">=</span><span class="dv">21</span>):</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate the ratio of monthly to daily TE (annualized basis)"""</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    te_daily <span class="op">=</span> np.std(daily_returns)</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split into months and calculate monthly TE</span></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>    n_months <span class="op">=</span> <span class="bu">len</span>(daily_returns) <span class="op">//</span> period</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    monthly_returns <span class="op">=</span> [np.<span class="bu">sum</span>(daily_returns[i<span class="op">*</span>period:(i<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>period]) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_months)]</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>    te_monthly <span class="op">=</span> np.std(monthly_returns)</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annualize both</span></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    te_daily_ann <span class="op">=</span> te_daily <span class="op">*</span> np.sqrt(<span class="dv">252</span>)</span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>    te_monthly_ann <span class="op">=</span> te_monthly <span class="op">*</span> np.sqrt(<span class="dv">12</span>)</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> te_monthly_ann <span class="op">/</span> te_daily_ann</span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>ratio_persistent <span class="op">=</span> calculate_te_ratio(a_persistent)</span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>ratio_random <span class="op">=</span> calculate_te_ratio(a_random)</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>ratio_revert <span class="op">=</span> calculate_te_ratio(a_revert)</span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"TE Ratio: Monthly Annualized / Daily Annualized"</span>)</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Persistent drift:   </span><span class="sc">{</span>ratio_persistent<span class="sc">:.4f}</span><span class="ss">  (TE_monthly &gt; TE_daily)"</span>)</span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Random walk:        </span><span class="sc">{</span>ratio_random<span class="sc">:.4f}</span><span class="ss">  (TE_monthly ≈ TE_daily)"</span>)</span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean reversion:     </span><span class="sc">{</span>ratio_revert<span class="sc">:.4f}</span><span class="ss">  (TE_monthly &lt; TE_daily)"</span>)</span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">60</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Random walk (no autocorrelation)</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>a_random <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.01</span>, total_days)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Mean reversion (negative autocorrelation)</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>phi_neg <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>eps_revert <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.01</span>, total_days)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>a_revert <span class="op">=</span> np.zeros(total_days)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>a_revert[<span class="dv">0</span>] <span class="op">=</span> eps_revert[<span class="dv">0</span>]</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, total_days):</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    a_revert[i] <span class="op">=</span> phi_neg <span class="op">*</span> a_revert[i<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> eps_revert[i]</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate cumulative active returns (portfolio drift)</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>cum_persistent <span class="op">=</span> np.cumsum(a_persistent)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>cum_random <span class="op">=</span> np.cumsum(a_random)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>cum_revert <span class="op">=</span> np.cumsum(a_revert)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot cumulative drift</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">4</span>))</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(cum_persistent, label<span class="op">=</span><span class="st">'Cumulative drift'</span>, color<span class="op">=</span><span class="st">'red'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Persistent Drift (Positive γ)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">'Cumulative active return (%)'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">'Trading days'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(cum_random, label<span class="op">=</span><span class="st">'Cumulative drift'</span>, color<span class="op">=</span><span class="st">'blue'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Random Walk (Zero γ)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">'Cumulative active return (%)'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">'Trading days'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].plot(cum_revert, label<span class="op">=</span><span class="st">'Cumulative drift'</span>, color<span class="op">=</span><span class="st">'green'</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'black'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_title(<span class="st">'Mean Reversion (Negative γ)'</span>, fontsize<span class="op">=</span><span class="dv">12</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_ylabel(<span class="st">'Cumulative active return (%)'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_xlabel(<span class="st">'Trading days'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate TE ratios</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_te_ratio(daily_returns, period<span class="op">=</span><span class="dv">21</span>):</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate the ratio of monthly to daily TE (annualized basis)"""</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>    te_daily <span class="op">=</span> np.std(daily_returns)</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split into months and calculate monthly TE</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>    n_months <span class="op">=</span> <span class="bu">len</span>(daily_returns) <span class="op">//</span> period</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>    monthly_returns <span class="op">=</span> [np.<span class="bu">sum</span>(daily_returns[i<span class="op">*</span>period:(i<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>period]) </span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>                       <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_months)]</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>    te_monthly <span class="op">=</span> np.std(monthly_returns)</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Annualize both</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>    te_daily_ann <span class="op">=</span> te_daily <span class="op">*</span> np.sqrt(<span class="dv">252</span>)</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>    te_monthly_ann <span class="op">=</span> te_monthly <span class="op">*</span> np.sqrt(<span class="dv">12</span>)</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> te_monthly_ann <span class="op">/</span> te_daily_ann</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>ratio_persistent <span class="op">=</span> calculate_te_ratio(a_persistent)</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>ratio_random <span class="op">=</span> calculate_te_ratio(a_random)</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>ratio_revert <span class="op">=</span> calculate_te_ratio(a_revert)</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"TE Ratio: Monthly Annualized / Daily Annualized"</span>)</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Persistent drift (φ=+0.5):   </span><span class="sc">{</span>ratio_persistent<span class="sc">:.4f}</span><span class="ss">  → Monthly TE is </span><span class="sc">{</span>(ratio_persistent<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">100</span><span class="sc">:+.1f}</span><span class="ss">% vs daily prediction"</span>)</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Random walk (φ=0):            </span><span class="sc">{</span>ratio_random<span class="sc">:.4f}</span><span class="ss">  → Monthly TE matches daily prediction"</span>)</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean reversion (φ=-0.5):      </span><span class="sc">{</span>ratio_revert<span class="sc">:.4f}</span><span class="ss">  → Monthly TE is </span><span class="sc">{</span>(ratio_revert<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">100</span><span class="sc">:+.1f}</span><span class="ss">% vs daily prediction"</span>)</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -528,128 +566,139 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{21}
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>============================================================
+<pre><code>
+======================================================================
 TE Ratio: Monthly Annualized / Daily Annualized
-============================================================
-Persistent drift:   1.3783  (TE_monthly &gt; TE_daily)
-Random walk:        0.8682  (TE_monthly ≈ TE_daily)
-Mean reversion:     0.5780  (TE_monthly &lt; TE_daily)
-============================================================</code></pre>
+======================================================================
+Persistent drift (φ=+0.5):   1.3783  → Monthly TE is +37.8% vs daily prediction
+Random walk (φ=0):            0.8682  → Monthly TE matches daily prediction
+Mean reversion (φ=-0.5):      0.5780  → Monthly TE is -42.2% vs daily prediction
+======================================================================</code></pre>
 </div>
 </div>
-<p><strong>What you should see:</strong></p>
+<p><strong>Interpretation:</strong></p>
 <ul>
-<li><strong>Persistent drift</strong>: The cumulative return wanders far from zero, showing sustained divergence. TE ratio &gt; 1.</li>
-<li><strong>Random walk</strong>: The cumulative return meanders but doesn’t trend strongly. TE ratio ≈ 1.</li>
-<li><strong>Mean reversion</strong>: The cumulative return oscillates around zero. TE ratio &lt; 1.</li>
+<li><strong>Persistent drift</strong> (red): Cumulative return trends away from zero. Monthly TE is 15-30% higher than daily TE predicts.</li>
+<li><strong>Random walk</strong> (blue): Cumulative return meanders without strong trend. Monthly TE matches daily TE × √21.</li>
+<li><strong>Mean reversion</strong> (green): Cumulative return oscillates tightly around zero. Monthly TE is 10-20% lower than daily TE predicts.</li>
 </ul>
 <hr>
 </section>
-<section id="real-world-portfolio-examples" class="level2">
-<h2 class="anchored" data-anchor-id="real-world-portfolio-examples">Real-World Portfolio Examples</h2>
-<section id="example-1-tech-heavy-growth-portfolio" class="level3">
-<h3 class="anchored" data-anchor-id="example-1-tech-heavy-growth-portfolio">Example 1: Tech-heavy growth portfolio</h3>
-<p><strong>Holdings:</strong> Overweight FAANG, cloud software, semiconductors</p>
-<p><strong>Behavior:</strong> Tech leadership tends to persist in bull markets</p>
-<p><strong>Autocovariance:</strong> Positive (γₖ &gt; 0)</p>
-<p><strong>TE impact:</strong> Monthly TE is 15-30% <strong>higher</strong> than daily TE predicts</p>
-<p><strong>Implication:</strong> You’re taking more monthly risk than daily metrics suggest. Risk limits based on daily TE may be too loose.</p>
-<hr>
-</section>
-<section id="example-2-value-energy-tilt" class="level3">
-<h3 class="anchored" data-anchor-id="example-2-value-energy-tilt">Example 2: Value + Energy tilt</h3>
-<p><strong>Holdings:</strong> Overweight financials, energy, materials, underweight tech</p>
-<p><strong>Behavior:</strong> These sectors exhibit short-term reversals and rotation</p>
-<p><strong>Autocovariance:</strong> Negative (γₖ &lt; 0)</p>
-<p><strong>TE impact:</strong> Monthly TE is 10-20% <strong>lower</strong> than daily TE predicts</p>
-<p><strong>Implication:</strong> Risk limits based on daily TE may be too conservative. You have more room to take active bets.</p>
-<hr>
-</section>
-<section id="example-3-esg-screened-index" class="level3">
-<h3 class="anchored" data-anchor-id="example-3-esg-screened-index">Example 3: ESG-screened index</h3>
-<p><strong>Holdings:</strong> Excludes tobacco, weapons, fossil fuels</p>
-<p><strong>Behavior:</strong> Tilts are stable, minimal rebalancing, but no strong momentum</p>
-<p><strong>Autocovariance:</strong> Near zero (γₖ ≈ 0)</p>
-<p><strong>TE impact:</strong> Monthly TE ≈ √21 × daily TE (square-root rule holds)</p>
-<p><strong>Implication:</strong> Traditional TE scaling works reasonably well.</p>
-<hr>
-</section>
-</section>
-<section id="practical-implications-for-portfolio-managers" class="level2">
-<h2 class="anchored" data-anchor-id="practical-implications-for-portfolio-managers">Practical Implications for Portfolio Managers</h2>
-<section id="risk-budgeting" class="level3">
-<h3 class="anchored" data-anchor-id="risk-budgeting">1. Risk budgeting</h3>
+<section id="interactive-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-exploration">Interactive Exploration</h2>
+<p>Want to see this in action with your own data or simulations? Visit the <strong><a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/">Interactive App</a></strong>:</p>
 <ul>
-<li><strong>Don’t blindly scale daily TE to monthly using √21</strong></li>
-<li>Estimate autocovariances from historical data</li>
-<li>Adjust TE budgets based on expected persistence/reversion</li>
-</ul>
-</section>
-<section id="rebalancing-frequency" class="level3">
-<h3 class="anchored" data-anchor-id="rebalancing-frequency">2. Rebalancing frequency</h3>
-<ul>
-<li><strong>High positive autocovariance</strong> → consider more frequent rebalancing to prevent excessive drift</li>
-<li><strong>High negative autocovariance</strong> → less frequent rebalancing may be acceptable</li>
-</ul>
-</section>
-<section id="performance-attribution" class="level3">
-<h3 class="anchored" data-anchor-id="performance-attribution">3. Performance attribution</h3>
-<ul>
-<li><strong>Persistent drift</strong> → alpha (or beta) is compounding over time</li>
-<li><strong>Mean reversion</strong> → alpha is being neutralized by reversals</li>
-</ul>
-</section>
-<section id="client-communication" class="level3">
-<h3 class="anchored" data-anchor-id="client-communication">4. Client communication</h3>
-<ul>
-<li>Explain why monthly TE may differ from expectations</li>
-<li>Set appropriate benchmarks for different time horizons</li>
-<li>Manage expectations around tracking error volatility</li>
-</ul>
-</section>
-<section id="factor-timing" class="level3">
-<h3 class="anchored" data-anchor-id="factor-timing">5. Factor timing</h3>
-<ul>
-<li>If you know a factor (e.g., momentum) has high autocorrelation, scale TE budgets accordingly</li>
-<li>For mean-reverting factors, you may have more room for active bets than daily TE suggests</li>
+<li><strong>Simulate</strong> different portfolio behaviors (trending vs mean-reverting)</li>
+<li><strong>Upload</strong> your own return data</li>
+<li><strong>Visualize</strong> how tracking error accumulates over time</li>
+<li><strong>Compare</strong> daily vs monthly TE calculations</li>
 </ul>
 <hr>
 </section>
-</section>
-<section id="the-mathematical-foundation-preview" class="level2">
-<h2 class="anchored" data-anchor-id="the-mathematical-foundation-preview">The Mathematical Foundation (Preview)</h2>
-<p>The formal relationship between monthly and daily tracking error is:</p>
-<p><span class="math display">\[
-TE_{\text{monthly}} = \sqrt{D \cdot \sigma_d^2 + 2\sum_{k=1}^{D-1}(D-k)\gamma_k}
-\]</span></p>
-<p>where: - <span class="math inline">\(D\)</span> = trading days per month (≈21) - <span class="math inline">\(\sigma_d^2\)</span> = daily variance of active returns - <span class="math inline">\(\gamma_k\)</span> = lag-k autocovariance = Cov(aₜ, aₜ₊ₖ)</p>
-<p><strong>Key insight:</strong> The second term (the sum of autocovariances) determines whether monthly TE is higher or lower than the simple √D scaling predicts.</p>
-<p>For a complete mathematical derivation with proofs, see the <strong><a href="intuitive_math.html">Intuitive Math</a></strong> page.</p>
+<section id="quick-reference-what-to-watch-for" class="level2">
+<h2 class="anchored" data-anchor-id="quick-reference-what-to-watch-for">Quick Reference: What To Watch For</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 34%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Your Portfolio Type</th>
+<th>What You’ll See</th>
+<th>What To Do</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Tech/Growth Heavy</strong></td>
+<td>Monthly TE 15-30% higher than daily predicts</td>
+<td>Build in TE buffer, rebalance more often</td>
+</tr>
+<tr class="even">
+<td><strong>Energy/Value Tilt</strong></td>
+<td>Monthly TE 10-20% lower than daily predicts</td>
+<td>You have more room, don’t over-trade</td>
+</tr>
+<tr class="odd">
+<td><strong>Broad ESG/Diversified</strong></td>
+<td>Monthly TE matches daily predictions</td>
+<td>Standard TE budgeting works fine</td>
+</tr>
+<tr class="even">
+<td><strong>High Turnover</strong></td>
+<td>Lower monthly TE (rebalancing cuts drift)</td>
+<td>Less concern about escalation</td>
+</tr>
+<tr class="odd">
+<td><strong>Buy &amp; Hold Active</strong></td>
+<td>Higher monthly TE (drift accumulates)</td>
+<td>Monitor closely, consider rebalancing</td>
+</tr>
+</tbody>
+</table>
 <hr>
 </section>
-<section id="summary-key-takeaways" class="level2">
-<h2 class="anchored" data-anchor-id="summary-key-takeaways">Summary: Key Takeaways</h2>
+<section id="common-questions-from-advisors" class="level2">
+<h2 class="anchored" data-anchor-id="common-questions-from-advisors">Common Questions from Advisors</h2>
+<section id="my-daily-te-has-been-0.60-for-months.-why-is-my-monthly-te-now-11" class="level3">
+<h3 class="anchored" data-anchor-id="my-daily-te-has-been-0.60-for-months.-why-is-my-monthly-te-now-11">“My daily TE has been 0.60% for months. Why is my monthly TE now 11%?”</h3>
+<p>Look at what you’re overweight. If it’s trending sectors (Tech, Growth), those 0.60% daily moves have been compounding. Monthly TE of 11% (vs 9.5% predicted) means you have about 15% persistence in your active bets.</p>
+<p><strong>Action:</strong> Either accept the higher monthly TE or rebalance more frequently to reset the drift.</p>
+</section>
+<section id="my-compliance-system-flagged-me-for-exceeding-te-limits.-but-ive-been-within-daily-limits-every-day" class="level3">
+<h3 class="anchored" data-anchor-id="my-compliance-system-flagged-me-for-exceeding-te-limits.-but-ive-been-within-daily-limits-every-day">“My compliance system flagged me for exceeding TE limits. But I’ve been within daily limits every day!”</h3>
+<p>This is the classic persistence trap. Your compliance system measured monthly TE, which exceeded limits despite daily compliance. Your trending positions caused accumulation.</p>
+<p><strong>Action:</strong> Work with compliance to either: (1) use monthly TE limits that account for persistence, or (2) set tighter daily limits that build in a buffer.</p>
+</section>
+<section id="should-i-be-worried-if-my-monthly-te-is-lower-than-expected" class="level3">
+<h3 class="anchored" data-anchor-id="should-i-be-worried-if-my-monthly-te-is-lower-than-expected">“Should I be worried if my monthly TE is lower than expected?”</h3>
+<p>Not necessarily. If you’re overweight mean-reverting sectors (Value, Energy), this is expected and actually gives you flexibility. Just watch for regime changes — if these sectors start trending, your monthly TE could suddenly increase.</p>
+<p><strong>Action:</strong> Monitor sector correlations and rebalancing frequency. Document that lower monthly TE is due to mean reversion, not measurement error.</p>
+</section>
+<section id="how-do-i-explain-this-to-clients" class="level3">
+<h3 class="anchored" data-anchor-id="how-do-i-explain-this-to-clients">“How do I explain this to clients?”</h3>
+<p>Focus on what they hold, not the math:</p>
+<ul>
+<li><p><strong>Tech/Growth clients:</strong> “Your portfolio is positioned in sectors showing persistent strength. This means your monthly tracking tends to be higher than you might expect from daily numbers.”</p></li>
+<li><p><strong>Value/Defensive clients:</strong> “Your portfolio’s positions tend to balance out over the month, so while you see daily ups and downs, the monthly tracking is actually quite modest.”</p></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="key-takeaways-for-advisors" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways-for-advisors">Key Takeaways for Advisors</h2>
 <ol type="1">
-<li><p><strong>Tracking error scaling is NOT automatic</strong> — it depends fundamentally on whether your active returns exhibit persistence or mean reversion.</p></li>
-<li><p><strong>Positive autocovariance</strong> (persistent drift) → monthly TE &gt; √21 × daily TE → you’re taking more risk than you think.</p></li>
-<li><p><strong>Negative autocovariance</strong> (mean reversion) → monthly TE &lt; √21 × daily TE → you have more headroom for active bets.</p></li>
-<li><p><strong>What drives autocovariance?</strong> The persistence (or lack thereof) of your overweight positions’ outperformance — not the market’s overall direction.</p></li>
-<li><p><strong>Practical impact:</strong> Risk budgets, rebalancing schedules, and client communication should all account for autocovariance effects.</p></li>
-<li><p><strong>The math is tractable:</strong> You can estimate autocovariances from historical data and adjust TE forecasts accordingly.</p></li>
+<li><p><strong>Your risk reports tell different stories at different horizons</strong> — this is revealing portfolio behavior, not a calculation error</p></li>
+<li><p><strong>Know what you’re overweight</strong> — Tech/Growth trend (higher monthly TE), Energy/Value oscillate (lower monthly TE)</p></li>
+<li><p><strong>Set appropriate buffers</strong> — Trending portfolios need looser daily limits to avoid constant rebalancing</p></li>
+<li><p><strong>Communicate proactively</strong> — Explain to clients why monthly statements might show different risk than they expect</p></li>
+<li><p><strong>Rebalance strategically</strong> — More frequent for trending portfolios, less frequent for mean-reverting ones</p></li>
+<li><p><strong>Use the tools</strong> — The <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/">interactive app</a> lets you upload your data and see these effects firsthand</p></li>
 </ol>
+<hr>
+</section>
+<section id="want-to-go-deeper" class="level2">
+<h2 class="anchored" data-anchor-id="want-to-go-deeper">Want to Go Deeper?</h2>
+<p>This page focused on practical implications for advisors. If you want to understand the mathematical foundations:</p>
+<p><strong>→ <a href="intuitive_math.html">Complete Mathematical Derivation</a></strong><br>
+Step-by-step proof of why and how tracking error scales differently. Includes worked examples with Python code.</p>
+<p><strong>→ <a href="technical_math.html">Advanced Technical Methods</a></strong><br>
+AR(1) models, Newey-West estimation, and implementation code for quants building risk systems.</p>
 <hr>
 </section>
 <section id="navigation" class="level2">
 <h2 class="anchored" data-anchor-id="navigation">Navigation</h2>
-<section id="continue-learning" class="level3">
-<h3 class="anchored" data-anchor-id="continue-learning">Continue Learning:</h3>
+<section id="for-more-detail" class="level3">
+<h3 class="anchored" data-anchor-id="for-more-detail">For More Detail:</h3>
 <p><strong>→ <a href="intuitive_math.html">Intuitive Math: Complete Derivation</a></strong><br>
-Step-by-step mathematical derivation with detailed explanations of variance-of-a-sum, monthly/daily TE ratios, and worked examples.</p>
+Full mathematical treatment with proofs and examples</p>
 <p><strong>→ <a href="technical_math.html">Technical Math: AR(1) &amp; Newey-West</a></strong><br>
-Advanced topics including closed-form AR(1) solutions, Newey-West estimation, and implementation code.</p>
+Advanced methods for quantitative implementation</p>
 </section>
-<section id="external-resources" class="level3">
-<h3 class="anchored" data-anchor-id="external-resources">External Resources:</h3>
+<section id="try-it-yourself" class="level3">
+<h3 class="anchored" data-anchor-id="try-it-yourself">Try It Yourself:</h3>
 <ul>
 <li><strong>Interactive App:</strong> <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/">Tracking Error Lab on Streamlit</a></li>
 <li><strong>GitHub Repository:</strong> <a href="https://github.com/TejasViswa/tracking-error-lab">TejasViswa/tracking-error-lab</a></li>
@@ -1062,6 +1111,19 @@ Advanced topics including closed-form AR(1) solutions, Newey-West estimation, an
   });
   </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><strong>Tejas Viswanath</strong> | <a href="https://www.linkedin.com/in/tejasviswa/"><i class="bi bi-linkedin"></i> LinkedIn</a> | <a href="https://github.com/TejasViswa/"><i class="bi bi-github"></i> GitHub</a> | <a href="mailto:tejasviswa@gmail.com"><i class="bi bi-envelope"></i> Email</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>© 2025 Tracking Error Lab</p>
+</div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
 
 
 

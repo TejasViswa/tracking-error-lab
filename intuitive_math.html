@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Tejas Viswanath">
+<meta name="dcterms.date" content="2025-11-01">
 
-<title>From Daily to Monthly Tracking Error: Complete Derivation and Intuition – Tracking Error Notes</title>
+<title>From Daily to Monthly Tracking Error: Complete Derivation and Intuition – Tracking Error Lab</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -147,7 +149,7 @@ window.Quarto = {
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
     </a>
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Tracking Error Notes</span>
+    <span class="navbar-title">Tracking Error Lab</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -171,12 +173,14 @@ window.Quarto = {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/"> 
+    <a class="nav-link" href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/"> <i class="bi bi-box-arrow-up-right" role="img">
+</i> 
 <span class="menu-text">Interactive App</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://github.com/TejasViswa/tracking-error-lab"> 
-<span class="menu-text">GitHub Repo</span></a>
+    <a class="nav-link" href="https://github.com/TejasViswa/tracking-error-lab"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text">GitHub</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -264,7 +268,19 @@ window.Quarto = {
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Tejas Viswanath </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 1, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -274,6 +290,9 @@ window.Quarto = {
 </header>
 
 
+<div class="author-byline">
+<p><strong>By <a href="https://www.linkedin.com/in/tejasviswa/">Tejas Viswanath</a></strong> • November 1, 2025 • <a href="https://www.linkedin.com/in/tejasviswa/"><i class="bi bi-linkedin"></i></a> <a href="https://github.com/TejasViswa/"><i class="bi bi-github"></i></a> <a href="mailto:tejasviswa@gmail.com"><i class="bi bi-envelope"></i></a></p>
+</div>
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>This document provides a comprehensive derivation of how tracking error scales from daily to monthly horizons. We’ll see that the relationship isn’t just about square-root-of-time scaling — it fundamentally depends on the <strong>autocovariance structure</strong> of active returns.</p>
@@ -574,7 +593,7 @@ a_t = \sum_{i} \Delta w_{i,t}\,r_{i,t}
 <section id="practical-example-python-simulation" class="level2">
 <h2 class="anchored" data-anchor-id="practical-example-python-simulation">7. Practical Example (Python Simulation)</h2>
 <p>Let’s compute the ratio <span class="math inline">\(TE_{m,\text{ann}} / TE_{d,\text{ann}}\)</span> under different autocorrelation scenarios.</p>
-<div id="ad6de3d8" class="cell" data-execution_count="1">
+<div id="4f7b15c2" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -1218,6 +1237,19 @@ Advance to rigorous mathematical treatment with closed-form AR(1) solutions and 
   });
   </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><strong>Tejas Viswanath</strong> | <a href="https://www.linkedin.com/in/tejasviswa/"><i class="bi bi-linkedin"></i> LinkedIn</a> | <a href="https://github.com/TejasViswa/"><i class="bi bi-github"></i> GitHub</a> | <a href="mailto:tejasviswa@gmail.com"><i class="bi bi-envelope"></i> Email</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>© 2025 Tracking Error Lab</p>
+</div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
 
 
 

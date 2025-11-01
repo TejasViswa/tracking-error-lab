@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Tejas Viswanath">
+<meta name="dcterms.date" content="2025-11-01">
 
-<title>Advanced Topics: AR(1) Processes, Newey-West Estimation, and Consistent Annualization – Tracking Error Notes</title>
+<title>Advanced Topics: AR(1) Processes, Newey-West Estimation, and Consistent Annualization – Tracking Error Lab</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -147,7 +149,7 @@ window.Quarto = {
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
     </a>
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Tracking Error Notes</span>
+    <span class="navbar-title">Tracking Error Lab</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -171,12 +173,14 @@ window.Quarto = {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/"> 
+    <a class="nav-link" href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/"> <i class="bi bi-box-arrow-up-right" role="img">
+</i> 
 <span class="menu-text">Interactive App</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://github.com/TejasViswa/tracking-error-lab"> 
-<span class="menu-text">GitHub Repo</span></a>
+    <a class="nav-link" href="https://github.com/TejasViswa/tracking-error-lab"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text">GitHub</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -277,7 +281,19 @@ window.Quarto = {
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Tejas Viswanath </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 1, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -287,6 +303,9 @@ window.Quarto = {
 </header>
 
 
+<div class="author-byline">
+<p><strong>By <a href="https://www.linkedin.com/in/tejasviswa/">Tejas Viswanath</a></strong> • November 1, 2025 • <a href="https://www.linkedin.com/in/tejasviswa/"><i class="bi bi-linkedin"></i></a> <a href="https://github.com/TejasViswa/"><i class="bi bi-github"></i></a> <a href="mailto:tejasviswa@gmail.com"><i class="bi bi-envelope"></i></a></p>
+</div>
 <section id="overview" class="level2">
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>This page provides advanced mathematical tools for tracking error analysis, building on the intuitive derivations from the previous pages. We cover:</p>
@@ -329,6 +348,7 @@ TE_{\text{period}} = \sqrt{\widehat{\mathrm{Var}}(a)}
 \gamma(h) = \mathrm{Cov}(a_t, a_{t+h}) = \mathbb{E}[(a_t - \mu)(a_{t+h} - \mu)]
 \]</span></p>
 <p>where <span class="math inline">\(\mu = \mathbb{E}[a_t]\)</span> is the population mean.</p>
+<p><strong>Notation note:</strong> We use <span class="math inline">\(\gamma(h)\)</span> here (function notation), which is equivalent to <span class="math inline">\(\gamma_h\)</span> or <span class="math inline">\(\gamma_k\)</span> used in previous pages (subscript notation). These all refer to the lag-h autocovariance.</p>
 <p><strong>Key properties:</strong></p>
 <ul>
 <li><span class="math inline">\(\gamma(0)\)</span> = variance of <span class="math inline">\(a_t\)</span></li>
@@ -523,7 +543,7 @@ TE_{m}^{\text{AR(1)}} = \sqrt{\gamma(0)\left[m + 2\left(m\frac{\phi - \phi^m}{1 
 <h2 class="anchored" data-anchor-id="implementation-ar1-helper-functions">6. Implementation: AR(1) Helper Functions</h2>
 <section id="exact-ar1-tracking-error" class="level3">
 <h3 class="anchored" data-anchor-id="exact-ar1-tracking-error">6.1 Exact AR(1) tracking error</h3>
-<div id="ce35d6a4" class="cell" data-execution_count="1">
+<div id="5ed43469" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -595,7 +615,7 @@ TE_{m}^{\text{AR(1)}} = \sqrt{\gamma(0)\left[m + 2\left(m\frac{\phi - \phi^m}{1 
 </section>
 <section id="example-computing-multi-horizon-te-under-ar1" class="level3">
 <h3 class="anchored" data-anchor-id="example-computing-multi-horizon-te-under-ar1">6.2 Example: Computing multi-horizon TE under AR(1)</h3>
-<div id="57cf7d72" class="cell" data-execution_count="2">
+<div id="8863dbf5" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example parameters</span></span>
@@ -650,7 +670,7 @@ Ratio (True/Naive):              1.3610
 </section>
 <section id="newey-west-implementation" class="level2">
 <h2 class="anchored" data-anchor-id="newey-west-implementation">7. Newey-West Implementation</h2>
-<div id="42bd8405" class="cell" data-execution_count="3">
+<div id="a748ff83" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> newey_west_variance(returns, lags<span class="op">=</span><span class="va">None</span>):</span>
@@ -877,7 +897,7 @@ Estimated φ:                 0.3382
 <section id="worked-example-comparing-methods" class="level2">
 <h2 class="anchored" data-anchor-id="worked-example-comparing-methods">9. Worked Example: Comparing Methods</h2>
 <p>Let’s work through a complete example comparing all three methods.</p>
-<div id="70319005" class="cell" data-execution_count="4">
+<div id="bcdd1f39" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate realistic monthly active returns</span></span>
@@ -1444,6 +1464,19 @@ Review the step-by-step mathematical derivation with detailed explanations.</p>
   });
   </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p><strong>Tejas Viswanath</strong> | <a href="https://www.linkedin.com/in/tejasviswa/"><i class="bi bi-linkedin"></i> LinkedIn</a> | <a href="https://github.com/TejasViswa/"><i class="bi bi-github"></i> GitHub</a> | <a href="mailto:tejasviswa@gmail.com"><i class="bi bi-envelope"></i> Email</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p>© 2025 Tracking Error Lab</p>
+</div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org">Quarto</a></p>
+</div>
+  </div>
+</footer>
 
 
 
