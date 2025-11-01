@@ -290,7 +290,12 @@ window.Quarto = {
 <section id="the-problem-annualized-tracking-error-inconsistencies" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem-annualized-tracking-error-inconsistencies">The Problem: Annualized Tracking Error Inconsistencies</h2>
 <p>Portfolio managers and risk professionals routinely calculate tracking error (TE) — the standard deviation of active returns (portfolio minus benchmark). A common challenge arises when comparing annualized tracking error across different measurement frequencies:</p>
-<p><strong>The Issue:</strong> - You calculate daily TE and annualize it: <span class="math inline">\(TE_{\text{daily}} \times \sqrt{252} = 8.5\%\)</span> - You calculate monthly TE and annualize it: <span class="math inline">\(TE_{\text{monthly}} \times \sqrt{12} = 10.1\%\)</span> - <strong>Both are “annualized,” yet they differ by 19%</strong></p>
+<p><strong>The Issue:</strong></p>
+<ul>
+<li>You calculate daily TE and annualize it: <span class="math inline">\(TE_{\text{daily}} \times \sqrt{252} = 8.5\%\)</span></li>
+<li>You calculate monthly TE and annualize it: <span class="math inline">\(TE_{\text{monthly}} \times \sqrt{12} = 10.1\%\)</span></li>
+<li><strong>Both are “annualized,” yet they differ by 19%</strong></li>
+</ul>
 <p>This isn’t a calculation error or data quality issue. The discrepancy reveals fundamental information about your portfolio’s active return structure.</p>
 <section id="the-standard-assumption-often-wrong" class="level3">
 <h3 class="anchored" data-anchor-id="the-standard-assumption-often-wrong">The Standard Assumption (Often Wrong)</h3>
@@ -352,23 +357,67 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{D}
 <h2 class="anchored" data-anchor-id="three-portfolio-behaviors-you-need-to-recognize">Three Portfolio Behaviors You Need to Recognize</h2>
 <section id="persistent-drift-trending-positions" class="level3">
 <h3 class="anchored" data-anchor-id="persistent-drift-trending-positions">1. Persistent Drift (Trending Positions)</h3>
-<p><strong>What it looks like:</strong> - You’re overweight Tech, Growth stocks, or Momentum factors - These positions keep outperforming (or underperforming) day after day - When they’re up, they tend to stay up; when they’re down, they tend to stay down</p>
-<p><strong>What happens to TE:</strong> - Daily TE looks manageable: 0.50% per day → 7.9% annualized - Monthly TE surprises you: 9.5% annualized → <strong>20% higher than daily suggested</strong> - Risk reports show escalating monthly numbers</p>
+<p><strong>What it looks like:</strong></p>
+<ul>
+<li>You’re overweight Tech, Growth stocks, or Momentum factors</li>
+<li>These positions keep outperforming (or underperforming) day after day</li>
+<li>When they’re up, they tend to stay up; when they’re down, they tend to stay down</li>
+</ul>
+<p><strong>What happens to TE:</strong></p>
+<ul>
+<li>Daily TE looks manageable: 0.50% per day → 7.9% annualized</li>
+<li>Monthly TE surprises you: 9.5% annualized → <strong>20% higher than daily suggested</strong></li>
+<li>Risk reports show escalating monthly numbers</li>
+</ul>
 <p><strong>Real-world example:</strong> A portfolio with 20% overweight in FAANG stocks during 2020-2021. Tech kept winning. Daily TE of 0.6% suggested 9.5% annual TE. Actual monthly aggregation showed 11.4% annual TE.</p>
-<p><strong>Client impact:</strong> - Your portfolio appears riskier on monthly statements than daily reports suggested - Clients may see larger deviations from benchmark in quarterly reviews - Risk limits based on daily TE may be inadequate</p>
+<p><strong>Client impact:</strong></p>
+<ul>
+<li>Your portfolio appears riskier on monthly statements than daily reports suggested</li>
+<li>Clients may see larger deviations from benchmark in quarterly reviews</li>
+<li>Risk limits based on daily TE may be inadequate</li>
+</ul>
 </section>
 <section id="mean-reversion-oscillating-positions" class="level3">
 <h3 class="anchored" data-anchor-id="mean-reversion-oscillating-positions">2. Mean Reversion (Oscillating Positions)</h3>
-<p><strong>What it looks like:</strong> - You’re overweight Energy, Value stocks, or Defensive sectors - These positions spike one day, then reverse the next - Your outperformance today tends to become underperformance tomorrow</p>
-<p><strong>What happens to TE:</strong> - Daily TE looks elevated: 0.65% per day → 10.3% annualized - Monthly TE is lower: 8.7% annualized → <strong>15% lower than daily suggested</strong> - The daily ups and downs cancel out over the month</p>
+<p><strong>What it looks like:</strong></p>
+<ul>
+<li>You’re overweight Energy, Value stocks, or Defensive sectors</li>
+<li>These positions spike one day, then reverse the next</li>
+<li>Your outperformance today tends to become underperformance tomorrow</li>
+</ul>
+<p><strong>What happens to TE:</strong></p>
+<ul>
+<li>Daily TE looks elevated: 0.65% per day → 10.3% annualized</li>
+<li>Monthly TE is lower: 8.7% annualized → <strong>15% lower than daily suggested</strong></li>
+<li>The daily ups and downs cancel out over the month</li>
+</ul>
 <p><strong>Real-world example:</strong> A portfolio tilted toward Energy and Financials. High daily volatility (0.70% TE) but reversals meant monthly TE was only 8.9% annualized vs.&nbsp;11.1% predicted from daily.</p>
-<p><strong>Client impact:</strong> - Your portfolio appears less risky on monthly statements than daily reports suggested - You may have more room for active bets than daily TE indicates - Risk budgets based on daily TE may be too conservative</p>
+<p><strong>Client impact:</strong></p>
+<ul>
+<li>Your portfolio appears less risky on monthly statements than daily reports suggested</li>
+<li>You may have more room for active bets than daily TE indicates</li>
+<li>Risk budgets based on daily TE may be too conservative</li>
+</ul>
 </section>
 <section id="random-walk-neutral-positions" class="level3">
 <h3 class="anchored" data-anchor-id="random-walk-neutral-positions">3. Random Walk (Neutral Positions)</h3>
-<p><strong>What it looks like:</strong> - Broad ESG screens, minor sector tilts, or diversified active bets - No particular trend or reversal pattern - Each day is independent of the last</p>
-<p><strong>What happens to TE:</strong> - Daily and monthly TE align as expected - Your risk systems’ standard calculations work fine - No surprises in risk reporting</p>
-<p><strong>Client impact:</strong> - Risk reporting is consistent across time periods - Standard TE budgeting approaches work well</p>
+<p><strong>What it looks like:</strong></p>
+<ul>
+<li>Broad ESG screens, minor sector tilts, or diversified active bets</li>
+<li>No particular trend or reversal pattern</li>
+<li>Each day is independent of the last</li>
+</ul>
+<p><strong>What happens to TE:</strong></p>
+<ul>
+<li>Daily and monthly TE align as expected</li>
+<li>Your risk systems’ standard calculations work fine</li>
+<li>No surprises in risk reporting</li>
+</ul>
+<p><strong>Client impact:</strong></p>
+<ul>
+<li>Risk reporting is consistent across time periods</li>
+<li>Standard TE budgeting approaches work well</li>
+</ul>
 <hr>
 </section>
 </section>
@@ -377,14 +426,37 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{D}
 <section id="reading-your-risk-reports" class="level3">
 <h3 class="anchored" data-anchor-id="reading-your-risk-reports">1. Reading Your Risk Reports</h3>
 <p>When reviewing risk reports, ask yourself:</p>
-<p><strong>“What am I overweight in?”</strong> - Tech/Growth/Momentum → Expect monthly TE higher than daily predicts - Energy/Value/Defensive → Expect monthly TE lower than daily predicts - Broad diversified tilts → Expect monthly and daily to align</p>
-<p><strong>Don’t be alarmed if:</strong> - Monthly TE exceeds daily projections for a trending portfolio — it’s expected - Monthly TE comes in lower for a mean-reverting portfolio — also expected</p>
-<p><strong>Do be concerned if:</strong> - A trending portfolio shows lower monthly TE (position may have reversed) - A defensive portfolio shows higher monthly TE (market regime may have changed)</p>
+<p><strong>“What am I overweight in?”</strong></p>
+<ul>
+<li>Tech/Growth/Momentum → Expect monthly TE higher than daily predicts</li>
+<li>Energy/Value/Defensive → Expect monthly TE lower than daily predicts</li>
+<li>Broad diversified tilts → Expect monthly and daily to align</li>
+</ul>
+<p><strong>Don’t be alarmed if:</strong></p>
+<ul>
+<li>Monthly TE exceeds daily projections for a trending portfolio — it’s expected</li>
+<li>Monthly TE comes in lower for a mean-reverting portfolio — also expected</li>
+</ul>
+<p><strong>Do be concerned if:</strong></p>
+<ul>
+<li>A trending portfolio shows lower monthly TE (position may have reversed)</li>
+<li>A defensive portfolio shows higher monthly TE (market regime may have changed)</li>
+</ul>
 </section>
 <section id="setting-risk-budgets" class="level3">
 <h3 class="anchored" data-anchor-id="setting-risk-budgets">2. Setting Risk Budgets</h3>
-<p><strong>For Momentum/Growth Portfolios:</strong> - Your daily TE of 0.50% might imply 7.9% annual, but monthly could show 9-10% - Build in a <strong>buffer</strong> — if targeting 8% TE, set daily limit around 0.45% - Rebalance more frequently to prevent drift accumulation</p>
-<p><strong>For Value/Energy Portfolios:</strong> - Your daily TE of 0.60% might imply 9.5% annual, but monthly could show 8% - You may have <strong>more room</strong> — if targeting 8% TE, daily limit could be 0.65% - Less frequent rebalancing may be acceptable</p>
+<p><strong>For Momentum/Growth Portfolios:</strong></p>
+<ul>
+<li>Your daily TE of 0.50% might imply 7.9% annual, but monthly could show 9-10%</li>
+<li>Build in a <strong>buffer</strong> — if targeting 8% TE, set daily limit around 0.45%</li>
+<li>Rebalance more frequently to prevent drift accumulation</li>
+</ul>
+<p><strong>For Value/Energy Portfolios:</strong></p>
+<ul>
+<li>Your daily TE of 0.60% might imply 9.5% annual, but monthly could show 8%</li>
+<li>You may have <strong>more room</strong> — if targeting 8% TE, daily limit could be 0.65%</li>
+<li>Less frequent rebalancing may be acceptable</li>
+</ul>
 </section>
 <section id="client-communication" class="level3">
 <h3 class="anchored" data-anchor-id="client-communication">3. Client Communication</h3>
@@ -395,8 +467,18 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{D}
 </section>
 <section id="rebalancing-decisions" class="level3">
 <h3 class="anchored" data-anchor-id="rebalancing-decisions">4. Rebalancing Decisions</h3>
-<p><strong>High persistence (trending) portfolios:</strong> - More frequent rebalancing helps control drift - Consider weekly or bi-weekly rebalancing - Monitor for extended trending periods</p>
-<p><strong>High reversion (oscillating) portfolios:</strong> - Less frequent rebalancing may be optimal - Monthly or quarterly rebalancing often sufficient - Don’t over-trade in response to daily volatility</p>
+<p><strong>High persistence (trending) portfolios:</strong></p>
+<ul>
+<li>More frequent rebalancing helps control drift</li>
+<li>Consider weekly or bi-weekly rebalancing</li>
+<li>Monitor for extended trending periods</li>
+</ul>
+<p><strong>High reversion (oscillating) portfolios:</strong></p>
+<ul>
+<li>Less frequent rebalancing may be optimal</li>
+<li>Monthly or quarterly rebalancing often sufficient</li>
+<li>Don’t over-trade in response to daily volatility</li>
+</ul>
 <hr>
 </section>
 </section>
@@ -419,19 +501,47 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{D}
 <section id="the-accumulation-effect" class="level3">
 <h3 class="anchored" data-anchor-id="the-accumulation-effect">The Accumulation Effect</h3>
 <p>Consider a simplified example to build intuition:</p>
-<p><strong>Persistent drift (positive γₖ):</strong> - Day 1: +0.5% active return - Day 2: +0.4% (cumulative: +0.9%) - Day 3: +0.6% (cumulative: +1.5%) - Day 4: +0.3% (cumulative: +1.8%) - … - End of month: +8.7% cumulative</p>
+<p><strong>Persistent drift (positive γₖ):</strong></p>
+<ul>
+<li>Day 1: +0.5% active return</li>
+<li>Day 2: +0.4% (cumulative: +0.9%)</li>
+<li>Day 3: +0.6% (cumulative: +1.5%)</li>
+<li>Day 4: +0.3% (cumulative: +1.8%)</li>
+<li>…</li>
+<li>End of month: +8.7% cumulative</li>
+</ul>
 <p>Daily volatility: 0.4% → annualized: 6.3%<br>
 Monthly observation: 8.7% → if this persists, annualized monthly TE ≈ 7.5%<br>
 <strong>Monthly TE exceeds daily TE prediction by ~19%</strong></p>
-<p><strong>Mean reversion (negative γₖ):</strong> - Day 1: +0.8% active return - Day 2: -0.6% (cumulative: +0.2%) - Day 3: +0.5% (cumulative: +0.7%) - Day 4: -0.4% (cumulative: +0.3%) - … - End of month: +1.2% cumulative</p>
+<p><strong>Mean reversion (negative γₖ):</strong></p>
+<ul>
+<li>Day 1: +0.8% active return</li>
+<li>Day 2: -0.6% (cumulative: +0.2%)</li>
+<li>Day 3: +0.5% (cumulative: +0.7%)</li>
+<li>Day 4: -0.4% (cumulative: +0.3%)</li>
+<li>…</li>
+<li>End of month: +1.2% cumulative</li>
+</ul>
 <p>Daily volatility: 0.6% → annualized: 9.5%<br>
 Monthly observation: 1.2% → if this persists, annualized monthly TE ≈ 8.0%<br>
 <strong>Monthly TE is ~16% lower than daily TE prediction</strong></p>
 </section>
 <section id="why-does-this-happen" class="level3">
 <h3 class="anchored" data-anchor-id="why-does-this-happen">Why Does This Happen?</h3>
-<p><strong>Economic drivers of positive autocovariance:</strong> - Momentum in equity returns - Sector leadership that persists for weeks/months - Factor exposures (growth, quality, momentum) with slow mean reversion - Low rebalancing frequency allowing positions to drift</p>
-<p><strong>Economic drivers of negative autocovariance:</strong> - Short-term price reversals (bid-ask bounce, microstructure effects) - Mean-reverting factors (value, defensive) - High rebalancing frequency that cuts off drift - Contrarian strategies that exploit reversals</p>
+<p><strong>Economic drivers of positive autocovariance:</strong></p>
+<ul>
+<li>Momentum in equity returns</li>
+<li>Sector leadership that persists for weeks/months</li>
+<li>Factor exposures (growth, quality, momentum) with slow mean reversion</li>
+<li>Low rebalancing frequency allowing positions to drift</li>
+</ul>
+<p><strong>Economic drivers of negative autocovariance:</strong></p>
+<ul>
+<li>Short-term price reversals (bid-ask bounce, microstructure effects)</li>
+<li>Mean-reverting factors (value, defensive)</li>
+<li>High rebalancing frequency that cuts off drift</li>
+<li>Contrarian strategies that exploit reversals</li>
+</ul>
 <hr>
 </section>
 </section>
@@ -440,7 +550,12 @@ Monthly observation: 1.2% → if this persists, annualized monthly TE ≈ 8.0%<b
 <section id="tech-heavy-growth-portfolio-2020-2021" class="level3">
 <h3 class="anchored" data-anchor-id="tech-heavy-growth-portfolio-2020-2021">Tech-Heavy Growth Portfolio (2020-2021)</h3>
 <p><strong>Holdings:</strong> 25% overweight in FAANG + cloud computing + semiconductors</p>
-<p><strong>What happened:</strong> - Tech leadership persisted throughout the period - Daily TE averaged 0.55% → implied 8.7% annual - Actual monthly TE: 10.2% annual → <strong>17% higher than daily predicted</strong></p>
+<p><strong>What happened:</strong></p>
+<ul>
+<li>Tech leadership persisted throughout the period</li>
+<li>Daily TE averaged 0.55% → implied 8.7% annual</li>
+<li>Actual monthly TE: 10.2% annual → <strong>17% higher than daily predicted</strong></li>
+</ul>
 <p><strong>Risk management lesson:</strong> A 1% daily TE limit (meant to keep annual below 15%) actually resulted in nearly 18% annual TE due to persistence.</p>
 <p><strong>What the advisor should have done:</strong> Set daily limit at 0.85% to account for likely persistence in tech trends.</p>
 <hr>
@@ -448,7 +563,12 @@ Monthly observation: 1.2% → if this persists, annualized monthly TE ≈ 8.0%<b
 <section id="value-energy-tilt-2022" class="level3">
 <h3 class="anchored" data-anchor-id="value-energy-tilt-2022">Value + Energy Tilt (2022)</h3>
 <p><strong>Holdings:</strong> Overweight energy, financials, materials; underweight tech</p>
-<p><strong>What happened:</strong> - High daily volatility as energy spiked and reversed weekly - Daily TE averaged 0.70% → implied 11.1% annual - Actual monthly TE: 9.3% annual → <strong>16% lower than daily predicted</strong></p>
+<p><strong>What happened:</strong></p>
+<ul>
+<li>High daily volatility as energy spiked and reversed weekly</li>
+<li>Daily TE averaged 0.70% → implied 11.1% annual</li>
+<li>Actual monthly TE: 9.3% annual → <strong>16% lower than daily predicted</strong></li>
+</ul>
 <p><strong>Risk management lesson:</strong> The advisor was overcautious — daily TE looked scary, but monthly TE was actually manageable.</p>
 <p><strong>What the advisor should have done:</strong> Could have taken larger active bets, knowing reversals would reduce monthly TE.</p>
 <hr>
@@ -456,7 +576,12 @@ Monthly observation: 1.2% → if this persists, annualized monthly TE ≈ 8.0%<b
 <section id="esg-screened-broad-index" class="level3">
 <h3 class="anchored" data-anchor-id="esg-screened-broad-index">ESG-Screened Broad Index</h3>
 <p><strong>Holdings:</strong> S&amp;P 500 excluding tobacco, weapons, fossil fuels</p>
-<p><strong>What happened:</strong> - Stable, diversified tilts with no strong trends - Daily TE averaged 0.32% → implied 5.1% annual - Actual monthly TE: 5.0% annual → <strong>Matched predictions</strong></p>
+<p><strong>What happened:</strong></p>
+<ul>
+<li>Stable, diversified tilts with no strong trends</li>
+<li>Daily TE averaged 0.32% → implied 5.1% annual</li>
+<li>Actual monthly TE: 5.0% annual → <strong>Matched predictions</strong></li>
+</ul>
 <p><strong>Risk management lesson:</strong> Standard TE budgeting worked fine — no surprises.</p>
 <hr>
 </section>
@@ -464,7 +589,7 @@ Monthly observation: 1.2% → if this persists, annualized monthly TE ≈ 8.0%<b
 <section id="python-demonstration-visualizing-the-three-regimes" class="level2">
 <h2 class="anchored" data-anchor-id="python-demonstration-visualizing-the-three-regimes">Python Demonstration: Visualizing the Three Regimes</h2>
 <p>Let’s simulate the three autocovariance regimes and visualize their impact on cumulative drift and tracking error scaling.</p>
-<div id="9402987b" class="cell" data-execution_count="1">
+<div id="ca18ae55" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
