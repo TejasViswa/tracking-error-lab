@@ -21,7 +21,6 @@ format:
 Portfolio managers and risk professionals routinely calculate tracking error (TE) — the standard deviation of active returns (portfolio minus benchmark). A common challenge arises when comparing annualized tracking error across different measurement frequencies:
 
 **The Issue:**
-
 - You calculate daily TE and annualize it: $TE_{\text{daily}} \times \sqrt{252} = 8.5\%$
 - You calculate monthly TE and annualize it: $TE_{\text{monthly}} \times \sqrt{12} = 10.1\%$
 - **Both are "annualized," yet they differ by 19%**
@@ -40,164 +39,37 @@ This is the **square-root-of-time scaling rule** from random walk theory. It ass
 
 **Reality:** Active returns in real portfolios exhibit serial correlation (autocorrelation), which violates the i.i.d. assumption and causes the scaling rule to break down.
 
-### What Drives the Discrepancy
+---
 
-The relationship between daily and monthly annualized TE depends on the **autocovariance structure** of your active returns:
+## Three Portfolio Behaviors
 
-| **Portfolio Characteristic** | **Serial Correlation** | **Effect on Monthly TE** |
-|----------------------------|----------------------|--------------------------|
-| **Momentum/Growth tilts** | Positive (persistent) | Monthly annualized TE **higher** than daily predicts |
-| **Value/Energy tilts** | Negative (mean-reverting) | Monthly annualized TE **lower** than daily predicts |
-| **Diversified/Neutral** | Near zero | Monthly and daily annualized TE align |
+| **Behavior** | **Holdings** | **Autocorrelation (φ)** | **Monthly vs Daily TE** | **Real Example** |
+|-------------|-------------|------------------------|------------------------|------------------|
+| **Persistent Drift** | Tech, Growth, Momentum | Positive (+0.3 to +0.5) | Monthly TE **15-30% higher** | FAANG 2020-21: 9.5% → 11.4% |
+| **Random Walk** | ESG screens, diversified tilts | Near zero (~0) | Monthly TE ≈ Daily TE | ESG Index: 5.1% → 5.0% |
+| **Mean Reversion** | Energy, Value, Defensive | Negative (-0.2 to -0.5) | Monthly TE **10-20% lower** | Energy 2022: 11.1% → 8.9% |
 
-### Why This Matters
+### Key Implications
 
-Understanding this relationship is critical for:
+**Persistent Drift (Trending Portfolios):**
+- Risk limits based on daily TE may be inadequate → build in a buffer (e.g., target 8% annual, set daily limit to achieve ~7%)
+- More frequent rebalancing helps control drift accumulation
+- Example: Tech-heavy portfolio during bull market — daily gains compound over the month
 
-1. **Risk Budgeting:** Setting appropriate TE limits across different reporting horizons
-2. **Compliance:** Avoiding situations where you're within daily limits but exceed monthly limits
-3. **Rebalancing:** Determining optimal rebalancing frequency based on drift characteristics
-4. **Client Communication:** Explaining why risk metrics vary across time horizons
-5. **Performance Attribution:** Understanding whether active returns compound or offset over time
+**Mean Reversion (Oscillating Portfolios):**
+- You may have more room for active bets than daily TE suggests
+- Less frequent rebalancing may be sufficient — don't over-trade on daily volatility
+- Example: Energy tilt — daily spikes and reversals cancel out over the month
+
+**Random Walk (Neutral Portfolios):**
+- Standard square-root-of-time scaling works fine
+- No special adjustments needed for risk budgeting
 
 ---
 
-## Three Portfolio Behaviors You Need to Recognize
+## The Mechanics: Serial Correlation
 
-### 1. Persistent Drift (Trending Positions)
-
-**What it looks like:**
-
-- You're overweight Tech, Growth stocks, or Momentum factors
-- These positions keep outperforming (or underperforming) day after day
-- When they're up, they tend to stay up; when they're down, they tend to stay down
-
-**What happens to TE:**
-
-- Daily TE looks manageable: 0.50% per day → 7.9% annualized
-- Monthly TE surprises you: 9.5% annualized → **20% higher than daily suggested**
-- Risk reports show escalating monthly numbers
-
-**Real-world example:**
-A portfolio with 20% overweight in FAANG stocks during 2020-2021. Tech kept winning. Daily TE of 0.6% suggested 9.5% annual TE. Actual monthly aggregation showed 11.4% annual TE.
-
-**Client impact:**
-
-- Your portfolio appears riskier on monthly statements than daily reports suggested
-- Clients may see larger deviations from benchmark in quarterly reviews
-- Risk limits based on daily TE may be inadequate
-
-### 2. Mean Reversion (Oscillating Positions)
-
-**What it looks like:**
-
-- You're overweight Energy, Value stocks, or Defensive sectors
-- These positions spike one day, then reverse the next
-- Your outperformance today tends to become underperformance tomorrow
-
-**What happens to TE:**
-
-- Daily TE looks elevated: 0.65% per day → 10.3% annualized
-- Monthly TE is lower: 8.7% annualized → **15% lower than daily suggested**
-- The daily ups and downs cancel out over the month
-
-**Real-world example:**
-A portfolio tilted toward Energy and Financials. High daily volatility (0.70% TE) but reversals meant monthly TE was only 8.9% annualized vs. 11.1% predicted from daily.
-
-**Client impact:**
-
-- Your portfolio appears less risky on monthly statements than daily reports suggested
-- You may have more room for active bets than daily TE indicates
-- Risk budgets based on daily TE may be too conservative
-
-### 3. Random Walk (Neutral Positions)
-
-**What it looks like:**
-
-- Broad ESG screens, minor sector tilts, or diversified active bets
-- No particular trend or reversal pattern
-- Each day is independent of the last
-
-**What happens to TE:**
-
-- Daily and monthly TE align as expected
-- Your risk systems' standard calculations work fine
-- No surprises in risk reporting
-
-**Client impact:**
-
-- Risk reporting is consistent across time periods
-- Standard TE budgeting approaches work well
-
----
-
-## What This Means for Your Practice
-
-### 1. Reading Your Risk Reports
-
-When reviewing risk reports, ask yourself:
-
-**"What am I overweight in?"**
-
-- Tech/Growth/Momentum → Expect monthly TE higher than daily predicts
-- Energy/Value/Defensive → Expect monthly TE lower than daily predicts
-- Broad diversified tilts → Expect monthly and daily to align
-
-**Don't be alarmed if:**
-
-- Monthly TE exceeds daily projections for a trending portfolio — it's expected
-- Monthly TE comes in lower for a mean-reverting portfolio — also expected
-
-**Do be concerned if:**
-
-- A trending portfolio shows lower monthly TE (position may have reversed)
-- A defensive portfolio shows higher monthly TE (market regime may have changed)
-
-### 2. Setting Risk Budgets
-
-**For Momentum/Growth Portfolios:**
-
-- Your daily TE of 0.50% might imply 7.9% annual, but monthly could show 9-10%
-- Build in a **buffer** — if targeting 8% TE, set daily limit around 0.45%
-- Rebalance more frequently to prevent drift accumulation
-
-**For Value/Energy Portfolios:**
-
-- Your daily TE of 0.60% might imply 9.5% annual, but monthly could show 8%
-- You may have **more room** — if targeting 8% TE, daily limit could be 0.65%
-- Less frequent rebalancing may be acceptable
-
-### 3. Client Communication
-
-**When monthly TE exceeds daily projections:**
-
-"Your portfolio is overweight in sectors that have shown persistent strength this period. This causes the monthly tracking difference to be larger than what you see day-to-day. This is expected behavior for a growth-tilted strategy."
-
-**When monthly TE comes in lower than expected:**
-
-"Your portfolio's active positions tend to balance out over the month. While we see daily variations, these often offset each other, resulting in lower monthly tracking error. This is typical for value-oriented strategies."
-
-### 4. Rebalancing Decisions
-
-**High persistence (trending) portfolios:**
-
-- More frequent rebalancing helps control drift
-- Consider weekly or bi-weekly rebalancing
-- Monitor for extended trending periods
-
-**High reversion (oscillating) portfolios:**
-
-- Less frequent rebalancing may be optimal
-- Monthly or quarterly rebalancing often sufficient
-- Don't over-trade in response to daily volatility
-
----
-
-## The Mechanics: Serial Correlation in Active Returns
-
-### Autocovariance and TE Scaling
-
-The relationship between monthly and daily TE is governed by the **autocovariance function** of active returns:
+The relationship between monthly and daily TE is governed by the **autocovariance function**:
 
 $$
 \gamma_k = \text{Cov}(a_t, a_{t+k})
@@ -207,109 +79,20 @@ where $a_t$ is the active return on day $t$, and $k$ is the lag in days.
 
 **Three regimes:**
 
-1. **Positive autocovariance (γₖ > 0):** Today's active return is positively correlated with tomorrow's → active returns **persist** → monthly drift accumulates
-2. **Zero autocovariance (γₖ = 0):** No serial correlation → active returns are independent → standard square-root scaling applies
-3. **Negative autocovariance (γₖ < 0):** Today's active return is negatively correlated with tomorrow's → active returns **reverse** → monthly drift cancels out
+1. **Positive autocovariance (γₖ > 0):** Active returns persist → monthly drift accumulates → higher monthly TE
+2. **Zero autocovariance (γₖ = 0):** No serial correlation → standard square-root scaling applies
+3. **Negative autocovariance (γₖ < 0):** Active returns reverse → monthly drift cancels out → lower monthly TE
 
-### The Accumulation Effect
+**Economic drivers:**
 
-Consider a simplified example to build intuition:
-
-**Persistent drift (positive γₖ):**
-
-- Day 1: +0.5% active return
-- Day 2: +0.4% (cumulative: +0.9%)
-- Day 3: +0.6% (cumulative: +1.5%)
-- Day 4: +0.3% (cumulative: +1.8%)
-- ...
-- End of month: +8.7% cumulative
-
-Daily volatility: 0.4% → annualized: 6.3%  
-Monthly observation: 8.7% → if this persists, annualized monthly TE ≈ 7.5%  
-**Monthly TE exceeds daily TE prediction by ~19%**
-
-**Mean reversion (negative γₖ):**
-
-- Day 1: +0.8% active return
-- Day 2: -0.6% (cumulative: +0.2%)
-- Day 3: +0.5% (cumulative: +0.7%)
-- Day 4: -0.4% (cumulative: +0.3%)
-- ...
-- End of month: +1.2% cumulative
-
-Daily volatility: 0.6% → annualized: 9.5%  
-Monthly observation: 1.2% → if this persists, annualized monthly TE ≈ 8.0%  
-**Monthly TE is ~16% lower than daily TE prediction**
-
-### Why Does This Happen?
-
-**Economic drivers of positive autocovariance:**
-
-- Momentum in equity returns
-- Sector leadership that persists for weeks/months
-- Factor exposures (growth, quality, momentum) with slow mean reversion
-- Low rebalancing frequency allowing positions to drift
-
-**Economic drivers of negative autocovariance:**
-
-- Short-term price reversals (bid-ask bounce, microstructure effects)
-- Mean-reverting factors (value, defensive)
-- High rebalancing frequency that cuts off drift
-- Contrarian strategies that exploit reversals
+- **Positive:** Momentum effects, sector leadership persistence, low rebalancing frequency
+- **Negative:** Short-term reversals, mean-reverting factors, high rebalancing frequency
 
 ---
 
-## Real Portfolio Examples
+## Python Demonstration
 
-### Tech-Heavy Growth Portfolio (2020-2021)
-
-**Holdings:** 25% overweight in FAANG + cloud computing + semiconductors
-
-**What happened:**
-
-- Tech leadership persisted throughout the period
-- Daily TE averaged 0.55% → implied 8.7% annual
-- Actual monthly TE: 10.2% annual → **17% higher than daily predicted**
-
-**Risk management lesson:** A 1% daily TE limit (meant to keep annual below 15%) actually resulted in nearly 18% annual TE due to persistence.
-
-**What the advisor should have done:** Set daily limit at 0.85% to account for likely persistence in tech trends.
-
----
-
-### Value + Energy Tilt (2022)
-
-**Holdings:** Overweight energy, financials, materials; underweight tech
-
-**What happened:**
-
-- High daily volatility as energy spiked and reversed weekly
-- Daily TE averaged 0.70% → implied 11.1% annual
-- Actual monthly TE: 9.3% annual → **16% lower than daily predicted**
-
-**Risk management lesson:** The advisor was overcautious — daily TE looked scary, but monthly TE was actually manageable.
-
-**What the advisor should have done:** Could have taken larger active bets, knowing reversals would reduce monthly TE.
-
----
-
-### ESG-Screened Broad Index
-
-**Holdings:** S&P 500 excluding tobacco, weapons, fossil fuels
-
-**What happened:**
-
-- Stable, diversified tilts with no strong trends
-- Daily TE averaged 0.32% → implied 5.1% annual
-- Actual monthly TE: 5.0% annual → **Matched predictions**
-
-**Risk management lesson:** Standard TE budgeting worked fine — no surprises.
-
----
-
-## Python Demonstration: Visualizing the Three Regimes
-
-Let's simulate the three autocovariance regimes and visualize their impact on cumulative drift and tracking error scaling.
+Simulate the three autocovariance regimes to visualize their impact on cumulative drift and tracking error scaling:
 
 ```{python}
 import numpy as np
@@ -353,21 +136,21 @@ fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 axes[0].plot(cum_persistent, label='Cumulative drift', color='red', linewidth=2)
 axes[0].axhline(0, color='black', linestyle='--', alpha=0.3)
 axes[0].set_title('Persistent Drift (Positive γ)', fontsize=12, fontweight='bold')
-axes[0].set_ylabel('Cumulative active return (%)', fontsize=10)
+axes[0].set_ylabel('Cumulative active return', fontsize=10)
 axes[0].set_xlabel('Trading days', fontsize=10)
 axes[0].grid(alpha=0.3)
 
 axes[1].plot(cum_random, label='Cumulative drift', color='blue', linewidth=2)
 axes[1].axhline(0, color='black', linestyle='--', alpha=0.3)
 axes[1].set_title('Random Walk (Zero γ)', fontsize=12, fontweight='bold')
-axes[1].set_ylabel('Cumulative active return (%)', fontsize=10)
+axes[1].set_ylabel('Cumulative active return', fontsize=10)
 axes[1].set_xlabel('Trading days', fontsize=10)
 axes[1].grid(alpha=0.3)
 
 axes[2].plot(cum_revert, label='Cumulative drift', color='green', linewidth=2)
 axes[2].axhline(0, color='black', linestyle='--', alpha=0.3)
 axes[2].set_title('Mean Reversion (Negative γ)', fontsize=12, fontweight='bold')
-axes[2].set_ylabel('Cumulative active return (%)', fontsize=10)
+axes[2].set_ylabel('Cumulative active return', fontsize=10)
 axes[2].set_xlabel('Trading days', fontsize=10)
 axes[2].grid(alpha=0.3)
 
@@ -398,9 +181,9 @@ ratio_revert = calculate_te_ratio(a_revert)
 print("\n" + "=" * 70)
 print("TE Ratio: Monthly Annualized / Daily Annualized")
 print("=" * 70)
-print(f"Persistent drift (φ=+0.5):   {ratio_persistent:.4f}  → Monthly TE is {(ratio_persistent-1)*100:+.1f}% vs daily prediction")
-print(f"Random walk (φ=0):            {ratio_random:.4f}  → Monthly TE matches daily prediction")
-print(f"Mean reversion (φ=-0.5):      {ratio_revert:.4f}  → Monthly TE is {(ratio_revert-1)*100:+.1f}% vs daily prediction")
+print(f"Persistent drift (φ=+0.5):   {ratio_persistent:.4f}  → Monthly TE is {(ratio_persistent-1)*100:+.1f}% vs daily")
+print(f"Random walk (φ=0):            {ratio_random:.4f}  → Monthly TE matches daily")
+print(f"Mean reversion (φ=-0.5):      {ratio_revert:.4f}  → Monthly TE is {(ratio_revert-1)*100:+.1f}% vs daily")
 print("=" * 70)
 ```
 
@@ -414,96 +197,36 @@ print("=" * 70)
 
 ## Interactive Exploration
 
-Want to see this in action with your own data or simulations? Visit the **[Interactive App](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)**:
+Explore this phenomenon with your own data using the **[Interactive App](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)**:
 
-- **Simulate** different portfolio behaviors (trending vs mean-reverting)
-- **Upload** your own return data
-- **Visualize** how tracking error accumulates over time
-- **Compare** daily vs monthly TE calculations
-
----
-
-## Quick Reference: What To Watch For
-
-| Your Portfolio Type | What You'll See | What To Do |
-|-------------------|----------------|------------|
-| **Tech/Growth Heavy** | Monthly TE 15-30% higher than daily predicts | Build in TE buffer, rebalance more often |
-| **Energy/Value Tilt** | Monthly TE 10-20% lower than daily predicts | You have more room, don't over-trade |
-| **Broad ESG/Diversified** | Monthly TE matches daily predictions | Standard TE budgeting works fine |
-| **High Turnover** | Lower monthly TE (rebalancing cuts drift) | Less concern about escalation |
-| **Buy & Hold Active** | Higher monthly TE (drift accumulates) | Monitor closely, consider rebalancing |
+- Choose preset scenarios (Tech/Growth, Energy/Value, ESG Index) or customize parameters
+- Compare all three regimes side-by-side
+- Upload your own portfolio and benchmark returns
+- Visualize cumulative drift and autocorrelation
 
 ---
 
-## Common Questions from Advisors
+## Key Takeaways
 
-### "My daily TE has been 0.60% for months. Why is my monthly TE now 11%?"
-
-Look at what you're overweight. If it's trending sectors (Tech, Growth), those 0.60% daily moves have been compounding. Monthly TE of 11% (vs 9.5% predicted) means you have about 15% persistence in your active bets.
-
-**Action:** Either accept the higher monthly TE or rebalance more frequently to reset the drift.
-
-### "My compliance system flagged me for exceeding TE limits. But I've been within daily limits every day!"
-
-This is the classic persistence trap. Your compliance system measured monthly TE, which exceeded limits despite daily compliance. Your trending positions caused accumulation.
-
-**Action:** Work with compliance to either: (1) use monthly TE limits that account for persistence, or (2) set tighter daily limits that build in a buffer.
-
-### "Should I be worried if my monthly TE is lower than expected?"
-
-Not necessarily. If you're overweight mean-reverting sectors (Value, Energy), this is expected and actually gives you flexibility. Just watch for regime changes — if these sectors start trending, your monthly TE could suddenly increase.
-
-**Action:** Monitor sector correlations and rebalancing frequency. Document that lower monthly TE is due to mean reversion, not measurement error.
-
-### "How do I explain this to clients?"
-
-Focus on what they hold, not the math:
-
-- **Tech/Growth clients:** "Your portfolio is positioned in sectors showing persistent strength. This means your monthly tracking tends to be higher than you might expect from daily numbers."
-
-- **Value/Defensive clients:** "Your portfolio's positions tend to balance out over the month, so while you see daily ups and downs, the monthly tracking is actually quite modest."
+1. **Annualized TE differs across measurement horizons** when active returns exhibit serial correlation
+2. **Tech/Growth tilts** → Positive autocorrelation → Monthly TE **15-30% higher** than daily predicts
+3. **Energy/Value tilts** → Negative autocorrelation → Monthly TE **10-20% lower** than daily predicts
+4. **Risk budgeting:** Adjust daily TE limits based on expected autocorrelation structure
+5. **Rebalancing:** More frequent for trending portfolios, less frequent for mean-reverting ones
 
 ---
 
-## Key Takeaways for Advisors
+## Learn More
 
-1. **Your risk reports tell different stories at different horizons** — this is revealing portfolio behavior, not a calculation error
-
-2. **Know what you're overweight** — Tech/Growth trend (higher monthly TE), Energy/Value oscillate (lower monthly TE)
-
-3. **Set appropriate buffers** — Trending portfolios need looser daily limits to avoid constant rebalancing
-
-4. **Communicate proactively** — Explain to clients why monthly statements might show different risk than they expect
-
-5. **Rebalance strategically** — More frequent for trending portfolios, less frequent for mean-reverting ones
-
-6. **Use the tools** — The [interactive app](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/) lets you upload your data and see these effects firsthand
-
----
-
-## Want to Go Deeper?
-
-This page focused on practical implications for advisors. If you want to understand the mathematical foundations:
-
-**→ [Complete Mathematical Derivation](intuitive_math.html)**  
-Step-by-step proof of why and how tracking error scales differently. Includes worked examples with Python code.
-
-**→ [Advanced Technical Methods](technical_math.html)**  
-AR(1) models, Newey-West estimation, and implementation code for quants building risk systems.
-
----
-
-## Navigation
-
-### For More Detail:
+### For Mathematical Details:
 
 **→ [Intuitive Math: Complete Derivation](intuitive_math.html)**  
-Full mathematical treatment with proofs and examples
+Step-by-step proof of the variance-of-a-sum formula and autocovariance effects
 
 **→ [Technical Math: AR(1) & Newey-West](technical_math.html)**  
-Advanced methods for quantitative implementation
+Closed-form AR(1) solutions, Newey-West estimation, and implementation code
 
-### Try It Yourself:
+### External Links:
 
-- **Interactive App:** [Tracking Error Lab on Streamlit](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)
-- **GitHub Repository:** [TejasViswa/tracking-error-lab](https://github.com/TejasViswa/tracking-error-lab)
+- **[Interactive App](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)** — Simulate and analyze tracking error
+- **[GitHub Repository](https://github.com/TejasViswa/tracking-error-lab)** — Source code and documentation
