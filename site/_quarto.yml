@@ -3,6 +3,13 @@ project:
 website:
   title: "Tracking Error Notes"
   navbar:
+    left:
+      - text: "Overview"
+        href: index.qmd
+      - text: "Intuitive Math"
+        href: intuitive_math.qmd
+      - text: "Technical Math"
+        href: technical_math.qmd
     right:
       - text: "Interactive App"
         href: https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/
@@ -14,4 +21,5 @@ format:
     toc: true
     math: mathjax
     mainfont: "Roboto"
+    page-layout: full
     css: styles.css

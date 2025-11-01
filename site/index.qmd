@@ -1,248 +1,384 @@
 ---
-title: "Tracking Error Math: Daily vs Monthly, Serial Correlation, and Annualization"
-author: "Tejas Viswanath"
-date: "2025-11-01"
+title: "Tracking Error Across Time Horizons"
+subtitle: "Why your portfolio's drift depends on what you own, not just how much it moves"
 format:
   html:
-    theme: flatly
     toc: true
-    math: mathjax
-    mainfont: "Roboto"
+    theme: cosmo
+    code-fold: true
 ---
 
-# Overview
+## Introduction: The Core Question
 
-**Tracking Error (TE)** is the standard deviation of **active returns** $a_t = r_{p,t} - r_{b,t}$, where $r_{p,t}$ and $r_{b,t}$ are portfolio and benchmark returns at time $t$.
-This article derives:
+When managing a portfolio that deviates from a benchmark, one fundamental question arises: 
 
-- the usual **sample TE estimator** and its annualization under IID,
-- why IID **fails with serial correlation**, and the **correct** formulas,
-- a **general formula** for TE when aggregating $m$ periods (e.g., daily $\rightarrow$ monthly),
-- a **closed-form AR(1)** expression you can use to relate daily and monthly TE,
-- **consistent (Newey–West) annualization** from daily data.
+**Does the gap between your portfolio and the benchmark grow over time, or does it oscillate back and forth?**
 
-👉 **Interactive App:** <https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/>  
-👉 **GitHub Repo:** <https://github.com/TejasViswa/tracking-error-lab>
+This seemingly simple question has profound implications for:
 
----
+- Risk management and TE budgeting
+- Performance attribution
+- Rebalancing frequency decisions
+- Factor exposure management
+- Client reporting and expectations
 
-# 1. Definitions and Estimators
-
-Let active return be $a_t = r_{p,t} - r_{b,t}$ for periods $t=1,\dots,T$.  
-The **sample mean** and **sample variance** are
-$$
-\bar a = \frac{1}{T}\sum_{t=1}^{T} a_t, 
-\qquad
-\widehat{\mathrm{Var}}(a) = \frac{1}{T-1}\sum_{t=1}^{T} (a_t - \bar a)^2.
-$$
-
-The **sample Tracking Error** at the data’s native frequency is
-$$
-\widehat{\mathrm{TE}}_{\text{period}} = \sqrt{\widehat{\mathrm{Var}}(a)}.
-$$
-
-If the data are **daily**, people often report the **annualized TE** by multiplying by $\sqrt{N}$, where $N$ is periods per year:
-
-$$
-\widehat{\mathrm{TE}}_{\text{annual, IID}} = \widehat{\mathrm{TE}}_{\text{daily}} \sqrt{252}.
-$$
-
-This is **correct only under IID** (no serial correlation).
+The answer lies in understanding **how tracking error scales across different time horizons** — and surprisingly, it's not just about volatility multiplied by the square root of time.
 
 ---
 
-# 2. Aggregation and the General Variance Formula
+## What is Tracking Error?
 
-Suppose you aggregate $m$ consecutive periods (e.g., sum daily returns across a month). Define
+### The basics
+
+**Tracking error (TE)** measures the standard deviation of the difference between your portfolio's returns and your benchmark's returns over time.
+
+**Daily active return:**
 $$
-S_m = \sum_{i=1}^{m} a_i.
-$$
-In **full generality**, the variance of $S_m$ depends on the **autocovariance** function $\gamma(h) = \mathrm{Cov}(a_t, a_{t+h})$:
-$$
-\mathrm{Var}(S_m) 
-= \sum_{h=-(m-1)}^{m-1} (m-|h|)\,\gamma(h)
-= m\,\gamma(0) + 2\sum_{h=1}^{m-1} (m-h)\,\gamma(h).
+a_t = r_t^{\text{Portfolio}} - r_t^{\text{Benchmark}}
 $$
 
-Therefore, the **$m$-period TE** (e.g., “monthly TE” from daily data with a fixed month length $m$) is
+**Daily tracking error:**
 $$
-\mathrm{TE}_{(m)} = \sqrt{\,\mathrm{Var}(S_m)\,}.
-$$
-
-### IID special case
-If $a_t$ are uncorrelated with variance $\sigma^2$ (i.e., $\gamma(0)=\sigma^2$ and $\gamma(h)=0$ for $h\neq 0$), then
-$$
-\mathrm{Var}(S_m)=m\sigma^2
-\quad\Rightarrow\quad
-\mathrm{TE}_{(m)} = \sqrt{m}\,\sigma.
-$$
-This gives the usual square-root-of-time scaling:
-- from daily to monthly (say $m\approx 21$): $\mathrm{TE}_{\text{monthly}}\approx \sqrt{m}\,\mathrm{TE}_{\text{daily}}$,
-- from daily to annual: $\mathrm{TE}_{\text{annual}}\approx \sqrt{252}\,\mathrm{TE}_{\text{daily}}$.
-
----
-
-# 3. Annualization with Serial Correlation (Correct Formula)
-
-Let one **year** contain $N$ base periods (e.g., $N=252$ trading days).  
-The **annual active return** is $A=\sum_{t=1}^{N} a_t$. Its variance is
-$$
-\mathrm{Var}(A)
-= N\,\gamma(0) + 2\sum_{h=1}^{N-1} (N-h)\,\gamma(h).
+TE_{\text{daily}} = \text{StdDev}(a_t)
 $$
 
-Thus the **true annualized TE** (standard deviation of the annual active return) is
+This tells us: on a typical day, how much does your portfolio deviate from the benchmark?
+
+### The conventional wisdom
+
+Traditional risk management often assumes:
 $$
-\mathrm{TE}_{\text{annual,true}} = \sqrt{\,N\,\gamma(0) + 2\sum_{h=1}^{N-1} (N-h)\,\gamma(h)\,}.
+TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{21}
 $$
 
-- Under IID, $\gamma(h)=0$ for $h\ge 1$ and you recover $\sqrt{N}\,\sqrt{\gamma(0)}$.  
-- With **positive** serial correlation ($\gamma(h)>0$), annual TE is **higher** than the IID scaling.
-- With **negative** serial correlation (mean reversion), annual TE can be **lower** than IID scaling.
+This is the **square-root-of-time rule** — borrowed from random walk theory. It assumes daily returns are **independent and identically distributed**.
+
+### The problem
+
+**Real portfolios don't work this way.**
+
+If you're overweight Tech stocks and they keep winning day after day, those daily advantages **compound**. The monthly TE will be **higher** than the square-root rule predicts.
+
+Conversely, if your overweight positions tend to mean-revert (today's winners become tomorrow's losers), the monthly TE will be **lower** than expected.
 
 ---
 
-# 4. AR(1) Closed-Form for $m$-period TE
+## The Big Idea: Autocovariance Drives TE Scaling
 
-Assume active returns follow the stationary AR(1):
-$$
-a_t = \phi a_{t-1} + \varepsilon_t,\qquad \varepsilon_t\sim \mathcal{N}(0,\sigma_\varepsilon^2),\quad |\phi|<1.
-$$
+The key insight is that **tracking error scaling depends on the autocovariance structure of active returns** — how today's active return relates to tomorrow's.
 
-Then
-$$
-\gamma(0)=\frac{\sigma_\varepsilon^2}{1-\phi^2}, 
-\qquad
-\gamma(h)=\gamma(0)\,\phi^{\,h}\quad(h\ge 1).
-$$
+### Three regimes
 
-Plugging into the general formula,
-$$
-\mathrm{Var}(S_m)
-= \gamma(0)\Bigg[m + 2\sum_{h=1}^{m-1} (m-h)\phi^{\,h}\Bigg].
-$$
-A convenient algebraic identity for the finite sum is
-$$
-\sum_{h=1}^{m-1} (m-h)\phi^{\,h}
-= m\frac{\phi - \phi^{\,m}}{1-\phi}
-- \frac{\phi\left(1 - m\phi^{\,m-1} + (m-1)\phi^{\,m}\right)}{(1-\phi)^2}.
-$$
+| **Regime** | **Behavior** | **Autocovariance** | **TE Scaling** |
+|------------|--------------|-------------------|----------------|
+| **Persistent drift** | Overweights keep outperforming | Positive γₖ > 0 | $TE_{\text{monthly}} > \sqrt{21} \cdot TE_{\text{daily}}$ |
+| **Random walk** | No serial correlation | Zero γₖ = 0 | $TE_{\text{monthly}} = \sqrt{21} \cdot TE_{\text{daily}}$ |
+| **Mean reversion** | Gains reverse quickly | Negative γₖ < 0 | $TE_{\text{monthly}} < \sqrt{21} \cdot TE_{\text{daily}}$ |
 
-Therefore, the **$m$-period TE under AR(1)** is
-$$
-\mathrm{TE}_{(m)}^{\text{AR(1)}} 
-= \sqrt{\,\gamma(0)\Bigg[
-m + 2\Big(
-m\frac{\phi - \phi^{\,m}}{1-\phi}
-- \frac{\phi\left(1 - m\phi^{\,m-1} + (m-1)\phi^{\,m}\right)}{(1-\phi)^2}
-\Big)\Bigg]}\,,
-$$
-with $\gamma(0)=\sigma_\varepsilon^2/(1-\phi^2)$.
-
-**Use cases.**  
-- To convert **daily TE** to **monthly TE**, set $m$ equal to trading days per month (e.g., $m\approx 21$).  
-- To get **annual TE** from daily, set $m=N$ (e.g., $N=252$).  
-- This formula collapses to $\sqrt{m}\,\sigma$ when $\phi=0$ (IID).
+where γₖ = Cov(aₜ, aₜ₊ₖ) is the lag-k autocovariance of active returns.
 
 ---
 
-# 5. Estimating Annualized TE Consistently (Newey–West)
+## Why Does This Happen?
 
-From a daily series $\{a_t\}_{t=1}^{T}$, estimate the **long-run variance** (LRV)
-$$
-\sigma^2_{\text{LR}} = \gamma(0) + 2\sum_{h=1}^{\infty}\gamma(h),
-$$
-with a **Newey–West** estimator
-$$
-\widehat{\sigma}^2_{\text{LR}} 
-= \hat\gamma(0) + 2\sum_{h=1}^{L} w_h\,\hat\gamma(h), 
-\qquad
-w_h = 1 - \frac{h}{L+1},
-$$
-where $L$ is a truncation lag (e.g., $L\approx\lfloor 4(T/100)^{2/9}\rfloor$ or a simpler rule like $L\in[5,25]$ for daily data).
+### Persistent drift (positive autocovariance)
 
-Then the **consistent annualized TE** from daily data is
-$$
-\widehat{\mathrm{TE}}_{\text{annual, NW}} 
-= \sqrt{\,N\,\widehat{\sigma}^2_{\text{LR}}\,}.
-$$
+When your portfolio is overweight in sectors or factors that exhibit **momentum** or **persistent leadership**:
 
-This reduces to the IID formula when serial correlation is negligible.
+**Example scenario:**
+
+- You're overweight large-cap Tech (FAANG stocks)
+- Tech leadership persists for weeks/months
+- Day 1: portfolio beats benchmark by +0.5%
+- Day 2: Tech continues winning → portfolio beats by another +0.4%
+- Day 3: momentum continues → +0.6% outperformance
+- ...and so on
+
+**Result:** Daily advantages **compound** → the cumulative gap grows → monthly TE exceeds what daily TE suggests.
+
+**Economic drivers:**
+
+- Momentum effects in equity markets
+- Factor persistence (growth, quality, momentum factors)
+- Stable portfolio construction with minimal rebalancing
+- Sector rotation trends lasting weeks to months
+
+### Mean reversion (negative autocovariance)
+
+When your portfolio is exposed to **contrarian factors** or **volatile sectors**:
+
+**Example scenario:**
+
+- You're overweight Energy and Value stocks
+- These sectors tend to reverse quickly
+- Day 1: Energy spikes → portfolio beats benchmark by +0.8%
+- Day 2: Energy reverses → portfolio lags by -0.6%
+- Day 3: Another spike → +0.5%
+- Day 4: Another reversal → -0.4%
+
+**Result:** Daily advantages **cancel out** → monthly TE is smaller than expected.
+
+**Economic drivers:**
+
+- Short-term price reversals
+- Frequent rebalancing that cuts off drift
+- Mean-reverting factor exposures
+- High-turnover strategies
 
 ---
 
-# 6. Daily vs Monthly: What You Actually Compare
+## Visual Intuition: The Beach Walk Analogy
 
-Two common comparisons:
+Imagine you and a friend are walking along a beach. The distance between you is like tracking error.
 
-1. **Compute TE on daily data** and report $\widehat{\mathrm{TE}}_{\text{daily}}\sqrt{252}$ (IID) or the **NW-consistent** version above.  
-2. **Aggregate to monthly** returns $S_m$ and compute the standard deviation across months:
-   $$
-   \widehat{\mathrm{TE}}_{\text{monthly}} = \mathrm{sd}\{S_{m,j}\}_{j=1}^{J}, 
-   \qquad
-   \widehat{\mathrm{TE}}_{\text{monthly,ann}} = \widehat{\mathrm{TE}}_{\text{monthly}}\sqrt{12}.
-   $$
-   These will **not** necessarily match the daily-based annualization unless returns are IID.
+### Scenario 1: Persistent drift
+
+- You both walk forward, but you consistently veer slightly left
+- Each step reinforces the last
+- After 100 steps, you're far apart
+- **This is positive autocovariance** → differences accumulate
+
+### Scenario 2: Mean reversion
+
+- You walk forward but zigzag left and right
+- Your friend walks straight
+- After 100 steps, you're not that far apart (the left/right deviations canceled)
+- **This is negative autocovariance** → differences neutralize
+
+### Scenario 3: Random walk
+
+- You walk forward with random left/right steps
+- No pattern to your deviations
+- After 100 steps, you're moderately far apart
+- **This is zero autocovariance** → standard diffusion
 
 ---
 
-# 7. Numerical Verification (AR(1) example)
+## A Simple Python Demonstration
+
+Let's simulate these three regimes with actual data to see the effect.
 
 ```{python}
 import numpy as np
+import matplotlib.pyplot as plt
 
-def te_m_ar1(phi, sigma_eps, m):
-    # gamma0 and the finite-sum identity
-    gamma0 = sigma_eps**2 / (1 - phi**2)
-    num = m*((phi - phi**m)/(1 - phi)) - (phi*(1 - m*phi**(m-1) + (m-1)*phi**m))/((1 - phi)**2)
-    var_sm = gamma0 * (m + 2*num)
-    return np.sqrt(var_sm)
+np.random.seed(42)
 
-phi = 0.2
-sigma_eps = 0.0012
-m_daily_to_month = 21
-m_daily_to_year  = 252
+# Parameters
+D = 21  # trading days per month
+N_months = 12
+total_days = D * N_months
 
-te_month = te_m_ar1(phi, sigma_eps, m_daily_to_month)
-te_year  = te_m_ar1(phi, sigma_eps, m_daily_to_year)
+# Generate three types of active returns
+# 1. Persistent drift (positive autocorrelation)
+a_persistent = np.random.normal(0, 0.01, total_days)
+for i in range(1, total_days):
+    a_persistent[i] += 0.5 * a_persistent[i-1]  # AR(1) with positive coefficient
 
-(te_month, te_year)
+# 2. Random walk (no autocorrelation)
+a_random = np.random.normal(0, 0.01, total_days)
+
+# 3. Mean reversion (negative autocorrelation)
+a_revert = np.random.normal(0, 0.01, total_days)
+for i in range(1, total_days):
+    a_revert[i] -= 0.5 * a_revert[i-1]  # AR(1) with negative coefficient
+
+# Calculate cumulative active returns (portfolio drift)
+cum_persistent = np.cumsum(a_persistent)
+cum_random = np.cumsum(a_random)
+cum_revert = np.cumsum(a_revert)
+
+# Plot
+fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+
+axes[0].plot(cum_persistent, label='Cumulative drift', color='red')
+axes[0].axhline(0, color='black', linestyle='--', alpha=0.3)
+axes[0].set_title('Persistent Drift (Positive γ)')
+axes[0].set_ylabel('Cumulative active return')
+axes[0].set_xlabel('Trading days')
+axes[0].grid(alpha=0.3)
+
+axes[1].plot(cum_random, label='Cumulative drift', color='blue')
+axes[1].axhline(0, color='black', linestyle='--', alpha=0.3)
+axes[1].set_title('Random Walk (Zero γ)')
+axes[1].set_ylabel('Cumulative active return')
+axes[1].set_xlabel('Trading days')
+axes[1].grid(alpha=0.3)
+
+axes[2].plot(cum_revert, label='Cumulative drift', color='green')
+axes[2].axhline(0, color='black', linestyle='--', alpha=0.3)
+axes[2].set_title('Mean Reversion (Negative γ)')
+axes[2].set_ylabel('Cumulative active return')
+axes[2].set_xlabel('Trading days')
+axes[2].grid(alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+# Calculate TE ratios
+def calculate_te_ratio(daily_returns, period=21):
+    """Calculate the ratio of monthly to daily TE (annualized basis)"""
+    te_daily = np.std(daily_returns)
+    
+    # Split into months and calculate monthly TE
+    n_months = len(daily_returns) // period
+    monthly_returns = [np.sum(daily_returns[i*period:(i+1)*period]) for i in range(n_months)]
+    te_monthly = np.std(monthly_returns)
+    
+    # Annualize both
+    te_daily_ann = te_daily * np.sqrt(252)
+    te_monthly_ann = te_monthly * np.sqrt(12)
+    
+    return te_monthly_ann / te_daily_ann
+
+ratio_persistent = calculate_te_ratio(a_persistent)
+ratio_random = calculate_te_ratio(a_random)
+ratio_revert = calculate_te_ratio(a_revert)
+
+print("=" * 60)
+print("TE Ratio: Monthly Annualized / Daily Annualized")
+print("=" * 60)
+print(f"Persistent drift:   {ratio_persistent:.4f}  (TE_monthly > TE_daily)")
+print(f"Random walk:        {ratio_random:.4f}  (TE_monthly ≈ TE_daily)")
+print(f"Mean reversion:     {ratio_revert:.4f}  (TE_monthly < TE_daily)")
+print("=" * 60)
 ```
 
+**What you should see:**
+
+- **Persistent drift**: The cumulative return wanders far from zero, showing sustained divergence. TE ratio > 1.
+- **Random walk**: The cumulative return meanders but doesn't trend strongly. TE ratio ≈ 1.
+- **Mean reversion**: The cumulative return oscillates around zero. TE ratio < 1.
+
 ---
 
-# 8. Worked Example: When Monthly TE < Daily-scaled TE
+## Real-World Portfolio Examples
 
-Let daily active returns be mean-reverting (negative serial correlation), e.g., $\phi=-0.3$ in AR(1).  
-Then monthly aggregation partially cancels day-to-day fluctuations, so you often observe:
+### Example 1: Tech-heavy growth portfolio
+
+**Holdings:** Overweight FAANG, cloud software, semiconductors
+
+**Behavior:** Tech leadership tends to persist in bull markets
+
+**Autocovariance:** Positive (γₖ > 0)
+
+**TE impact:** Monthly TE is 15-30% **higher** than daily TE predicts
+
+**Implication:** You're taking more monthly risk than daily metrics suggest. Risk limits based on daily TE may be too loose.
+
+---
+
+### Example 2: Value + Energy tilt
+
+**Holdings:** Overweight financials, energy, materials, underweight tech
+
+**Behavior:** These sectors exhibit short-term reversals and rotation
+
+**Autocovariance:** Negative (γₖ < 0)
+
+**TE impact:** Monthly TE is 10-20% **lower** than daily TE predicts
+
+**Implication:** Risk limits based on daily TE may be too conservative. You have more room to take active bets.
+
+---
+
+### Example 3: ESG-screened index
+
+**Holdings:** Excludes tobacco, weapons, fossil fuels
+
+**Behavior:** Tilts are stable, minimal rebalancing, but no strong momentum
+
+**Autocovariance:** Near zero (γₖ ≈ 0)
+
+**TE impact:** Monthly TE ≈ √21 × daily TE (square-root rule holds)
+
+**Implication:** Traditional TE scaling works reasonably well.
+
+---
+
+## Practical Implications for Portfolio Managers
+
+### 1. Risk budgeting
+
+- **Don't blindly scale daily TE to monthly using √21**
+- Estimate autocovariances from historical data
+- Adjust TE budgets based on expected persistence/reversion
+
+### 2. Rebalancing frequency
+
+- **High positive autocovariance** → consider more frequent rebalancing to prevent excessive drift
+- **High negative autocovariance** → less frequent rebalancing may be acceptable
+
+### 3. Performance attribution
+
+- **Persistent drift** → alpha (or beta) is compounding over time
+- **Mean reversion** → alpha is being neutralized by reversals
+
+### 4. Client communication
+
+- Explain why monthly TE may differ from expectations
+- Set appropriate benchmarks for different time horizons
+- Manage expectations around tracking error volatility
+
+### 5. Factor timing
+
+- If you know a factor (e.g., momentum) has high autocorrelation, scale TE budgets accordingly
+- For mean-reverting factors, you may have more room for active bets than daily TE suggests
+
+---
+
+## The Mathematical Foundation (Preview)
+
+The formal relationship between monthly and daily tracking error is:
 
 $$
-TE_{\text{monthly,ann}} < TE_{\text{daily}} \sqrt{252}.
+TE_{\text{monthly}} = \sqrt{D \cdot \sigma_d^2 + 2\sum_{k=1}^{D-1}(D-k)\gamma_k}
 $$
 
-Conversely, with trend persistence ($\phi>0$), the aggregated variance can rise faster than IID scaling.
+where:
+- $D$ = trading days per month (≈21)
+- $\sigma_d^2$ = daily variance of active returns
+- $\gamma_k$ = lag-k autocovariance = Cov(aₜ, aₜ₊ₖ)
+
+**Key insight:** The second term (the sum of autocovariances) determines whether monthly TE is higher or lower than the simple √D scaling predicts.
+
+For a complete mathematical derivation with proofs, see the **[Intuitive Math](intuitive_math.html)** page.
 
 ---
 
-# 9. Practical Guidance
+## Summary: Key Takeaways
 
-- **Always state the sampling frequency** used to compute TE.  
-- If you report **annualized TE from daily data**, prefer the **Newey–West** consistent estimator when autocorrelation is present.  
-- If comparing **daily-based vs monthly-based TE**, remember they are *different estimators* of different objects (sum of daily vs one-step monthly), which coincide only under IID.  
-- For **model-based conversion**, the AR(1) closed form is a simple and effective approximation.
+1. **Tracking error scaling is NOT automatic** — it depends fundamentally on whether your active returns exhibit persistence or mean reversion.
 
----
+2. **Positive autocovariance** (persistent drift) → monthly TE > √21 × daily TE → you're taking more risk than you think.
 
-# 10. References (selected)
+3. **Negative autocovariance** (mean reversion) → monthly TE < √21 × daily TE → you have more headroom for active bets.
 
-- Grinold, R. C., & Kahn, R. N. *Active Portfolio Management* (2nd ed.).  
-- Newey, W. K., & West, K. D. (1987). *A Simple, Positive Semi-definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.*  
-- Lo, A. W. (2002). *The Statistics of Sharpe Ratios* (serial correlation & scaling ideas apply to volatility and TE).  
-- CFA Institute curriculum: *Tracking error, active risk, and information ratio.*
+4. **What drives autocovariance?** The persistence (or lack thereof) of your overweight positions' outperformance — not the market's overall direction.
+
+5. **Practical impact:** Risk budgets, rebalancing schedules, and client communication should all account for autocovariance effects.
+
+6. **The math is tractable:** You can estimate autocovariances from historical data and adjust TE forecasts accordingly.
 
 ---
 
-# Try It Live
+## Interactive Tools & Resources
 
-- 🧮 **Interactive App:** [tracking-error-lab.streamlit.app](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)  
-- 💻 **Source Code:** [github.com/TejasViswa/tracking-error-lab](https://github.com/TejasViswa/tracking-error-lab)
+Want to experiment with your own data?
+
+- **Interactive App:** [Tracking Error Lab on Streamlit](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)
+- **GitHub Repository:** [TejasViswa/tracking-error-lab](https://github.com/TejasViswa/tracking-error-lab)
+- **Full Mathematical Derivation:** [Intuitive Math](intuitive_math.html) (next page)
+
+---
+
+## Where to Go Next
+
+This page provided the intuition and practical implications. For the complete mathematical derivation, including:
+
+- Variance-of-a-sum expansions
+- Exact formulas for the monthly/daily TE ratio
+- Proofs and worked examples
+- Python code to compute autocovariances
+
+Continue to → **[Intuitive Math: Complete Derivation](intuitive_math.html)**
