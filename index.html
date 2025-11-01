@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-869f6345bc137b105ba0b5f5bdca7a99.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0b37c64f34216b628666a8dac638b53b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -233,8 +233,11 @@ window.Quarto = {
   </ul></li>
   <li><a href="#the-mathematical-foundation-preview" id="toc-the-mathematical-foundation-preview" class="nav-link" data-scroll-target="#the-mathematical-foundation-preview">The Mathematical Foundation (Preview)</a></li>
   <li><a href="#summary-key-takeaways" id="toc-summary-key-takeaways" class="nav-link" data-scroll-target="#summary-key-takeaways">Summary: Key Takeaways</a></li>
-  <li><a href="#interactive-tools-resources" id="toc-interactive-tools-resources" class="nav-link" data-scroll-target="#interactive-tools-resources">Interactive Tools &amp; Resources</a></li>
-  <li><a href="#where-to-go-next" id="toc-where-to-go-next" class="nav-link" data-scroll-target="#where-to-go-next">Where to Go Next</a></li>
+  <li><a href="#navigation" id="toc-navigation" class="nav-link" data-scroll-target="#navigation">Navigation</a>
+  <ul class="collapse">
+  <li><a href="#continue-learning" id="toc-continue-learning" class="nav-link" data-scroll-target="#continue-learning">Continue Learning:</a></li>
+  <li><a href="#external-resources" id="toc-external-resources" class="nav-link" data-scroll-target="#external-resources">External Resources:</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -430,7 +433,7 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{21}
 <section id="a-simple-python-demonstration" class="level2">
 <h2 class="anchored" data-anchor-id="a-simple-python-demonstration">A Simple Python Demonstration</h2>
 <p>Let’s simulate these three regimes with actual data to see the effect.</p>
-<div id="0f7b0d1f" class="cell" data-execution_count="1">
+<div id="5aca7b9d" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -636,29 +639,25 @@ TE_{\text{monthly}} = \sqrt{D \cdot \sigma_d^2 + 2\sum_{k=1}^{D-1}(D-k)\gamma_k}
 </ol>
 <hr>
 </section>
-<section id="interactive-tools-resources" class="level2">
-<h2 class="anchored" data-anchor-id="interactive-tools-resources">Interactive Tools &amp; Resources</h2>
-<p>Want to experiment with your own data?</p>
+<section id="navigation" class="level2">
+<h2 class="anchored" data-anchor-id="navigation">Navigation</h2>
+<section id="continue-learning" class="level3">
+<h3 class="anchored" data-anchor-id="continue-learning">Continue Learning:</h3>
+<p><strong>→ <a href="intuitive_math.html">Intuitive Math: Complete Derivation</a></strong><br>
+Step-by-step mathematical derivation with detailed explanations of variance-of-a-sum, monthly/daily TE ratios, and worked examples.</p>
+<p><strong>→ <a href="technical_math.html">Technical Math: AR(1) &amp; Newey-West</a></strong><br>
+Advanced topics including closed-form AR(1) solutions, Newey-West estimation, and implementation code.</p>
+</section>
+<section id="external-resources" class="level3">
+<h3 class="anchored" data-anchor-id="external-resources">External Resources:</h3>
 <ul>
 <li><strong>Interactive App:</strong> <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/">Tracking Error Lab on Streamlit</a></li>
 <li><strong>GitHub Repository:</strong> <a href="https://github.com/TejasViswa/tracking-error-lab">TejasViswa/tracking-error-lab</a></li>
-<li><strong>Full Mathematical Derivation:</strong> <a href="intuitive_math.html">Intuitive Math</a> (next page)</li>
 </ul>
-<hr>
+
+
+
 </section>
-<section id="where-to-go-next" class="level2">
-<h2 class="anchored" data-anchor-id="where-to-go-next">Where to Go Next</h2>
-<p>This page provided the intuition and practical implications. For the complete mathematical derivation, including:</p>
-<ul>
-<li>Variance-of-a-sum expansions</li>
-<li>Exact formulas for the monthly/daily TE ratio</li>
-<li>Proofs and worked examples</li>
-<li>Python code to compute autocovariances</li>
-</ul>
-<p>Continue to → <strong><a href="intuitive_math.html">Intuitive Math: Complete Derivation</a></strong></p>
-
-
-
 </section>
 
 </main> <!-- /main -->

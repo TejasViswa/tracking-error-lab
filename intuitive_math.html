@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-869f6345bc137b105ba0b5f5bdca7a99.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0b37c64f34216b628666a8dac638b53b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -243,7 +243,11 @@ window.Quarto = {
   <li><a href="#direct-indexing-and-factor-overlays" id="toc-direct-indexing-and-factor-overlays" class="nav-link" data-scroll-target="#direct-indexing-and-factor-overlays">11.3 Direct indexing and factor overlays</a></li>
   <li><a href="#multi-horizon-risk-management" id="toc-multi-horizon-risk-management" class="nav-link" data-scroll-target="#multi-horizon-risk-management">11.4 Multi-horizon risk management</a></li>
   </ul></li>
-  <li><a href="#navigation" id="toc-navigation" class="nav-link" data-scroll-target="#navigation">Navigation</a></li>
+  <li><a href="#navigation" id="toc-navigation" class="nav-link" data-scroll-target="#navigation">Navigation</a>
+  <ul class="collapse">
+  <li><a href="#continue-learning" id="toc-continue-learning" class="nav-link" data-scroll-target="#continue-learning">Continue Learning:</a></li>
+  <li><a href="#external-resources" id="toc-external-resources" class="nav-link" data-scroll-target="#external-resources">External Resources:</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -570,7 +574,7 @@ a_t = \sum_{i} \Delta w_{i,t}\,r_{i,t}
 <section id="practical-example-python-simulation" class="level2">
 <h2 class="anchored" data-anchor-id="practical-example-python-simulation">7. Practical Example (Python Simulation)</h2>
 <p>Let’s compute the ratio <span class="math inline">\(TE_{m,\text{ann}} / TE_{d,\text{ann}}\)</span> under different autocorrelation scenarios.</p>
-<div id="cf1dcfde" class="cell" data-execution_count="1">
+<div id="ad6de3d8" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -793,14 +797,23 @@ Autocovariance details:
 </section>
 <section id="navigation" class="level2">
 <h2 class="anchored" data-anchor-id="navigation">Navigation</h2>
+<section id="continue-learning" class="level3">
+<h3 class="anchored" data-anchor-id="continue-learning">Continue Learning:</h3>
+<p><strong>← <a href="index.html">Overview: Tracking Error Across Time Horizons</a></strong><br>
+Return to the intuitive overview with practical examples and real-world portfolio implications.</p>
+<p><strong>→ <a href="technical_math.html">Technical Math: AR(1) &amp; Newey-West</a></strong><br>
+Advance to rigorous mathematical treatment with closed-form AR(1) solutions and Newey-West estimation.</p>
+</section>
+<section id="external-resources" class="level3">
+<h3 class="anchored" data-anchor-id="external-resources">External Resources:</h3>
 <ul>
-<li>← Back to <a href="index.html">Overview: Tracking Error Across Time Horizons</a></li>
 <li><strong>Interactive App:</strong> <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/">Tracking Error Lab on Streamlit</a></li>
 <li><strong>GitHub Repository:</strong> <a href="https://github.com/TejasViswa/tracking-error-lab">TejasViswa/tracking-error-lab</a></li>
 </ul>
 
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

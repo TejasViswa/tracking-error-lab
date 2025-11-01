@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-869f6345bc137b105ba0b5f5bdca7a99.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0b37c64f34216b628666a8dac638b53b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -257,9 +257,9 @@ window.Quarto = {
   </ul></li>
   <li><a href="#navigation-resources" id="toc-navigation-resources" class="nav-link" data-scroll-target="#navigation-resources">13. Navigation &amp; Resources</a>
   <ul class="collapse">
-  <li><a href="#related-pages" id="toc-related-pages" class="nav-link" data-scroll-target="#related-pages">Related pages</a></li>
-  <li><a href="#interactive-tools" id="toc-interactive-tools" class="nav-link" data-scroll-target="#interactive-tools">Interactive tools</a></li>
-  <li><a href="#suggested-workflow" id="toc-suggested-workflow" class="nav-link" data-scroll-target="#suggested-workflow">Suggested workflow</a></li>
+  <li><a href="#continue-learning" id="toc-continue-learning" class="nav-link" data-scroll-target="#continue-learning">Continue Learning:</a></li>
+  <li><a href="#external-resources" id="toc-external-resources" class="nav-link" data-scroll-target="#external-resources">External Resources:</a></li>
+  <li><a href="#suggested-learning-path" id="toc-suggested-learning-path" class="nav-link" data-scroll-target="#suggested-learning-path">Suggested Learning Path:</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -523,7 +523,7 @@ TE_{m}^{\text{AR(1)}} = \sqrt{\gamma(0)\left[m + 2\left(m\frac{\phi - \phi^m}{1 
 <h2 class="anchored" data-anchor-id="implementation-ar1-helper-functions">6. Implementation: AR(1) Helper Functions</h2>
 <section id="exact-ar1-tracking-error" class="level3">
 <h3 class="anchored" data-anchor-id="exact-ar1-tracking-error">6.1 Exact AR(1) tracking error</h3>
-<div id="1f9e0eff" class="cell" data-execution_count="1">
+<div id="ce35d6a4" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -595,7 +595,7 @@ TE_{m}^{\text{AR(1)}} = \sqrt{\gamma(0)\left[m + 2\left(m\frac{\phi - \phi^m}{1 
 </section>
 <section id="example-computing-multi-horizon-te-under-ar1" class="level3">
 <h3 class="anchored" data-anchor-id="example-computing-multi-horizon-te-under-ar1">6.2 Example: Computing multi-horizon TE under AR(1)</h3>
-<div id="78a2bef8" class="cell" data-execution_count="2">
+<div id="57cf7d72" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example parameters</span></span>
@@ -650,7 +650,7 @@ Ratio (True/Naive):              1.3610
 </section>
 <section id="newey-west-implementation" class="level2">
 <h2 class="anchored" data-anchor-id="newey-west-implementation">7. Newey-West Implementation</h2>
-<div id="059e2749" class="cell" data-execution_count="3">
+<div id="42bd8405" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> newey_west_variance(returns, lags<span class="op">=</span><span class="va">None</span>):</span>
@@ -877,7 +877,7 @@ Estimated φ:                 0.3382
 <section id="worked-example-comparing-methods" class="level2">
 <h2 class="anchored" data-anchor-id="worked-example-comparing-methods">9. Worked Example: Comparing Methods</h2>
 <p>Let’s work through a complete example comparing all three methods.</p>
-<div id="5084d398" class="cell" data-execution_count="4">
+<div id="70319005" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate realistic monthly active returns</span></span>
@@ -1014,27 +1014,27 @@ annualized TE to be ~65.2% higher than naive scaling predicts.
 </section>
 <section id="navigation-resources" class="level2">
 <h2 class="anchored" data-anchor-id="navigation-resources">13. Navigation &amp; Resources</h2>
-<section id="related-pages" class="level3">
-<h3 class="anchored" data-anchor-id="related-pages">Related pages</h3>
+<section id="continue-learning" class="level3">
+<h3 class="anchored" data-anchor-id="continue-learning">Continue Learning:</h3>
+<p><strong>← <a href="index.html">Overview: Tracking Error Across Time Horizons</a></strong><br>
+Return to the intuitive overview with practical examples and real-world portfolio implications.</p>
+<p><strong>← <a href="intuitive_math.html">Intuitive Math: Complete Derivation</a></strong><br>
+Review the step-by-step mathematical derivation with detailed explanations.</p>
+</section>
+<section id="external-resources" class="level3">
+<h3 class="anchored" data-anchor-id="external-resources">External Resources:</h3>
 <ul>
-<li>← <a href="index.html">Overview: Tracking Error Across Time Horizons</a></li>
-<li>← <a href="intuitive_math.html">Intuitive Math: Complete Derivation</a></li>
+<li><strong>Interactive App:</strong> <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/">Tracking Error Lab on Streamlit</a></li>
+<li><strong>GitHub Repository:</strong> <a href="https://github.com/TejasViswa/tracking-error-lab">TejasViswa/tracking-error-lab</a></li>
 </ul>
 </section>
-<section id="interactive-tools" class="level3">
-<h3 class="anchored" data-anchor-id="interactive-tools">Interactive tools</h3>
-<ul>
-<li><strong>Live App:</strong> <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/">Tracking Error Lab on Streamlit</a></li>
-<li><strong>Source Code:</strong> <a href="https://github.com/TejasViswa/tracking-error-lab">GitHub Repository</a></li>
-</ul>
-</section>
-<section id="suggested-workflow" class="level3">
-<h3 class="anchored" data-anchor-id="suggested-workflow">Suggested workflow</h3>
+<section id="suggested-learning-path" class="level3">
+<h3 class="anchored" data-anchor-id="suggested-learning-path">Suggested Learning Path:</h3>
 <ol type="1">
-<li><strong>Start with <a href="index.html">Overview</a></strong> for intuition and practical implications</li>
-<li><strong>Read <a href="intuitive_math.html">Intuitive Math</a></strong> for complete derivation of variance-of-a-sum formula</li>
-<li><strong>Study this page</strong> for advanced tools: AR(1) models, Newey-West estimation, closed-form solutions</li>
-<li><strong>Experiment with the <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/">interactive app</a></strong> using your own data</li>
+<li><strong><a href="index.html">Overview</a></strong> — Start here for intuition and practical implications</li>
+<li><strong><a href="intuitive_math.html">Intuitive Math</a></strong> — Complete derivation of variance-of-a-sum formula</li>
+<li><strong><a href="technical_math.html">Technical Math</a></strong> — Advanced tools: AR(1) models, Newey-West estimation, closed-form solutions</li>
+<li><strong><a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/">Interactive App</a></strong> — Experiment with your own data</li>
 </ol>
 
 

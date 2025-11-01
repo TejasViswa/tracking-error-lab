@@ -102,7 +102,7 @@
     "href": "technical_math.html#navigation-resources",
     "title": "Advanced Topics: AR(1) Processes, Newey-West Estimation, and Consistent Annualization",
     "section": "13. Navigation & Resources",
-    "text": "13. Navigation & Resources\n\nRelated pages\n\n← Overview: Tracking Error Across Time Horizons\n← Intuitive Math: Complete Derivation\n\n\n\nInteractive tools\n\nLive App: Tracking Error Lab on Streamlit\nSource Code: GitHub Repository\n\n\n\nSuggested workflow\n\nStart with Overview for intuition and practical implications\nRead Intuitive Math for complete derivation of variance-of-a-sum formula\nStudy this page for advanced tools: AR(1) models, Newey-West estimation, closed-form solutions\nExperiment with the interactive app using your own data"
+    "text": "13. Navigation & Resources\n\nContinue Learning:\n← Overview: Tracking Error Across Time Horizons\nReturn to the intuitive overview with practical examples and real-world portfolio implications.\n← Intuitive Math: Complete Derivation\nReview the step-by-step mathematical derivation with detailed explanations.\n\n\nExternal Resources:\n\nInteractive App: Tracking Error Lab on Streamlit\nGitHub Repository: TejasViswa/tracking-error-lab\n\n\n\nSuggested Learning Path:\n\nOverview — Start here for intuition and practical implications\nIntuitive Math — Complete derivation of variance-of-a-sum formula\nTechnical Math — Advanced tools: AR(1) models, Newey-West estimation, closed-form solutions\nInteractive App — Experiment with your own data"
   },
   {
     "objectID": "index.html",
@@ -182,18 +182,11 @@
     "text": "Summary: Key Takeaways\n\nTracking error scaling is NOT automatic — it depends fundamentally on whether your active returns exhibit persistence or mean reversion.\nPositive autocovariance (persistent drift) → monthly TE &gt; √21 × daily TE → you’re taking more risk than you think.\nNegative autocovariance (mean reversion) → monthly TE &lt; √21 × daily TE → you have more headroom for active bets.\nWhat drives autocovariance? The persistence (or lack thereof) of your overweight positions’ outperformance — not the market’s overall direction.\nPractical impact: Risk budgets, rebalancing schedules, and client communication should all account for autocovariance effects.\nThe math is tractable: You can estimate autocovariances from historical data and adjust TE forecasts accordingly."
   },
   {
-    "objectID": "index.html#interactive-tools-resources",
-    "href": "index.html#interactive-tools-resources",
+    "objectID": "index.html#navigation",
+    "href": "index.html#navigation",
     "title": "Tracking Error Across Time Horizons",
-    "section": "Interactive Tools & Resources",
-    "text": "Interactive Tools & Resources\nWant to experiment with your own data?\n\nInteractive App: Tracking Error Lab on Streamlit\nGitHub Repository: TejasViswa/tracking-error-lab\nFull Mathematical Derivation: Intuitive Math (next page)"
-  },
-  {
-    "objectID": "index.html#where-to-go-next",
-    "href": "index.html#where-to-go-next",
-    "title": "Tracking Error Across Time Horizons",
-    "section": "Where to Go Next",
-    "text": "Where to Go Next\nThis page provided the intuition and practical implications. For the complete mathematical derivation, including:\n\nVariance-of-a-sum expansions\nExact formulas for the monthly/daily TE ratio\nProofs and worked examples\nPython code to compute autocovariances\n\nContinue to → Intuitive Math: Complete Derivation"
+    "section": "Navigation",
+    "text": "Navigation\n\nContinue Learning:\n→ Intuitive Math: Complete Derivation\nStep-by-step mathematical derivation with detailed explanations of variance-of-a-sum, monthly/daily TE ratios, and worked examples.\n→ Technical Math: AR(1) & Newey-West\nAdvanced topics including closed-form AR(1) solutions, Newey-West estimation, and implementation code.\n\n\nExternal Resources:\n\nInteractive App: Tracking Error Lab on Streamlit\nGitHub Repository: TejasViswa/tracking-error-lab"
   },
   {
     "objectID": "intuitive_math.html",
@@ -291,6 +284,6 @@
     "href": "intuitive_math.html#navigation",
     "title": "From Daily to Monthly Tracking Error: Complete Derivation and Intuition",
     "section": "Navigation",
-    "text": "Navigation\n\n← Back to Overview: Tracking Error Across Time Horizons\nInteractive App: Tracking Error Lab on Streamlit\nGitHub Repository: TejasViswa/tracking-error-lab"
+    "text": "Navigation\n\nContinue Learning:\n← Overview: Tracking Error Across Time Horizons\nReturn to the intuitive overview with practical examples and real-world portfolio implications.\n→ Technical Math: AR(1) & Newey-West\nAdvance to rigorous mathematical treatment with closed-form AR(1) solutions and Newey-West estimation.\n\n\nExternal Resources:\n\nInteractive App: Tracking Error Lab on Streamlit\nGitHub Repository: TejasViswa/tracking-error-lab"
   }
 ]
