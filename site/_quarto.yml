@@ -17,9 +17,8 @@ website:
         href: https://github.com/TejasViswa/tracking-error-lab
 format:
   html:
-    theme: flatly
+    theme: cosmo
     toc: true
     math: mathjax
-    mainfont: "Roboto"
     page-layout: full
     css: styles.css

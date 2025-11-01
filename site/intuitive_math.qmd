@@ -4,7 +4,6 @@ subtitle: "Understanding autocovariance, cross-sectional drift, and TE scaling"
 format:
   html:
     toc: true
-    theme: cosmo
     code-fold: true
 ---
 
@@ -453,6 +452,15 @@ Extend this analysis to quarterly or annual horizons to understand how autocorre
 
 ## Navigation
 
-- ← Back to [Overview: Tracking Error Across Time Horizons](index.html)
+### Continue Learning:
+
+**← [Overview: Tracking Error Across Time Horizons](index.html)**  
+Return to the intuitive overview with practical examples and real-world portfolio implications.
+
+**→ [Technical Math: AR(1) & Newey-West](technical_math.html)**  
+Advance to rigorous mathematical treatment with closed-form AR(1) solutions and Newey-West estimation.
+
+### External Resources:
+
 - **Interactive App:** [Tracking Error Lab on Streamlit](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)
 - **GitHub Repository:** [TejasViswa/tracking-error-lab](https://github.com/TejasViswa/tracking-error-lab)

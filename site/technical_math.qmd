@@ -4,7 +4,6 @@ subtitle: "Rigorous mathematical treatment with closed-form solutions and estima
 format:
   html:
     toc: true
-    theme: cosmo
     code-fold: true
 ---
 
@@ -643,16 +642,22 @@ This page extends the framework developed in earlier sections:
 
 ## 13. Navigation & Resources
 
-### Related pages
-- ← [Overview: Tracking Error Across Time Horizons](index.html)
-- ← [Intuitive Math: Complete Derivation](intuitive_math.html)
+### Continue Learning:
 
-### Interactive tools
-- **Live App:** [Tracking Error Lab on Streamlit](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)
-- **Source Code:** [GitHub Repository](https://github.com/TejasViswa/tracking-error-lab)
+**← [Overview: Tracking Error Across Time Horizons](index.html)**  
+Return to the intuitive overview with practical examples and real-world portfolio implications.
 
-### Suggested workflow
-1. **Start with [Overview](index.html)** for intuition and practical implications
-2. **Read [Intuitive Math](intuitive_math.html)** for complete derivation of variance-of-a-sum formula
-3. **Study this page** for advanced tools: AR(1) models, Newey-West estimation, closed-form solutions
-4. **Experiment with the [interactive app](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)** using your own data
+**← [Intuitive Math: Complete Derivation](intuitive_math.html)**  
+Review the step-by-step mathematical derivation with detailed explanations.
+
+### External Resources:
+
+- **Interactive App:** [Tracking Error Lab on Streamlit](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)
+- **GitHub Repository:** [TejasViswa/tracking-error-lab](https://github.com/TejasViswa/tracking-error-lab)
+
+### Suggested Learning Path:
+
+1. **[Overview](index.html)** — Start here for intuition and practical implications
+2. **[Intuitive Math](intuitive_math.html)** — Complete derivation of variance-of-a-sum formula
+3. **[Technical Math](technical_math.html)** — Advanced tools: AR(1) models, Newey-West estimation, closed-form solutions
+4. **[Interactive App](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)** — Experiment with your own data

@@ -4,7 +4,6 @@ subtitle: "Why your portfolio's drift depends on what you own, not just how much
 format:
   html:
     toc: true
-    theme: cosmo
     code-fold: true
 ---
 
@@ -362,23 +361,17 @@ For a complete mathematical derivation with proofs, see the **[Intuitive Math](i
 
 ---
 
-## Interactive Tools & Resources
+## Navigation
 
-Want to experiment with your own data?
+### Continue Learning:
+
+**→ [Intuitive Math: Complete Derivation](intuitive_math.html)**  
+Step-by-step mathematical derivation with detailed explanations of variance-of-a-sum, monthly/daily TE ratios, and worked examples.
+
+**→ [Technical Math: AR(1) & Newey-West](technical_math.html)**  
+Advanced topics including closed-form AR(1) solutions, Newey-West estimation, and implementation code.
+
+### External Resources:
 
 - **Interactive App:** [Tracking Error Lab on Streamlit](https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/)
 - **GitHub Repository:** [TejasViswa/tracking-error-lab](https://github.com/TejasViswa/tracking-error-lab)
-- **Full Mathematical Derivation:** [Intuitive Math](intuitive_math.html) (next page)
-
----
-
-## Where to Go Next
-
-This page provided the intuition and practical implications. For the complete mathematical derivation, including:
-
-- Variance-of-a-sum expansions
-- Exact formulas for the monthly/daily TE ratio
-- Proofs and worked examples
-- Python code to compute autocovariances
-
-Continue to → **[Intuitive Math: Complete Derivation](intuitive_math.html)**
