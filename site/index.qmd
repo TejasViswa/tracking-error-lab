@@ -233,7 +233,7 @@ Conversely, with trend persistence ($\phi>0$), the aggregated variance can rise 
 
 ---
 
-# 10. References (select)
+# 10. References (selected)
 
 - Grinold, R. C., & Kahn, R. N. *Active Portfolio Management* (2nd ed.).  
 - Newey, W. K., & West, K. D. (1987). *A Simple, Positive Semi-definite, Heteroskedasticity and Autocorrelation Consistent Covariance Matrix.*  
