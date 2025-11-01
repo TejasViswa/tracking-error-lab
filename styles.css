@@ -1,1 +1,20 @@
-body { max-width: 960px; margin: auto; font-size: 1.05rem; }
+/* Make Quarto use the full width */
+:root {
+    /* expand the built-in content width variable */
+    --content-max-width: 1200px;   /* try 1400px or 100% if you like */
+  }
+  
+  /* When using page-layout: full, ensure content expands */
+  .page-layout-full .content {
+    max-width: var(--content-max-width);
+  }
+  
+  /* Optional: let the embedded app span the width */
+  iframe {
+    width: 100%;
+    border: 0;
+  }
+  
+  /* Slightly larger text for readability on wide pages */
+  body { font-size: 1.05rem; }
+  
