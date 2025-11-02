@@ -105,6 +105,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -240,13 +241,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
  <span class="menu-text">Resources</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/" class="sidebar-item-text sidebar-link"><i class="bi bi-play-circle" role="img">
@@ -265,13 +266,13 @@ window.Quarto = {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
  <span class="menu-text">Contact</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="https://www.linkedin.com/in/tejasviswa/" class="sidebar-item-text sidebar-link"><i class="bi bi-linkedin" role="img">
@@ -647,7 +648,7 @@ TE_{m}^{\text{AR(1)}} = \sqrt{\gamma(0)\left[m + 2\left(m\frac{\phi - \phi^m}{1 
 <h2 class="anchored" data-anchor-id="implementation-ar1-helper-functions">6. Implementation: AR(1) Helper Functions</h2>
 <section id="exact-ar1-tracking-error" class="level3">
 <h3 class="anchored" data-anchor-id="exact-ar1-tracking-error">6.1 Exact AR(1) tracking error</h3>
-<div id="dd65cbc7" class="cell" data-execution_count="1">
+<div id="93423647" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -719,7 +720,7 @@ TE_{m}^{\text{AR(1)}} = \sqrt{\gamma(0)\left[m + 2\left(m\frac{\phi - \phi^m}{1 
 </section>
 <section id="example-computing-multi-horizon-te-under-ar1" class="level3">
 <h3 class="anchored" data-anchor-id="example-computing-multi-horizon-te-under-ar1">6.2 Example: Computing multi-horizon TE under AR(1)</h3>
-<div id="bd856c69" class="cell" data-execution_count="2">
+<div id="100aa5f1" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example parameters</span></span>
@@ -774,7 +775,7 @@ Ratio (True/Naive):              1.3610
 </section>
 <section id="newey-west-implementation" class="level2">
 <h2 class="anchored" data-anchor-id="newey-west-implementation">7. Newey-West Implementation</h2>
-<div id="c2f31197" class="cell" data-execution_count="3">
+<div id="14affc7c" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> newey_west_variance(returns, lags<span class="op">=</span><span class="va">None</span>):</span>
@@ -1001,7 +1002,7 @@ Estimated φ:                 0.3382
 <section id="worked-example-comparing-methods" class="level2">
 <h2 class="anchored" data-anchor-id="worked-example-comparing-methods">9. Worked Example: Comparing Methods</h2>
 <p>Let’s work through a complete example comparing all three methods.</p>
-<div id="8543036f" class="cell" data-execution_count="4">
+<div id="781000ef" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate realistic monthly active returns</span></span>
