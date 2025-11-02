@@ -14,6 +14,7 @@ format:
 Portfolio managers and risk professionals routinely calculate tracking error (TE) — the standard deviation of active returns (portfolio minus benchmark). A common challenge arises when comparing annualized tracking error across different measurement frequencies:
 
 **The Issue:**
+
 - You calculate daily TE and annualize it: $TE_{\text{daily}} \times \sqrt{252} = 8.5\%$
 - You calculate monthly TE and annualize it: $TE_{\text{monthly}} \times \sqrt{12} = 10.1\%$
 - **Both are "annualized," yet they differ by 19%**
@@ -45,16 +46,19 @@ This is the **square-root-of-time scaling rule** from random walk theory. It ass
 ### Key Implications
 
 **Persistent Drift (Trending Portfolios):**
+
 - Risk limits based on daily TE may be inadequate → build in a buffer (e.g., target 8% annual, set daily limit to achieve ~7%)
 - More frequent rebalancing helps control drift accumulation
 - Example: Tech-heavy portfolio during bull market — daily gains compound over the month
 
 **Mean Reversion (Oscillating Portfolios):**
+
 - You may have more room for active bets than daily TE suggests
 - Less frequent rebalancing may be sufficient — don't over-trade on daily volatility
 - Example: Energy tilt — daily spikes and reversals cancel out over the month
 
 **Random Walk (Neutral Portfolios):**
+
 - Standard square-root-of-time scaling works fine
 - No special adjustments needed for risk budgeting
 
