@@ -667,6 +667,19 @@ a_t = \sum_{i} \Delta w_{i,t}\,r_{i,t}
 \gamma_k = \mathrm{Cov}(a_t, a_{t+k})
 = \sum_{i,j} \mathbb{E}[\Delta w_{i,t}\,\Delta w_{j,t+k}]\,\mathrm{Cov}(r_{i,t}, r_{j,t+k})
 \]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Assumptions:</strong> This decomposition assumes zero-mean returns (or is written in deviation-from-mean form) and that portfolio weights and returns have sufficient independence properties. In practice, this provides useful intuition for understanding the sources of autocorrelation.</p>
+</div>
+</div>
 <p>This shows that <span class="math inline">\(\gamma_k\)</span> depends on:</p>
 <ol type="1">
 <li><strong>Persistence of active weights</strong> (<span class="math inline">\(\Delta w_{i,t}\)</span> vs <span class="math inline">\(\Delta w_{j,t+k}\)</span>)</li>
@@ -698,7 +711,7 @@ a_t = \sum_{i} \Delta w_{i,t}\,r_{i,t}
 <section id="practical-example-python-simulation" class="level2">
 <h2 class="anchored" data-anchor-id="practical-example-python-simulation">7. Practical Example (Python Simulation)</h2>
 <p>Let’s compute the ratio <span class="math inline">\(TE_{m,\text{ann}} / TE_{d,\text{ann}}\)</span> under different autocorrelation scenarios.</p>
-<div id="d33e7f32" class="cell" data-execution_count="1">
+<div id="c59f150c" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>

@@ -469,7 +469,7 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{D}
 <section id="python-demonstration" class="level2">
 <h2 class="anchored" data-anchor-id="python-demonstration">Python Demonstration</h2>
 <p>Simulate the three autocovariance regimes to visualize their impact on cumulative drift and tracking error scaling:</p>
-<div id="75eff9eb" class="cell" data-execution_count="1">
+<div id="eb6f3b88" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -559,7 +559,7 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{D}
 <span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"TE Ratio: Monthly Annualized / Daily Annualized"</span>)</span>
 <span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Persistent drift (φ=+0.5):   </span><span class="sc">{</span>ratio_persistent<span class="sc">:.4f}</span><span class="ss">  → Monthly TE is </span><span class="sc">{</span>(ratio_persistent<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">100</span><span class="sc">:+.1f}</span><span class="ss">% vs daily"</span>)</span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Random walk (φ=0):            </span><span class="sc">{</span>ratio_random<span class="sc">:.4f}</span><span class="ss">  → Monthly TE matches daily"</span>)</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Random walk (φ=0):            </span><span class="sc">{</span>ratio_random<span class="sc">:.4f}</span><span class="ss">  → Monthly TE ≈ daily (±sampling noise)"</span>)</span>
 <span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean reversion (φ=-0.5):      </span><span class="sc">{</span>ratio_revert<span class="sc">:.4f}</span><span class="ss">  → Monthly TE is </span><span class="sc">{</span>(ratio_revert<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">100</span><span class="sc">:+.1f}</span><span class="ss">% vs daily"</span>)</span>
 <span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
@@ -576,7 +576,7 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{D}
 TE Ratio: Monthly Annualized / Daily Annualized
 ======================================================================
 Persistent drift (φ=+0.5):   1.3783  → Monthly TE is +37.8% vs daily
-Random walk (φ=0):            0.8682  → Monthly TE matches daily
+Random walk (φ=0):            0.8682  → Monthly TE ≈ daily (±sampling noise)
 Mean reversion (φ=-0.5):      0.5780  → Monthly TE is -42.2% vs daily
 ======================================================================</code></pre>
 </div>
@@ -584,7 +584,7 @@ Mean reversion (φ=-0.5):      0.5780  → Monthly TE is -42.2% vs daily
 <p><strong>Interpretation:</strong></p>
 <ul>
 <li><strong>Persistent drift</strong> (red): Cumulative return trends away from zero. Monthly TE is 15-30% higher than daily TE predicts.</li>
-<li><strong>Random walk</strong> (blue): Cumulative return meanders without strong trend. Monthly TE matches daily TE × √21.</li>
+<li><strong>Random walk</strong> (blue): Cumulative return meanders without strong trend. Monthly TE ≈ daily TE × √21 (up to sampling noise).</li>
 <li><strong>Mean reversion</strong> (green): Cumulative return oscillates tightly around zero. Monthly TE is 10-20% lower than daily TE predicts.</li>
 </ul>
 <hr>

@@ -560,7 +560,7 @@ a_t = \phi a_{t-1} + \varepsilon_t
 <p><strong>Autocorrelation:</strong> <span class="math display">\[
 \rho(h) = \frac{\gamma(h)}{\gamma(0)} = \phi^{|h|}
 \]</span></p>
-<p>This shows exponential decay (or growth if <span class="math inline">\(\phi &lt; 0\)</span>) of correlations with lag.</p>
+<p>This shows exponential decay in magnitude with lag. When <span class="math inline">\(\phi &lt; 0\)</span>, correlations decay with alternating signs.</p>
 </section>
 <section id="variance-of-m-period-sum" class="level3">
 <h3 class="anchored" data-anchor-id="variance-of-m-period-sum">4.3 Variance of m-period sum</h3>
@@ -613,16 +613,29 @@ TE_{m}^{\text{AR(1)}} = \sqrt{\gamma(0)\left[m + 2\left(m\frac{\phi - \phi^m}{1 
 <p><span class="math display">\[
 \hat{\gamma}(h) = \frac{1}{T}\sum_{t=1}^{T-h}(a_t - \bar{a})(a_{t+h} - \bar{a})
 \]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Note on conventions:</strong> Some texts use <span class="math inline">\(1/(T-h)\)</span> instead of <span class="math inline">\(1/T\)</span> in the denominator. Both conventions are asymptotically equivalent, and <span class="math inline">\(1/T\)</span> is commonly used in long-run variance estimation.</p>
+</div>
+</div>
 </section>
 <section id="bandwidth-selection" class="level3">
 <h3 class="anchored" data-anchor-id="bandwidth-selection">5.4 Bandwidth selection</h3>
-<p>Common rules of thumb:</p>
+<p>Common rules of thumb for choosing the lag truncation parameter <span class="math inline">\(L\)</span>:</p>
 <ul>
-<li><strong>Andrews (1991):</strong> <span class="math inline">\(L \approx \lfloor 4(T/100)^{2/9} \rfloor\)</span> for AR(1) processes</li>
-<li><strong>Newey-West (1994):</strong> <span class="math inline">\(L \approx \lfloor 4(T/100)^{1/4} \rfloor\)</span> for general processes</li>
-<li><strong>Rule of thumb:</strong> <span class="math inline">\(L \approx T^{1/3}\)</span></li>
+<li><strong>Simple power rules:</strong> <span class="math inline">\(L \approx T^{1/4}\)</span> or <span class="math inline">\(L \approx 0.75 T^{1/3}\)</span></li>
+<li><strong>Data-dependent (Andrews 1991):</strong> Plug-in automatic bandwidth selection based on estimated autocorrelation structure</li>
+<li><strong>Conservative choice:</strong> <span class="math inline">\(L \approx \lfloor 4(T/100)^{2/9} \rfloor\)</span> often recommended for AR-type processes</li>
 </ul>
-<p>For daily data with <span class="math inline">\(T=252\)</span>, typical choices: <span class="math inline">\(L \in [6, 10]\)</span></p>
+<p>For daily financial data with <span class="math inline">\(T=252\)</span>, typical choices: <span class="math inline">\(L \in [6, 10]\)</span></p>
 </section>
 <section id="annualized-tracking-error-newey-west" class="level3">
 <h3 class="anchored" data-anchor-id="annualized-tracking-error-newey-west">5.5 Annualized tracking error (Newey-West)</h3>
@@ -648,7 +661,7 @@ TE_{m}^{\text{AR(1)}} = \sqrt{\gamma(0)\left[m + 2\left(m\frac{\phi - \phi^m}{1 
 <h2 class="anchored" data-anchor-id="implementation-ar1-helper-functions">6. Implementation: AR(1) Helper Functions</h2>
 <section id="exact-ar1-tracking-error" class="level3">
 <h3 class="anchored" data-anchor-id="exact-ar1-tracking-error">6.1 Exact AR(1) tracking error</h3>
-<div id="36a6827c" class="cell" data-execution_count="1">
+<div id="aeb194c5" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -720,7 +733,7 @@ TE_{m}^{\text{AR(1)}} = \sqrt{\gamma(0)\left[m + 2\left(m\frac{\phi - \phi^m}{1 
 </section>
 <section id="example-computing-multi-horizon-te-under-ar1" class="level3">
 <h3 class="anchored" data-anchor-id="example-computing-multi-horizon-te-under-ar1">6.2 Example: Computing multi-horizon TE under AR(1)</h3>
-<div id="dfe954e5" class="cell" data-execution_count="2">
+<div id="145a93c4" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example parameters</span></span>
@@ -775,7 +788,7 @@ Ratio (True/Naive):              1.3610
 </section>
 <section id="newey-west-implementation" class="level2">
 <h2 class="anchored" data-anchor-id="newey-west-implementation">7. Newey-West Implementation</h2>
-<div id="296a1efd" class="cell" data-execution_count="3">
+<div id="08a3e735" class="cell" data-execution_count="3">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> newey_west_variance(returns, lags<span class="op">=</span><span class="va">None</span>):</span>
@@ -1002,7 +1015,7 @@ Estimated φ:                 0.3382
 <section id="worked-example-comparing-methods" class="level2">
 <h2 class="anchored" data-anchor-id="worked-example-comparing-methods">9. Worked Example: Comparing Methods</h2>
 <p>Let’s work through a complete example comparing all three methods.</p>
-<div id="ab7c50b6" class="cell" data-execution_count="4">
+<div id="c18aadbd" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate realistic monthly active returns</span></span>
