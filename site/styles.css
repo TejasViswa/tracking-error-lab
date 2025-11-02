@@ -258,4 +258,89 @@
   .sidebar, .sidebar *, .sidebar-navigation, .sidebar-navigation * {
     pointer-events: auto !important;
   }
+
+  /* Mobile responsiveness */
+  @media (max-width: 768px) {
+    /* Make body text slightly smaller on mobile */
+    body {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Adjust heading sizes for mobile */
+    h1.title {
+      font-size: 1.8rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+    }
+
+    /* Make tables scrollable on mobile */
+    table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      font-size: 0.85rem;
+    }
+
+    /* Adjust code blocks for mobile */
+    pre {
+      font-size: 0.85rem;
+      overflow-x: auto;
+    }
+
+    /* Make sidebar items more touch-friendly */
+    .sidebar-item a {
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+    }
+
+    /* Adjust footer for mobile */
+    .page-footer {
+      font-size: 0.85rem;
+      padding: 1.5rem 1rem;
+    }
+
+    .page-footer i.bi {
+      font-size: 1.2rem;
+    }
+
+    /* Add padding to content on mobile */
+    .page-columns {
+      padding: 0 1rem;
+    }
+  }
+
+  /* Very small screens (phones in portrait) */
+  @media (max-width: 480px) {
+    body {
+      font-size: 0.9rem;
+    }
+
+    h1.title {
+      font-size: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+    }
+
+    /* Stack footer content if needed */
+    .page-footer {
+      font-size: 0.8rem;
+    }
+
+    .page-footer .footer-icon {
+      padding: 0 0.3rem;
+    }
+  }
   

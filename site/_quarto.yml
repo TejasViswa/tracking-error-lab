@@ -5,6 +5,7 @@ website:
   sidebar:
     style: "docked"
     background: light
+    collapse-level: 1
     contents:
       - section: "Navigation"
         contents:
@@ -63,3 +64,6 @@ format:
       margin-width: 280px
       gutter-width: 1.5rem
     css: styles.css
+    include-in-header:
+      text: |
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
