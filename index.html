@@ -363,7 +363,12 @@ window.Quarto = {
 <section id="the-problem-annualized-tracking-error-inconsistencies" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem-annualized-tracking-error-inconsistencies">The Problem: Annualized Tracking Error Inconsistencies</h2>
 <p>Portfolio managers and risk professionals routinely calculate tracking error (TE) — the standard deviation of active returns (portfolio minus benchmark). A common challenge arises when comparing annualized tracking error across different measurement frequencies:</p>
-<p><strong>The Issue:</strong> - You calculate daily TE and annualize it: <span class="math inline">\(TE_{\text{daily}} \times \sqrt{252} = 8.5\%\)</span> - You calculate monthly TE and annualize it: <span class="math inline">\(TE_{\text{monthly}} \times \sqrt{12} = 10.1\%\)</span> - <strong>Both are “annualized,” yet they differ by 19%</strong></p>
+<p><strong>The Issue:</strong></p>
+<ul>
+<li>You calculate daily TE and annualize it: <span class="math inline">\(TE_{\text{daily}} \times \sqrt{252} = 8.5\%\)</span></li>
+<li>You calculate monthly TE and annualize it: <span class="math inline">\(TE_{\text{monthly}} \times \sqrt{12} = 10.1\%\)</span></li>
+<li><strong>Both are “annualized,” yet they differ by 19%</strong></li>
+</ul>
 <p>This isn’t a calculation error or data quality issue. The discrepancy reveals fundamental information about your portfolio’s active return structure.</p>
 <section id="the-standard-assumption-often-wrong" class="level3">
 <h3 class="anchored" data-anchor-id="the-standard-assumption-often-wrong">The Standard Assumption (Often Wrong)</h3>
@@ -420,9 +425,23 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{D}
 </table>
 <section id="key-implications" class="level3">
 <h3 class="anchored" data-anchor-id="key-implications">Key Implications</h3>
-<p><strong>Persistent Drift (Trending Portfolios):</strong> - Risk limits based on daily TE may be inadequate → build in a buffer (e.g., target 8% annual, set daily limit to achieve ~7%) - More frequent rebalancing helps control drift accumulation - Example: Tech-heavy portfolio during bull market — daily gains compound over the month</p>
-<p><strong>Mean Reversion (Oscillating Portfolios):</strong> - You may have more room for active bets than daily TE suggests - Less frequent rebalancing may be sufficient — don’t over-trade on daily volatility - Example: Energy tilt — daily spikes and reversals cancel out over the month</p>
-<p><strong>Random Walk (Neutral Portfolios):</strong> - Standard square-root-of-time scaling works fine - No special adjustments needed for risk budgeting</p>
+<p><strong>Persistent Drift (Trending Portfolios):</strong></p>
+<ul>
+<li>Risk limits based on daily TE may be inadequate → build in a buffer (e.g., target 8% annual, set daily limit to achieve ~7%)</li>
+<li>More frequent rebalancing helps control drift accumulation</li>
+<li>Example: Tech-heavy portfolio during bull market — daily gains compound over the month</li>
+</ul>
+<p><strong>Mean Reversion (Oscillating Portfolios):</strong></p>
+<ul>
+<li>You may have more room for active bets than daily TE suggests</li>
+<li>Less frequent rebalancing may be sufficient — don’t over-trade on daily volatility</li>
+<li>Example: Energy tilt — daily spikes and reversals cancel out over the month</li>
+</ul>
+<p><strong>Random Walk (Neutral Portfolios):</strong></p>
+<ul>
+<li>Standard square-root-of-time scaling works fine</li>
+<li>No special adjustments needed for risk budgeting</li>
+</ul>
 <hr>
 </section>
 </section>
@@ -449,7 +468,7 @@ TE_{\text{monthly}} = TE_{\text{daily}} \times \sqrt{D}
 <section id="python-demonstration" class="level2">
 <h2 class="anchored" data-anchor-id="python-demonstration">Python Demonstration</h2>
 <p>Simulate the three autocovariance regimes to visualize their impact on cumulative drift and tracking error scaling:</p>
-<div id="67451945" class="cell" data-execution_count="1">
+<div id="fe42afc8" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
