@@ -29,72 +29,63 @@ st.markdown("""
         color: #2c3e50;
     }
     
-    /* Top navigation bar */
-    .top-nav {
-        background-color: #f8f9fa;
-        padding: 1rem 2rem;
-        border-bottom: 1px solid #e8eaed;
-        margin-bottom: 2rem;
-    }
-    
-    .top-nav h1 {
-        margin: 0;
-        font-size: 1.5rem;
-        font-weight: 600;
-    }
-    
-    .top-nav-links {
-        display: flex;
-        gap: 1.5rem;
-        margin-top: 0.5rem;
-    }
-    
-    .top-nav-links a {
-        color: #5a6c7d;
-        text-decoration: none;
-        font-size: 0.95rem;
-        transition: color 0.2s;
-    }
-    
-    .top-nav-links a:hover {
-        color: #3498db;
-    }
-    
-    /* Sidebar styling to match Quarto */
+    /* Sidebar styling */
     [data-testid="stSidebar"] {
         background-color: #f8f9fa;
         border-right: 1px solid #e8eaed;
+        padding-top: 2rem;
     }
     
-    [data-testid="stSidebar"] .sidebar-content {
-        padding: 1.5rem 1rem;
+    [data-testid="stSidebar"] > div:first-child {
+        padding: 1rem 1.5rem;
     }
     
-    /* Section headers in sidebar */
+    /* Sidebar section headers */
     .sidebar-section {
-        margin-top: 1.5rem;
-        margin-bottom: 0.5rem;
         font-size: 0.75rem;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         color: #7f8c8d;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+        padding-left: 0.5rem;
     }
     
-    /* Sidebar links */
-    .sidebar-link {
-        display: block;
-        padding: 0.5rem 0.75rem;
-        margin-bottom: 0.25rem;
+    /* Sidebar description */
+    .sidebar-description {
+        font-size: 0.9rem;
         color: #5a6c7d;
-        text-decoration: none;
-        border-radius: 0.25rem;
-        transition: background-color 0.2s, color 0.2s;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
     }
     
-    .sidebar-link:hover {
-        background-color: #e8eaed;
-        color: #2c3e50;
+    /* Expander styling - fix the fucked up look */
+    .streamlit-expanderHeader {
+        background-color: #f8f9fa !important;
+        border: 1px solid #e8eaed !important;
+        border-radius: 0.375rem !important;
+        padding: 0.75rem 1rem !important;
+        font-weight: 500 !important;
+        font-size: 0.95rem !important;
+    }
+    
+    .streamlit-expanderHeader:hover {
+        background-color: #e8eaed !important;
+        border-color: #d0d5dd !important;
+    }
+    
+    [data-testid="stExpander"] {
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    [data-testid="stExpanderDetails"] {
+        padding: 1rem !important;
+        border: 1px solid #e8eaed !important;
+        border-top: none !important;
+        border-radius: 0 0 0.375rem 0.375rem !important;
+        background-color: white !important;
     }
     
     /* Remove default streamlit branding */
@@ -124,9 +115,33 @@ st.markdown("""
         background-color: #3498db;
     }
     
-    /* Tables */
-    .dataframe {
-        font-size: 0.9rem;
+    /* File uploader */
+    [data-testid="stFileUploader"] {
+        background-color: #f8f9fa;
+        border: 2px dashed #d0d5dd;
+        border-radius: 0.375rem;
+        padding: 1.5rem;
+    }
+    
+    /* Info cards */
+    .info-card {
+        background-color: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 0.375rem;
+        border-left: 3px solid #3498db;
+        margin-bottom: 1rem;
+    }
+    
+    .info-card h4 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+    }
+    
+    .info-card p {
+        margin: 0;
+        color: #5a6c7d;
+        line-height: 1.6;
     }
     
     /* Footer */
@@ -148,71 +163,77 @@ st.markdown("""
         color: #3498db;
     }
     
-    /* Clean card styling */
-    .info-card {
-        background-color: #f8f9fa;
-        padding: 1.5rem;
-        border-radius: 0.375rem;
-        border-left: 3px solid #e8eaed;
-        margin-bottom: 1rem;
+    /* Radio buttons */
+    .stRadio > label {
+        font-weight: 500;
+        font-size: 0.95rem;
     }
     
-    /* Remove emoji/icon clutter */
-    .no-emoji {
-        font-style: normal;
+    /* Slider labels */
+    .stSlider > label {
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+    
+    /* Tables */
+    .dataframe {
+        font-size: 0.9rem;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Top Navigation Bar
-st.markdown("""
-<div class="top-nav">
-    <h1>Tracking Error Lab</h1>
-    <div class="top-nav-links">
-        <a href="https://tejasviswa.github.io/tracking-error-lab/" target="_blank">Overview</a>
-        <a href="https://tejasviswa.github.io/tracking-error-lab/intuitive_math.html" target="_blank">Intuitive Math</a>
-        <a href="https://tejasviswa.github.io/tracking-error-lab/technical_math.html" target="_blank">Technical Details</a>
-        <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/" target="_blank">Interactive Simulator</a>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# Sidebar Navigation
+# Sidebar Configuration
 with st.sidebar:
-    st.markdown('<div class="sidebar-section">Navigation</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <a href="https://tejasviswa.github.io/tracking-error-lab/" target="_blank" class="sidebar-link">Overview</a>
-    <a href="https://tejasviswa.github.io/tracking-error-lab/intuitive_math.html" target="_blank" class="sidebar-link">Intuitive Math</a>
-    <a href="https://tejasviswa.github.io/tracking-error-lab/technical_math.html" target="_blank" class="sidebar-link">Technical Details</a>
-    """, unsafe_allow_html=True)
+    st.markdown("### Interactive Simulator")
+    st.markdown('<p class="sidebar-description">Configure parameters and data sources for tracking error analysis.</p>', unsafe_allow_html=True)
     
-    st.markdown('<div class="sidebar-section">Resources</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <a href="https://tracking-error-lab-kgkju98o4pqxdjoevqtsay.streamlit.app/" target="_blank" class="sidebar-link">Interactive Simulator</a>
-    <a href="https://github.com/TejasViswa/tracking-error-lab" target="_blank" class="sidebar-link">Source Code</a>
-    """, unsafe_allow_html=True)
+    st.markdown("---")
     
-    st.markdown('<div class="sidebar-section">Contact</div>', unsafe_allow_html=True)
+    # Analysis mode
+    st.markdown('<div class="sidebar-section">Data Source</div>', unsafe_allow_html=True)
+    analysis_mode = st.radio(
+        "",
+        ["Simulated Portfolios", "Upload Your Data", "Compare Both"],
+        index=0,
+        label_visibility="collapsed",
+        help="Choose between simulated regimes or your own portfolio data"
+    )
+    
+    st.markdown("---")
+    
+    # Links section
+    st.markdown('<div class="sidebar-section">Documentation</div>', unsafe_allow_html=True)
     st.markdown("""
-    <a href="https://www.linkedin.com/in/tejasviswa/" target="_blank" class="sidebar-link">LinkedIn</a>
-    <a href="https://github.com/TejasViswa/" target="_blank" class="sidebar-link">GitHub</a>
-    <a href="mailto:tejasviswa@gmail.com" class="sidebar-link">Email</a>
+    <div style="padding-left: 0.5rem;">
+        <p style="margin-bottom: 0.5rem;"><a href="https://tejasviswa.github.io/tracking-error-lab/" target="_blank" style="color: #5a6c7d; text-decoration: none;">Overview</a></p>
+        <p style="margin-bottom: 0.5rem;"><a href="https://tejasviswa.github.io/tracking-error-lab/intuitive_math.html" target="_blank" style="color: #5a6c7d; text-decoration: none;">Intuitive Math</a></p>
+        <p style="margin-bottom: 0.5rem;"><a href="https://tejasviswa.github.io/tracking-error-lab/technical_math.html" target="_blank" style="color: #5a6c7d; text-decoration: none;">Technical Details</a></p>
+    </div>
     """, unsafe_allow_html=True)
     
     st.markdown("---")
     
-    # Analysis mode in sidebar
-    st.markdown("### Analysis Mode")
-    analysis_mode = st.radio(
-        "",
-        ["Simulated Regimes", "Upload Portfolio", "Compare Both"],
-        index=0,
-        label_visibility="collapsed"
-    )
+    st.markdown('<div class="sidebar-section">Resources</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div style="padding-left: 0.5rem;">
+        <p style="margin-bottom: 0.5rem;"><a href="https://github.com/TejasViswa/tracking-error-lab" target="_blank" style="color: #5a6c7d; text-decoration: none;">Source Code</a></p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    
+    st.markdown('<div class="sidebar-section">Contact</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div style="padding-left: 0.5rem;">
+        <p style="margin-bottom: 0.5rem;"><a href="https://www.linkedin.com/in/tejasviswa/" target="_blank" style="color: #5a6c7d; text-decoration: none;">LinkedIn</a></p>
+        <p style="margin-bottom: 0.5rem;"><a href="https://github.com/TejasViswa/" target="_blank" style="color: #5a6c7d; text-decoration: none;">GitHub</a></p>
+        <p style="margin-bottom: 0.5rem;"><a href="mailto:tejasviswa@gmail.com" style="color: #5a6c7d; text-decoration: none;">Email</a></p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # Main content
-st.title("Interactive Simulator")
-st.markdown("Explore how autocorrelation in active returns affects tracking error across different time horizons.")
+st.title("Tracking Error Lab: Interactive Simulator")
+st.markdown("Explore how autocorrelation in active returns affects tracking error estimation across different time horizons.")
 
 st.markdown("---")
 
@@ -227,28 +248,32 @@ with st.expander("About This Tool"):
     - When active returns are **negatively correlated** (mean reversion), monthly TE is lower than daily TE predicts
     - When active returns are **uncorrelated** (random walk), monthly and daily TE estimates align
     
-    Read the full mathematical treatment in the documentation pages linked above.
+    Read the full mathematical treatment in the [documentation pages](https://tejasviswa.github.io/tracking-error-lab/).
     """)
 
 # --- Portfolio Upload Section ---
 uploaded_portfolio_data = None
 uploaded_portfolio_name = None
 
-if analysis_mode in ["Upload Portfolio", "Compare Both"]:
-    st.subheader("Upload Portfolio Data")
+if analysis_mode in ["Upload Your Data", "Compare Both"]:
+    st.subheader("Upload Your Portfolio Data")
     
     st.markdown("""
-    Upload a CSV or Excel file with your portfolio's **active returns** (portfolio return minus benchmark return).
-    The file should contain a Date column and an Active Return column in decimal format (e.g., 0.0015 for 15 basis points).
-    """)
+    <div class="info-card">
+        <h4>Upload Active Returns Data</h4>
+        <p>Upload a CSV or Excel file containing your portfolio's <strong>active returns</strong> 
+        (portfolio return minus benchmark return). The file should have two columns: Date and Active Return 
+        in decimal format (e.g., 0.0015 for 15 basis points).</p>
+    </div>
+    """, unsafe_allow_html=True)
     
     col_upload, col_example = st.columns([2, 1])
     
     with col_upload:
         uploaded_file = st.file_uploader(
-            "Choose file",
+            "Choose CSV or Excel file",
             type=["csv", "xlsx", "xls"],
-            help="CSV or Excel file with Date and Active Return columns"
+            help="Upload your portfolio's daily active returns"
         )
     
     with col_example:
@@ -267,12 +292,12 @@ if analysis_mode in ["Upload Portfolio", "Compare Both"]:
                 df_upload = pd.read_excel(uploaded_file)
             
             # Display raw data preview
-            with st.expander("Preview data"):
+            with st.expander("Preview uploaded data"):
                 st.dataframe(df_upload.head(10), use_container_width=True)
             
             # Column mapping
-            st.markdown("**Configure columns:**")
-            col_date_select, col_return_select = st.columns(2)
+            st.markdown("**Map your columns:**")
+            col_date_select, col_return_select, col_name = st.columns(3)
             
             with col_date_select:
                 date_column = st.selectbox("Date column", options=df_upload.columns.tolist(), index=0)
@@ -281,8 +306,8 @@ if analysis_mode in ["Upload Portfolio", "Compare Both"]:
                 return_column = st.selectbox("Active Return column", options=df_upload.columns.tolist(), 
                                             index=min(1, len(df_upload.columns) - 1))
             
-            # Portfolio name
-            uploaded_portfolio_name = st.text_input("Portfolio name", value="My Portfolio")
+            with col_name:
+                uploaded_portfolio_name = st.text_input("Portfolio name", value="My Portfolio")
             
             # Parse and validate
             df_clean = df_upload[[date_column, return_column]].copy()
@@ -323,10 +348,10 @@ regime_presets = {
 }
 
 selected_regimes = []
-if analysis_mode in ["Simulated Regimes", "Compare Both"]:
-    st.subheader("Simulated Regimes")
+if analysis_mode in ["Simulated Portfolios", "Compare Both"]:
+    st.subheader("Configure Simulated Portfolios")
     
-    st.markdown("Select which autocorrelation regimes to simulate and compare:")
+    st.markdown("Select which autocorrelation regimes to simulate and analyze:")
     
     selected_regimes = st.multiselect(
         "Select regimes",
@@ -335,24 +360,27 @@ if analysis_mode in ["Simulated Regimes", "Compare Both"]:
         label_visibility="collapsed"
     )
     
-    if not selected_regimes and analysis_mode != "Upload Portfolio":
-        st.warning("Please select at least one regime.")
+    if not selected_regimes and analysis_mode != "Upload Your Data":
+        st.warning("Please select at least one regime to continue.")
         st.stop()
-
-if analysis_mode in ["Simulated Regimes", "Compare Both"]:
-    st.markdown("**Simulation parameters:**")
     
-    col_days, col_te, col_seed = st.columns(3)
-    with col_days:
-        T_days = st.slider("Trading days", 252, 2520, 756, 252)
-    with col_te:
-        target_annual_te_bps = st.slider("Target annual TE (bps)", 100, 1500, 500, 50)
-    with col_seed:
-        seed = st.number_input("Random seed", 0, 10_000, 42)
-    
-    # Advanced customization
     if selected_regimes:
-        with st.expander("Advanced: Customize φ values"):
+        st.markdown("**Simulation parameters:**")
+        
+        col_days, col_te, col_seed = st.columns(3)
+        with col_days:
+            T_days = st.slider("Trading days", 252, 2520, 756, 252, 
+                              help="Number of trading days to simulate (~252 per year)")
+        with col_te:
+            target_annual_te_bps = st.slider("Target annual TE (bps)", 100, 1500, 500, 50,
+                                            help="Target annualized tracking error in basis points")
+        with col_seed:
+            seed = st.number_input("Random seed", 0, 10_000, 42, 
+                                  help="For reproducibility")
+        
+        # Advanced customization
+        with st.expander("Advanced: Customize φ (autocorrelation) values"):
+            st.markdown("Override the default autocorrelation coefficients for each regime:")
             custom_phi = {}
             cols = st.columns(len(selected_regimes))
             for i, regime in enumerate(selected_regimes):
@@ -361,15 +389,21 @@ if analysis_mode in ["Simulated Regimes", "Compare Both"]:
                     custom_phi[regime] = st.slider(
                         f"{regime.split('(')[0].strip()}",
                         -0.7, 0.7, default_phi, 0.05,
-                        key=f"phi_{regime}"
+                        key=f"phi_{regime}",
+                        help="AR(1) coefficient: positive = momentum, negative = mean reversion"
                     )
     else:
         custom_phi = {}
+        T_days = 756
+        target_annual_te_bps = 500
+        seed = 42
 else:
     T_days = 756
     target_annual_te_bps = 500
     seed = 42
     custom_phi = {}
+
+st.markdown("---")
 
 # --- Helper Functions ---
 def generate_realistic_ar1(phi, target_annual_te_bps, T_days, seed):
@@ -457,11 +491,10 @@ def estimate_ar1_parameters(a):
     return phi_hat, sigma_eps, r_squared
 
 # --- Analysis ---
-st.markdown("---")
 st.subheader("Results & Analysis")
 
 if not selected_regimes and uploaded_portfolio_data is None:
-    st.info("Select regimes or upload portfolio data to begin analysis.")
+    st.info("Configure data source in the sidebar to begin analysis.")
     st.stop()
 
 all_data = {}
@@ -469,7 +502,7 @@ all_metrics = []
 
 # Analyze uploaded portfolio
 if uploaded_portfolio_data is not None:
-    st.markdown("**Your Portfolio**")
+    st.markdown("#### Your Portfolio Analysis")
     
     a_uploaded = uploaded_portfolio_data
     T_uploaded = len(a_uploaded)
@@ -498,9 +531,11 @@ if uploaded_portfolio_data is not None:
     # Display metrics
     col_info1, col_info2, col_info3 = st.columns(3)
     with col_info1:
-        st.metric("Estimated φ (AR(1))", f"{phi_estimated:+.3f}")
+        st.metric("Estimated φ (AR(1))", f"{phi_estimated:+.3f}",
+                 help="Autocorrelation coefficient estimated from your data")
     with col_info2:
-        st.metric("AR(1) R²", f"{r_squared:.3f}")
+        st.metric("AR(1) R²", f"{r_squared:.3f}",
+                 help="How well the AR(1) model fits your data")
     with col_info3:
         if phi_estimated > 0.1:
             behavior = "Persistent Drift"
@@ -508,7 +543,7 @@ if uploaded_portfolio_data is not None:
             behavior = "Mean Reversion"
         else:
             behavior = "Random Walk"
-        st.metric("Behavior", behavior)
+        st.metric("Detected Behavior", behavior)
     
     all_data[uploaded_portfolio_name] = a_uploaded
     all_metrics.append({
@@ -526,7 +561,7 @@ if uploaded_portfolio_data is not None:
 
 # Simulated regimes
 if selected_regimes:
-    st.markdown("**Simulated Regimes**")
+    st.markdown("#### Simulated Regimes Analysis")
 
 dates = pd.bdate_range(end=pd.Timestamp.today().normalize(), periods=T_days)
 
@@ -564,12 +599,16 @@ for regime in selected_regimes:
 
 # Display metrics table
 st.markdown("**Comparison of Estimation Methods**")
-st.markdown("""
-- **Daily TE (ann)**: Empirical daily std × √252
-- **Monthly TE (ann)**: Empirical monthly std × √12
-- **AR(1) Formula**: Theoretical closed-form solution
-- **Newey-West**: Robust long-run variance estimator
-""")
+
+with st.expander("Understanding the metrics"):
+    st.markdown("""
+    - **Daily TE (ann)**: Empirical daily standard deviation × √252
+    - **Monthly TE (ann)**: Empirical monthly standard deviation × √12
+    - **AR(1) Formula**: Theoretical prediction using closed-form AR(1) solution
+    - **Newey-West**: Robust long-run variance estimator (handles unknown autocorrelation)
+    - **Ratio**: Monthly TE / Daily TE (how much they differ)
+    - **Effect**: Percentage difference between monthly and daily estimates
+    """)
 
 metrics_df = pd.DataFrame(all_metrics)
 st.dataframe(metrics_df, use_container_width=True, hide_index=True)
@@ -612,7 +651,7 @@ color_scale = alt.Scale(domain=all_regime_names, range=all_colors)
 tab1, tab2, tab3, tab4 = st.tabs(["Cumulative Drift", "Daily Returns", "Autocorrelation", "Methods Explained"])
 
 with tab1:
-    st.markdown("Cumulative active returns show how portfolio drift accumulates over time")
+    st.markdown("Cumulative active returns show how portfolio drift accumulates over time.")
     
     df_cum = df_viz.copy()
     df_cum = df_cum.sort_values(["regime", "index"])
@@ -638,7 +677,7 @@ with tab1:
     st.altair_chart(chart_cum, use_container_width=True)
 
 with tab2:
-    st.markdown("Daily active returns show raw volatility and patterns")
+    st.markdown("Daily active returns show raw volatility and patterns.")
     
     chart_daily = (
         alt.Chart(df_viz)
@@ -660,7 +699,7 @@ with tab2:
     st.altair_chart(chart_daily, use_container_width=True)
 
 with tab3:
-    st.markdown("Autocorrelation function (ACF) shows serial correlation structure")
+    st.markdown("Autocorrelation function (ACF) shows serial correlation structure.")
     
     acf_data = []
     for regime_name, regime_data in all_data.items():
@@ -700,34 +739,36 @@ with tab3:
     
     st.altair_chart((chart_acf + zero_line), use_container_width=True)
     
-    st.markdown("""
-    **Interpretation:**
-    - Positive ACF at lags 1-5: Momentum/persistence in returns
-    - Negative ACF at lags 1-5: Mean reversion in returns
-    - ACF ≈ 0 at all lags: No serial correlation (random walk)
-    """)
+    with st.expander("How to interpret the ACF"):
+        st.markdown("""
+        **Positive ACF at lags 1-5**: Momentum/persistence in returns (yesterday's positive return → today's positive return)
+        
+        **Negative ACF at lags 1-5**: Mean reversion in returns (yesterday's positive return → today's negative return)
+        
+        **ACF ≈ 0 at all lags**: No serial correlation (random walk behavior)
+        """)
 
 with tab4:
     st.markdown("### Mathematical Methods for TE Estimation")
     
     st.markdown("**1. Square-Root-of-Time Rule**")
-    st.markdown("Assumes active returns are i.i.d. (no autocorrelation)")
+    st.markdown("Assumes active returns are independent and identically distributed (i.i.d.).")
     st.latex(r"TE_{\text{monthly,ann}} = TE_{\text{daily}} \times \sqrt{252} = TE_{\text{monthly}} \times \sqrt{12}")
-    st.markdown("Valid when φ = 0 (random walk)")
+    st.markdown("Valid when φ = 0 (no autocorrelation).")
     
     st.markdown("**2. AR(1) Closed-Form Solution**")
-    st.markdown("Assumes active returns follow AR(1): $a_t = \\phi a_{t-1} + \\varepsilon_t$")
+    st.markdown("Assumes active returns follow first-order autoregressive process: $a_t = \\phi a_{t-1} + \\varepsilon_t$")
     st.latex(r"TE_m = \sqrt{D \cdot \gamma(0) \left[1 + \frac{2\phi}{1-\phi}\left(1 - \frac{1-\phi^D}{D(1-\phi)}\right)\right]}")
-    st.markdown("Exact when autocorrelation structure is AR(1)")
+    st.markdown("Where D = days per month (typically 21), γ(0) = variance of daily returns.")
     
     st.markdown("**3. Newey-West Long-Run Variance**")
-    st.markdown("Robust approach with no parametric assumptions")
+    st.markdown("Robust approach with no parametric assumptions about autocorrelation structure.")
     st.latex(r"\widehat{\sigma}^2_{LR} = \hat{\gamma}(0) + 2\sum_{h=1}^{L}\left(1 - \frac{h}{L+1}\right)\hat{\gamma}(h)")
     st.latex(r"TE_{\text{annual,NW}} = \sqrt{252 \cdot \widehat{\sigma}^2_{LR}}")
-    st.markdown("Most robust for real data with unknown autocorrelation")
+    st.markdown("Where L = bandwidth parameter (lag truncation), typically $L \\approx T^{1/4}$ or automatic selection.")
     
     st.markdown("---")
-    st.markdown("For detailed derivations, see the [Technical Math](https://tejasviswa.github.io/tracking-error-lab/technical_math.html) page.")
+    st.markdown("For complete derivations and proofs, see the [Technical Math](https://tejasviswa.github.io/tracking-error-lab/technical_math.html) page.")
 
 # Footer
 st.markdown("""
