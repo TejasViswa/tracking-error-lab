@@ -240,6 +240,7 @@ $$
 $$
 
 where:
+
 - $\hat{\gamma}(h)$ = sample autocovariance at lag $h$
 - $L$ = bandwidth (lag truncation parameter)
 - Weights $w(h) = 1 - \frac{h}{L+1}$ are the **Bartlett kernel** weights, which decay linearly
@@ -536,6 +537,7 @@ When reporting tracking error, always specify:
 5. **Assumptions:** Any filters, outlier treatment, etc.?
 
 **Example:**
+
 > "Daily tracking error over the past 12 months was 0.81%, corresponding to an annualized TE of 12.9% using Newey-West estimation with 8 lags. Estimated AR(1) coefficient: φ=0.28, indicating mild positive autocorrelation."
 
 ---
