@@ -10,20 +10,20 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for Montserrat font and better styling
+# Custom CSS for IBM Plex Sans font and better styling
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
     
     html, body, [class*="css"] {
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 500;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 400;
     }
     
     h1, h2, h3 {
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 700;
-        letter-spacing: 0.015em;
+        font-family: 'IBM Plex Sans', sans-serif;
+        font-weight: 600;
+        letter-spacing: 0em;
     }
     
     .stMetric {
@@ -32,6 +32,14 @@ st.markdown("""
         border-radius: 0.5rem;
         border-left: 4px solid #4a90e2;
     }
+    
+    .regime-card {
+        background-color: #f8f9fa;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid;
+        margin-bottom: 1rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -39,7 +47,7 @@ st.markdown("""
 col_title, col_links = st.columns([3, 1])
 with col_title:
     st.title("📊 Tracking Error Lab")
-    st.markdown("**Interactive tool for exploring tracking error across time horizons**")
+    st.markdown("**Interactive exploration of tracking error, autocorrelation, and annualization**")
 with col_links:
     st.markdown(
         "<div style='text-align:right; padding-top: 1.5rem;'>"
@@ -52,88 +60,98 @@ with col_links:
 st.markdown("---")
 
 # --- Introduction ---
-with st.expander("ℹ️ What is Tracking Error?", expanded=False):
+with st.expander("ℹ️ What This Tool Does", expanded=False):
     st.markdown("""
-    **Tracking error (TE)** measures how much a portfolio's returns deviate from its benchmark over time.
+    **Tracking error (TE)** measures how much a portfolio's returns deviate from its benchmark.
     
-    **Active return:** $a_t = r_{p,t} - r_{b,t}$ (portfolio return minus benchmark return)
+    **The Problem:** When we annualize tracking error from different frequencies (daily vs monthly), 
+    we often get different answers! This happens because of **autocorrelation** in active returns.
     
-    **Sample tracking error:**
-    """)
-    st.latex(r"\widehat{TE}=\sqrt{\frac{1}{T-1}\sum_{t=1}^{T}(a_t-\bar a)^2},\quad \bar a=\frac{1}{T}\sum_{t=1}^{T}a_t")
+    **This tool helps you:**
+    - Visualize how autocorrelation affects tracking error
+    - Compare different portfolio regimes (momentum, random walk, mean reversion)
+    - See theoretical formulas (AR(1)) vs robust estimators (Newey-West)
+    - Understand when monthly and daily TE estimates diverge
     
-    st.markdown("""
-    **Annualization:**
-    - Daily TE × √252 = Annualized TE
-    - Monthly TE × √12 = Annualized TE
-    
-    **Key insight:** When active returns are autocorrelated (positively or negatively), 
-    monthly and daily annualized TE can differ significantly!
-    
-    📖 Read more in the [Overview](https://tejasviswa.github.io/tracking-error-lab/) | 
-    [Intuitive Math](https://tejasviswa.github.io/tracking-error-lab/intuitive_math.html)
+    📖 Full explanation: [Overview](https://tejasviswa.github.io/tracking-error-lab/) | 
+    [Intuitive Math](https://tejasviswa.github.io/tracking-error-lab/intuitive_math.html) | 
+    [Technical Details](https://tejasviswa.github.io/tracking-error-lab/technical_math.html)
     """)
 
-# --- Simulator ---
-st.header("🎲 Simulate Daily Active Returns")
+# --- Main Configuration ---
+st.header("🎯 Select Portfolio Regimes to Compare")
 
 st.markdown("""
-Simulate an AR(1) process to see how **autocorrelation** affects the relationship between 
-daily and monthly tracking error. Choose a preset scenario or customize parameters.
+Choose which autocorrelation regimes to explore. By default, all three are shown so you can 
+see how different portfolio behaviors affect tracking error annualization.
 """)
 
-# Preset scenarios
-preset_scenarios = {
-    "Custom": {"phi": 0.0, "vol": 50, "days": 756},
-    "Tech/Growth (High Momentum)": {"phi": 0.5, "vol": 60, "days": 756},
-    "Moderate Momentum": {"phi": 0.3, "vol": 50, "days": 756},
-    "Random Walk (ESG Index)": {"phi": 0.0, "vol": 35, "days": 756},
-    "Mild Mean Reversion (Value)": {"phi": -0.25, "vol": 55, "days": 756},
-    "Strong Mean Reversion (Energy)": {"phi": -0.45, "vol": 70, "days": 756},
+# Define regime presets
+regime_presets = {
+    "Persistent Drift (φ=+0.5)": {
+        "phi": 0.5,
+        "color": "#e74c3c",
+        "description": "Momentum/trend-following behavior (e.g., Tech/Growth funds)",
+        "icon": "📈"
+    },
+    "Random Walk (φ=0)": {
+        "phi": 0.0,
+        "color": "#3498db",
+        "description": "No serial correlation (e.g., well-diversified index trackers)",
+        "icon": "🎲"
+    },
+    "Mean Reversion (φ=-0.45)": {
+        "phi": -0.45,
+        "color": "#27ae60",
+        "description": "Contrarian/value behavior (e.g., frequent rebalancing)",
+        "icon": "↩️"
+    }
 }
 
-col_preset, col_compare = st.columns([3, 1])
-with col_preset:
-    preset = st.selectbox(
-        "Choose a scenario:",
-        list(preset_scenarios.keys()),
-        help="Select a preset based on real portfolio behaviors, or choose 'Custom' to set your own parameters"
-    )
-with col_compare:
-    show_comparison = st.checkbox("Compare all regimes", value=False, help="Show all three regimes (momentum, random, reversion) side by side")
+# Regime selector (multiselect)
+selected_regimes = st.multiselect(
+    "Select regimes to compare:",
+    options=list(regime_presets.keys()),
+    default=list(regime_presets.keys()),  # All selected by default
+    help="Choose one or more regimes to simulate and compare"
+)
 
-# Set parameters based on preset or custom
-if preset != "Custom":
-    params = preset_scenarios[preset]
-    phi = params["phi"]
-    sigma_bps = params["vol"]
-    T_days = params["days"]
-    seed = 42
-else:
-    col_param1, col_param2, col_param3 = st.columns(3)
-    with col_param1:
-        T_days = st.slider("Trading days", 100, 2000, 756, 21, help="Number of trading days to simulate (~252 per year)")
-    with col_param2:
-        sigma_bps = st.slider("Target annual TE (bps)", 100, 1500, 500, 50, help="Target annualized tracking error in basis points")
-    with col_param3:
-        seed = st.number_input("Random seed", 0, 10_000, 42, help="Set seed for reproducibility")
+if not selected_regimes:
+    st.warning("⚠️ Please select at least one regime to continue.")
+    st.stop()
 
-    phi = st.slider(
-        "AR(1) coefficient φ (autocorrelation)", 
-        -0.7, 0.7, 0.0, 0.05,
-        help="φ > 0: Persistent drift (momentum) | φ < 0: Mean reversion | φ ≈ 0: No serial correlation"
-    )
+# --- Simulation Parameters ---
+st.subheader("⚙️ Simulation Parameters")
 
-# Generate realistic AR(1) process
+col_days, col_te, col_seed = st.columns(3)
+with col_days:
+    T_days = st.slider("Trading days", 252, 2520, 756, 252, help="Number of trading days (~252 per year)")
+with col_te:
+    target_annual_te_bps = st.slider("Target annual TE (bps)", 100, 1500, 500, 50, help="Target annualized tracking error in basis points")
+with col_seed:
+    seed = st.number_input("Random seed", 0, 10_000, 42, help="Set seed for reproducibility")
+
+# Advanced regime customization
+with st.expander("🔧 Customize Regime Parameters", expanded=False):
+    st.markdown("Override default φ (autocorrelation) values for each selected regime:")
+    
+    custom_phi = {}
+    cols = st.columns(len(selected_regimes))
+    for i, regime in enumerate(selected_regimes):
+        with cols[i]:
+            st.markdown(f"**{regime}**")
+            default_phi = regime_presets[regime]["phi"]
+            custom_phi[regime] = st.slider(
+                f"φ for {regime.split('(')[0].strip()}",
+                -0.7, 0.7, default_phi, 0.05,
+                key=f"phi_{regime}",
+                help="AR(1) coefficient: positive = momentum, negative = mean reversion"
+            )
+
+# --- Helper Functions ---
 def generate_realistic_ar1(phi, target_annual_te_bps, T_days, seed):
     """
     Generate realistic AR(1) active returns that look like real portfolio data.
-    
-    Parameters:
-    - phi: AR(1) coefficient (-1 to 1)
-    - target_annual_te_bps: target annualized TE in basis points
-    - T_days: number of trading days
-    - seed: random seed
     """
     rng = np.random.default_rng(int(seed))
     
@@ -141,8 +159,6 @@ def generate_realistic_ar1(phi, target_annual_te_bps, T_days, seed):
     target_annual_te = target_annual_te_bps / 10000.0
     
     # Calculate daily volatility to achieve target annual TE
-    # For AR(1): Var(a) = sigma_eps^2 / (1 - phi^2)
-    # Annual TE ≈ sqrt(252) * sqrt(Var(a))
     target_daily_std = target_annual_te / np.sqrt(252)
     
     # Back out epsilon volatility from stationary variance
@@ -159,14 +175,14 @@ def generate_realistic_ar1(phi, target_annual_te_bps, T_days, seed):
     for t in range(1, T_days):
         a[t] = phi * a[t-1] + eps[t]
     
-    # Add realistic features to make it look like real data
+    # Add realistic features
     # 1. Occasional small jumps (market events)
-    n_jumps = max(1, int(T_days / 252 * 2))  # ~2 jumps per year
+    n_jumps = max(1, int(T_days / 252 * 2))
     jump_indices = rng.choice(T_days, size=n_jumps, replace=False)
     jump_sizes = rng.normal(0, target_daily_std * 3, n_jumps)
     a[jump_indices] += jump_sizes
     
-    # 2. Add slight heteroskedasticity (volatility clustering)
+    # 2. Slight heteroskedasticity (volatility clustering)
     vol_regime = np.ones(T_days)
     regime_changes = sorted(rng.choice(T_days, size=max(1, T_days // 126), replace=False))
     for i, change_pt in enumerate(regime_changes):
@@ -177,402 +193,359 @@ def generate_realistic_ar1(phi, target_annual_te_bps, T_days, seed):
     
     return a
 
-# Simulate based on parameters
-if show_comparison:
-    st.subheader("📊 Comparison View: Three Autocorrelation Regimes")
-    st.markdown("Compare persistent drift, random walk, and mean reversion side-by-side.")
+def calculate_ar1_theoretical_te(phi, sigma_daily, D=21):
+    """
+    Calculate theoretical monthly TE using AR(1) closed-form formula.
     
-    # Generate three scenarios
-    rng = np.random.default_rng(int(seed))
-    a_persistent = generate_realistic_ar1(0.5, 500, T_days, seed)
-    a_random = generate_realistic_ar1(0.0, 500, T_days, seed + 1)
-    a_revert = generate_realistic_ar1(-0.45, 500, T_days, seed + 2)
-    
-    dates = pd.bdate_range(end=pd.Timestamp.today().normalize(), periods=T_days)
-    
-    # Create comparison DataFrame
-    df_comp = pd.DataFrame({
-        "date": dates,
-        "Momentum (φ=+0.5)": a_persistent,
-        "Random Walk (φ=0)": a_random,
-        "Mean Reversion (φ=-0.45)": a_revert
-    })
-    
-    # Calculate metrics for each
-    metrics_data = []
-    for col in ["Momentum (φ=+0.5)", "Random Walk (φ=0)", "Mean Reversion (φ=-0.45)"]:
-        te_d = df_comp[col].std(ddof=1)
-        te_d_ann = te_d * np.sqrt(252)
+    From technical_math.qmd:
+    TE_m = sqrt(D * gamma(0) * (1 + 2*phi/(1-phi) * (1 - (1-phi^D)/D/(1-phi))))
+    """
+    if abs(phi) < 0.99:
+        gamma_0 = sigma_daily**2
         
-        df_monthly = df_comp.set_index("date")[col].resample("M").sum()
-        te_m = df_monthly.std(ddof=1)
-        te_m_ann = te_m * np.sqrt(12)
-        ratio = te_m_ann / te_d_ann if te_d_ann > 0 else 1.0
+        if abs(phi) < 1e-6:  # phi ≈ 0
+            te_m_theoretical = np.sqrt(D * gamma_0)
+        else:
+            # Closed-form AR(1) formula
+            sum_term = (1 - (1 - phi**D) / (D * (1 - phi)))
+            factor = 1 + 2 * phi / (1 - phi) * sum_term
+            te_m_theoretical = np.sqrt(D * gamma_0 * factor)
         
-        metrics_data.append({
-            "Regime": col,
-            "Daily TE (ann)": f"{te_d_ann*100:.2f}%",
-            "Monthly TE (ann)": f"{te_m_ann*100:.2f}%",
-            "Ratio": f"{ratio:.3f}",
-            "Difference": f"{(ratio-1)*100:+.1f}%"
-        })
-    
-    st.dataframe(pd.DataFrame(metrics_data), use_container_width=True, hide_index=True)
-    
-    # Comparison visualization
-    tab_comp1, tab_comp2 = st.tabs(["Cumulative Drift Comparison", "Daily Returns Comparison"])
-    
-    with tab_comp1:
-        st.markdown("**How cumulative drift differs across autocorrelation regimes:**")
-        df_comp_cum = df_comp.copy()
-        df_comp_cum["Momentum (φ=+0.5)"] = df_comp_cum["Momentum (φ=+0.5)"].cumsum()
-        df_comp_cum["Random Walk (φ=0)"] = df_comp_cum["Random Walk (φ=0)"].cumsum()
-        df_comp_cum["Mean Reversion (φ=-0.45)"] = df_comp_cum["Mean Reversion (φ=-0.45)"].cumsum()
-        
-        df_comp_long = df_comp_cum.melt(id_vars=["date"], var_name="Regime", value_name="Cumulative Return")
-        
-        comp_chart = (
-            alt.Chart(df_comp_long)
-            .mark_line(strokeWidth=2.5)
-            .encode(
-                x=alt.X("date:T", title="Date"),
-                y=alt.Y("Cumulative Return:Q", title="Cumulative Active Return"),
-                color=alt.Color("Regime:N", 
-                    scale=alt.Scale(domain=["Momentum (φ=+0.5)", "Random Walk (φ=0)", "Mean Reversion (φ=-0.45)"],
-                                   range=["#e74c3c", "#3498db", "#27ae60"]),
-                    legend=alt.Legend(title="Regime", orient="bottom")
-                ),
-                tooltip=[
-                    alt.Tooltip("date:T", title="Date", format="%Y-%m-%d"),
-                    alt.Tooltip("Regime:N", title="Regime"),
-                    alt.Tooltip("Cumulative Return:Q", title="Cumulative Return", format=".4f")
-                ]
-            )
-            .properties(height=450)
-        )
-        
-        zero_line = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='gray', strokeDash=[5, 5]).encode(y='y:Q')
-        st.altair_chart((comp_chart + zero_line).interactive(), use_container_width=True)
-    
-    with tab_comp2:
-        st.markdown("**Daily returns across regimes:**")
-        df_comp_daily_long = df_comp.melt(id_vars=["date"], var_name="Regime", value_name="Active Return")
-        
-        daily_comp_chart = (
-            alt.Chart(df_comp_daily_long)
-            .mark_line(strokeWidth=1.5, opacity=0.7)
-            .encode(
-                x=alt.X("date:T", title="Date"),
-                y=alt.Y("Active Return:Q", title="Daily Active Return"),
-                color=alt.Color("Regime:N", 
-                    scale=alt.Scale(domain=["Momentum (φ=+0.5)", "Random Walk (φ=0)", "Mean Reversion (φ=-0.45)"],
-                                   range=["#e74c3c", "#3498db", "#27ae60"]),
-                    legend=alt.Legend(title="Regime", orient="bottom")
-                ),
-                tooltip=[
-                    alt.Tooltip("date:T", title="Date", format="%Y-%m-%d"),
-                    alt.Tooltip("Regime:N", title="Regime"),
-                    alt.Tooltip("Active Return:Q", title="Active Return", format=".5f")
-                ]
-            )
-            .properties(height=450)
-        )
-        
-        zero_line_daily = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='red', strokeDash=[5, 5]).encode(y='y:Q')
-        st.altair_chart((daily_comp_chart + zero_line_daily).interactive(), use_container_width=True)
-
-else:
-    # Single scenario view with realistic data
-    a = generate_realistic_ar1(phi, sigma_bps, T_days, seed)
-    dates = pd.bdate_range(end=pd.Timestamp.today().normalize(), periods=T_days)
-    df = pd.DataFrame({"date": dates, "a": a}).set_index("date")
-
-    # Calculate daily TE for single scenario
-    te_d = df["a"].std(ddof=1)
-    te_d_ann = te_d * np.sqrt(252)
-
-    # Calculate monthly TE
-    df_m = df.resample("M").sum()
-    te_m = df_m["a"].std(ddof=1)
-    te_m_ann = te_m * np.sqrt(12)
-
-    # Calculate ratio
-    ratio = te_m_ann / te_d_ann if te_d_ann > 0 else 1.0
-
-    # Display metrics
-    st.subheader(f"📊 Results: {preset if preset != 'Custom' else f'Custom (φ={phi:.2f})'}")
-    
-    col_metric1, col_metric2, col_metric3 = st.columns(3)
-    with col_metric1:
-        st.metric("Daily TE (annualized)", f"{te_d_ann*100:.2f}%")
-    with col_metric2:
-        st.metric("Monthly TE (annualized)", f"{te_m_ann*100:.2f}%")
-    with col_metric3:
-        delta_text = "Higher" if ratio > 1.05 else ("Lower" if ratio < 0.95 else "Similar")
-        st.metric(
-            "Monthly / Daily Ratio", 
-            f"{ratio:.3f}",
-            delta=delta_text,
-            delta_color="normal" if abs(ratio - 1) < 0.05 else ("off" if ratio < 1 else "normal")
-        )
-
-    # Interpretation
-    if ratio > 1.1:
-        st.info(f"📈 **Persistent drift detected** (φ={phi:.2f}): Monthly TE is {(ratio-1)*100:.1f}% higher than daily TE predicts. Active returns are positively autocorrelated.")
-    elif ratio < 0.9:
-        st.info(f"📉 **Mean reversion detected** (φ={phi:.2f}): Monthly TE is {(1-ratio)*100:.1f}% lower than daily TE predicts. Active returns are negatively autocorrelated.")
+        return te_m_theoretical
     else:
-        st.success(f"✅ **Near random walk** (φ={phi:.2f}): Monthly and daily TE are consistent. Minimal serial correlation detected.")
+        return np.sqrt(D) * sigma_daily
 
-    # --- Visualizations for single scenario ---
-    tab1, tab2, tab3 = st.tabs(["📈 Daily Active Returns", "📊 Cumulative Drift", "🔍 Autocorrelation"])
+def newey_west_lrv(a, L=None):
+    """
+    Calculate Newey-West long-run variance estimator with Bartlett kernel.
+    
+    From technical_math.qmd:
+    σ²_LR = γ(0) + 2*Σ(1 - h/(L+1))*γ(h)
+    """
+    T = len(a)
+    a_demean = a - np.mean(a)
+    
+    # Default bandwidth: Andrews rule of thumb
+    if L is None:
+        L = int(np.floor(4 * (T/100)**(2/9)))
+    
+    # Compute autocovariances
+    gamma_0 = np.dot(a_demean, a_demean) / T
+    
+    lrv = gamma_0
+    for h in range(1, min(L+1, T)):
+        gamma_h = np.dot(a_demean[:-h], a_demean[h:]) / T
+        weight = 1 - h / (L + 1)
+        lrv += 2 * weight * gamma_h
+    
+    return max(lrv, 0)  # Ensure non-negative
 
-    with tab1:
-        st.markdown("**Daily active returns** show the day-to-day portfolio vs benchmark differences.")
-        sim_chart = (
-            alt.Chart(df.reset_index())
-            .mark_line(strokeWidth=2, color="#4a90e2")
-            .encode(
-                x=alt.X("date:T", title="Date"),
-                y=alt.Y("a:Q", title="Active Return", scale=alt.Scale(zero=False)),
-                tooltip=[
-                    alt.Tooltip("date:T", title="Date", format="%Y-%m-%d"), 
-                    alt.Tooltip("a:Q", title="Active Return", format=".5f")
-                ],
-            )
-            .properties(height=400)
+# --- Generate Data for Selected Regimes ---
+st.markdown("---")
+st.header("📊 Results & Analysis")
+
+dates = pd.bdate_range(end=pd.Timestamp.today().normalize(), periods=T_days)
+all_data = {}
+all_metrics = []
+
+for regime in selected_regimes:
+    # Get phi (custom or default)
+    if regime in custom_phi:
+        phi = custom_phi[regime]
+    else:
+        phi = regime_presets[regime]["phi"]
+    
+    # Generate data
+    regime_seed = seed + list(regime_presets.keys()).index(regime)
+    a = generate_realistic_ar1(phi, target_annual_te_bps, T_days, regime_seed)
+    all_data[regime] = a
+    
+    # Calculate metrics
+    # 1. Daily TE (empirical)
+    te_daily = np.std(a, ddof=1)
+    te_daily_ann = te_daily * np.sqrt(252)
+    
+    # 2. Monthly TE (empirical)
+    df_temp = pd.DataFrame({"date": dates, "return": a}).set_index("date")
+    monthly_returns = df_temp["return"].resample("M").sum()
+    te_monthly = np.std(monthly_returns, ddof=1)
+    te_monthly_ann = te_monthly * np.sqrt(12)
+    
+    # 3. AR(1) Theoretical (closed-form)
+    te_monthly_ar1 = calculate_ar1_theoretical_te(phi, te_daily, D=21)
+    te_monthly_ar1_ann = te_monthly_ar1 * np.sqrt(12)
+    
+    # 4. Newey-West LRV
+    lrv_nw = newey_west_lrv(a, L=int(np.floor(4 * (T_days/100)**(2/9))))
+    te_annual_nw = np.sqrt(252 * lrv_nw)
+    
+    # Store metrics
+    all_metrics.append({
+        "Regime": regime,
+        "φ (actual)": f"{phi:+.2f}",
+        "Daily TE (ann)": f"{te_daily_ann*100:.2f}%",
+        "Monthly TE (ann, empirical)": f"{te_monthly_ann*100:.2f}%",
+        "Monthly TE (ann, AR(1) formula)": f"{te_monthly_ar1_ann*100:.2f}%",
+        "Annual TE (Newey-West)": f"{te_annual_nw*100:.2f}%",
+        "Ratio (Monthly/Daily)": f"{te_monthly_ann/te_daily_ann:.3f}",
+        "Effect": f"{(te_monthly_ann/te_daily_ann - 1)*100:+.1f}%"
+    })
+
+# --- Display Metrics Table ---
+st.subheader("📈 Tracking Error Comparison Across Methods")
+
+st.markdown("""
+This table shows **how different estimation methods compare** for each regime:
+- **Daily TE (ann):** Empirical daily std × √252
+- **Monthly TE (ann, empirical):** Empirical monthly std × √12
+- **Monthly TE (ann, AR(1) formula):** Theoretical prediction using closed-form AR(1) solution
+- **Annual TE (Newey-West):** Robust long-run variance estimator (handles unknown autocorrelation)
+""")
+
+metrics_df = pd.DataFrame(all_metrics)
+st.dataframe(metrics_df, use_container_width=True, hide_index=True)
+
+# Key insights
+st.markdown("**💡 Key Insights:**")
+for idx, row in metrics_df.iterrows():
+    regime = row["Regime"]
+    color = regime_presets[regime]["color"]
+    icon = regime_presets[regime]["icon"]
+    effect = row["Effect"]
+    
+    st.markdown(
+        f"<div style='border-left: 4px solid {color}; padding-left: 1rem; margin-bottom: 0.5rem;'>"
+        f"{icon} <strong>{regime}:</strong> Monthly TE is <strong>{effect}</strong> compared to daily TE prediction"
+        f"</div>",
+        unsafe_allow_html=True
+    )
+
+# --- Visualizations ---
+st.markdown("---")
+st.subheader("📉 Visual Comparison")
+
+# Prepare data for visualization
+df_all = pd.DataFrame({"date": dates})
+for regime in selected_regimes:
+    df_all[regime] = all_data[regime]
+
+# Tab layout for different views
+tab1, tab2, tab3, tab4 = st.tabs([
+    "📊 Cumulative Drift", 
+    "📈 Daily Returns", 
+    "🔄 Autocorrelation", 
+    "📐 Theoretical Formulas"
+])
+
+with tab1:
+    st.markdown("**Cumulative active returns show how portfolio drift accumulates over time**")
+    
+    # Calculate cumulative returns
+    df_cumulative = df_all.copy()
+    for regime in selected_regimes:
+        df_cumulative[regime] = df_cumulative[regime].cumsum()
+    
+    # Melt for Altair
+    df_cum_long = df_cumulative.melt(id_vars=["date"], var_name="Regime", value_name="Cumulative Return")
+    
+    # Color mapping
+    color_scale = alt.Scale(
+        domain=list(regime_presets.keys()),
+        range=[regime_presets[r]["color"] for r in regime_presets.keys()]
+    )
+    
+    chart_cum = (
+        alt.Chart(df_cum_long)
+        .mark_line(strokeWidth=2.5)
+        .encode(
+            x=alt.X("date:T", title="Date"),
+            y=alt.Y("Cumulative Return:Q", title="Cumulative Active Return"),
+            color=alt.Color("Regime:N", scale=color_scale, legend=alt.Legend(title="Regime", orient="bottom")),
+            tooltip=[
+                alt.Tooltip("date:T", title="Date", format="%Y-%m-%d"),
+                alt.Tooltip("Regime:N", title="Regime"),
+                alt.Tooltip("Cumulative Return:Q", title="Cumulative Return", format=".4f")
+            ]
         )
-        
-        zero_line = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='red', strokeDash=[5, 5]).encode(y='y:Q')
-        
-        st.altair_chart((sim_chart + zero_line).interactive(), use_container_width=True)
+        .properties(height=400)
+        .interactive()
+    )
+    
+    st.altair_chart(chart_cum, use_container_width=True)
+    
+    st.markdown("""
+    **What to look for:**
+    - **Persistent drift** (red): Cumulative return trends away from zero → positive autocorrelation
+    - **Random walk** (blue): Cumulative return meanders with no clear trend → zero autocorrelation
+    - **Mean reversion** (green): Cumulative return oscillates around zero → negative autocorrelation
+    """)
 
-    with tab2:
-        st.markdown("**Cumulative drift** shows how tracking error accumulates over time. Persistent drift causes larger swings.")
-        df_cumulative = df.copy()
-        df_cumulative['cumulative'] = df_cumulative['a'].cumsum()
-        
-        cum_chart = (
-            alt.Chart(df_cumulative.reset_index())
-            .mark_line(strokeWidth=2.5, color="#e74c3c")
-            .encode(
-                x=alt.X("date:T", title="Date"),
-                y=alt.Y("cumulative:Q", title="Cumulative Active Return", scale=alt.Scale(zero=False)),
-                tooltip=[
-                    alt.Tooltip("date:T", title="Date", format="%Y-%m-%d"), 
-                    alt.Tooltip("cumulative:Q", title="Cumulative Return", format=".5f")
-                ],
-            )
-            .properties(height=400)
+with tab2:
+    st.markdown("**Daily active returns show the raw volatility and patterns**")
+    
+    df_daily_long = df_all.melt(id_vars=["date"], var_name="Regime", value_name="Daily Return")
+    
+    chart_daily = (
+        alt.Chart(df_daily_long)
+        .mark_line(strokeWidth=1.5, opacity=0.7)
+        .encode(
+            x=alt.X("date:T", title="Date"),
+            y=alt.Y("Daily Return:Q", title="Daily Active Return"),
+            color=alt.Color("Regime:N", scale=color_scale, legend=alt.Legend(title="Regime", orient="bottom")),
+            tooltip=[
+                alt.Tooltip("date:T", title="Date", format="%Y-%m-%d"),
+                alt.Tooltip("Regime:N", title="Regime"),
+                alt.Tooltip("Daily Return:Q", title="Daily Return", format=".4f")
+            ]
         )
-        
-        zero_line_cum = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='gray', strokeDash=[5, 5]).encode(y='y:Q')
-        
-        st.altair_chart((cum_chart + zero_line_cum).interactive(), use_container_width=True)
-        
-        st.caption(f"Final cumulative return: {df_cumulative['cumulative'].iloc[-1]:.4f}")
+        .properties(height=400)
+        .interactive()
+    )
+    
+    st.altair_chart(chart_daily, use_container_width=True)
 
-    with tab3:
-        st.markdown("**Sample autocorrelation function (ACF)** shows correlation at different lags.")
-        
-        # Calculate sample autocorrelation
-        max_lag = min(40, len(df) // 4)
-        acf_values = []
-        a_centered = df['a'] - df['a'].mean()
-        var_a = np.var(a_centered, ddof=1)
+with tab3:
+    st.markdown("**Autocorrelation function (ACF) shows serial correlation structure**")
+    
+    # Calculate ACF for each regime
+    max_lag = min(50, T_days // 10)
+    acf_data = []
+    
+    for regime in selected_regimes:
+        a = all_data[regime]
+        a_demean = a - np.mean(a)
+        gamma_0 = np.dot(a_demean, a_demean) / len(a)
         
         for lag in range(max_lag + 1):
             if lag == 0:
-                acf_values.append(1.0)
+                acf = 1.0
             else:
-                cov = np.mean(a_centered[:-lag] * a_centered[lag:])
-                acf_values.append(cov / var_a if var_a > 0 else 0)
-        
-        acf_df = pd.DataFrame({'lag': range(max_lag + 1), 'acf': acf_values})
-        
-        acf_chart = (
-            alt.Chart(acf_df)
-            .mark_bar(size=8, color="#27ae60")
-            .encode(
-                x=alt.X("lag:Q", title="Lag (days)", scale=alt.Scale(domain=[0, max_lag])),
-                y=alt.Y("acf:Q", title="Autocorrelation", scale=alt.Scale(domain=[-1, 1])),
-                tooltip=[alt.Tooltip("lag:Q", title="Lag"), alt.Tooltip("acf:Q", title="ACF", format=".4f")],
-            )
-            .properties(height=350)
+                gamma_h = np.dot(a_demean[:-lag], a_demean[lag:]) / len(a)
+                acf = gamma_h / gamma_0
+            
+            acf_data.append({
+                "Regime": regime,
+                "Lag": lag,
+                "ACF": acf
+            })
+    
+    df_acf = pd.DataFrame(acf_data)
+    
+    chart_acf = (
+        alt.Chart(df_acf)
+        .mark_line(strokeWidth=2, point=True)
+        .encode(
+            x=alt.X("Lag:Q", title="Lag (days)"),
+            y=alt.Y("ACF:Q", title="Autocorrelation", scale=alt.Scale(domain=[-0.5, 1])),
+            color=alt.Color("Regime:N", scale=color_scale, legend=alt.Legend(title="Regime", orient="bottom")),
+            tooltip=[
+                alt.Tooltip("Lag:Q", title="Lag"),
+                alt.Tooltip("Regime:N", title="Regime"),
+                alt.Tooltip("ACF:Q", title="ACF", format=".3f")
+            ]
         )
-        
-        # Add confidence bands (approximate 95% CI for white noise)
-        ci = 1.96 / np.sqrt(len(df))
-        ci_df = pd.DataFrame({'y': [ci, -ci, 0]})
-        ci_lines = alt.Chart(ci_df).mark_rule(strokeDash=[3, 3], color='red', opacity=0.5).encode(y='y:Q')
-        
-        st.altair_chart((acf_chart + ci_lines).interactive(), use_container_width=True)
-        
-        st.caption(f"Lag-1 autocorrelation (estimate of φ): {acf_values[1]:.4f} | True φ: {phi:.4f}")
+        .properties(height=400)
+    )
+    
+    # Add zero line
+    zero_line = (
+        alt.Chart(pd.DataFrame({"y": [0]}))
+        .mark_rule(strokeDash=[5, 5], color="gray")
+        .encode(y="y:Q")
+    )
+    
+    st.altair_chart((chart_acf + zero_line), use_container_width=True)
+    
+    st.markdown("""
+    **Interpretation:**
+    - **Positive ACF** at lag 1-5: Returns are positively correlated → momentum/persistence
+    - **Negative ACF** at lag 1-5: Returns are negatively correlated → mean reversion
+    - **ACF ≈ 0** at all lags: No serial correlation → random walk
+    """)
 
+with tab4:
+    st.markdown("**Mathematical formulas for tracking error under different assumptions**")
+    
+    st.markdown("### 1. Standard Square-Root-of-Time Rule")
+    st.markdown("**Assumption:** Active returns are i.i.d. (no autocorrelation)")
+    st.latex(r"TE_{\text{monthly,ann}} = TE_{\text{daily}} \times \sqrt{252} = TE_{\text{monthly}} \times \sqrt{12}")
+    st.markdown("✅ Valid when φ = 0 (random walk)")
+    
+    st.markdown("### 2. AR(1) Closed-Form Solution")
+    st.markdown("**Assumption:** Active returns follow AR(1) process: $a_t = \\phi a_{t-1} + \\varepsilon_t$")
+    st.latex(r"TE_m = \sqrt{D \cdot \gamma(0) \left[1 + \frac{2\phi}{1-\phi}\left(1 - \frac{1-\phi^D}{D(1-\phi)}\right)\right]}")
+    st.markdown("where $D$ = days per month (typically 21), $\\gamma(0)$ = variance of daily returns")
+    st.markdown("✅ Exact when autocorrelation structure is truly AR(1)")
+    
+    st.markdown("### 3. Newey-West Long-Run Variance")
+    st.markdown("**Assumption:** Unknown autocorrelation structure (robust approach)")
+    st.latex(r"\widehat{\sigma}^2_{LR} = \hat{\gamma}(0) + 2\sum_{h=1}^{L}\left(1 - \frac{h}{L+1}\right)\hat{\gamma}(h)")
+    st.latex(r"TE_{\text{annual,NW}} = \sqrt{252 \cdot \widehat{\sigma}^2_{LR}}")
+    st.markdown("where $L$ = bandwidth (lag truncation), typically $L \\approx T^{1/4}$ or Andrews (1991) automatic selection")
+    st.markdown("✅ Most robust; no parametric assumptions")
+    
+    st.markdown("---")
+    st.markdown("**💡 Which method to use?**")
+    st.markdown("""
+    - **Square-root-of-time:** Quick estimate; assumes no autocorrelation
+    - **AR(1) formula:** Best when you know autocorrelation is first-order
+    - **Newey-West:** Most robust for real data with unknown autocorrelation structure
+    
+    📖 See [Technical Math](https://tejasviswa.github.io/tracking-error-lab/technical_math.html) for full derivations
+    """)
+
+# --- Educational Insights ---
 st.markdown("---")
+st.header("🎓 Key Takeaways")
 
-# --- Upload section ---
-st.header("📤 Upload Your Own Data")
+col_edu1, col_edu2, col_edu3 = st.columns(3)
 
+with col_edu1:
+    st.markdown("### 📈 Positive Autocorrelation")
+    st.markdown("""
+    **What it means:** Yesterday's positive return → today's positive return (momentum)
+    
+    **Effect on TE:**
+    - Monthly TE > Daily TE × √21
+    - Drift accumulates
+    - Simple annualization underestimates risk
+    
+    **Examples:** Tech/Growth funds, momentum strategies
+    """)
+
+with col_edu2:
+    st.markdown("### 🎲 Zero Autocorrelation")
+    st.markdown("""
+    **What it means:** Past returns don't predict future returns
+    
+    **Effect on TE:**
+    - Monthly TE ≈ Daily TE × √21
+    - Square-root-of-time works!
+    - Different frequencies agree
+    
+    **Examples:** Well-diversified trackers, random strategies
+    """)
+
+with col_edu3:
+    st.markdown("### ↩️ Negative Autocorrelation")
+    st.markdown("""
+    **What it means:** Yesterday's positive return → today's negative return (mean reversion)
+    
+    **Effect on TE:**
+    - Monthly TE < Daily TE × √21
+    - Returns cancel out
+    - Simple annualization overestimates risk
+    
+    **Examples:** Value/contrarian, frequent rebalancing
+    """)
+
+# --- Footer ---
+st.markdown("---")
 st.markdown("""
-Upload a CSV file with your portfolio and benchmark returns to calculate tracking error.  
-**Required columns:** `date`, `rp` (portfolio return), `rb` (benchmark return)
-""")
-
-col_upload, col_freq = st.columns([2, 1])
-with col_upload:
-    f = st.file_uploader("Upload CSV file", type=["csv"], help="CSV must contain: date, rp, rb columns")
-with col_freq:
-    freq = st.radio("Data frequency", ["Daily", "Monthly"], horizontal=True, help="Specify the frequency of your returns data")
-
-ann = 252 if freq == "Daily" else 12
-
-if f is not None:
-    raw = pd.read_csv(f)
-    lower = {c.lower(): c for c in raw.columns}
-    try:
-        dcol, rpcol, rbcol = lower["date"], lower["rp"], lower["rb"]
-    except KeyError:
-        st.error("Missing required columns: date, rp, rb")
-        st.stop()
-
-    dfu = raw.rename(columns={dcol: "date", rpcol: "rp", rbcol: "rb"})
-    dfu["date"] = pd.to_datetime(dfu["date"])
-    dfu = dfu.sort_values("date").set_index("date")
-    dfu["a"] = dfu["rp"].astype(float) - dfu["rb"].astype(float)
-
-    te = (dfu["a"] - dfu["a"].mean()).std(ddof=1)
-    te_ann = te * np.sqrt(ann)
-
-    c3, c4 = st.columns(2)
-    with c3:
-        st.metric("Periodic TE", f"{te*100:.2f}%")
-    with c4:
-        st.metric("Annualized TE", f"{te_ann*100:.2f}%")
-
-    # Visualization tabs for uploaded data
-    st.subheader(f"📊 Your Data Analysis ({freq})")
-    
-    tab_upload1, tab_upload2 = st.tabs(["Time Series", "Statistics"])
-    
-    with tab_upload1:
-        up_chart = (
-            alt.Chart(dfu.reset_index())
-            .mark_line(strokeWidth=2, color="#4a90e2")
-            .encode(
-                x=alt.X("date:T", title="Date"),
-                y=alt.Y("a:Q", title="Active Return", scale=alt.Scale(zero=False)),
-                tooltip=[
-                    alt.Tooltip("date:T", title="Date", format="%Y-%m-%d"), 
-                    alt.Tooltip("a:Q", title="Active Return", format=".5f")
-                ],
-            )
-            .properties(height=400)
-        )
-        
-        zero_line_upload = alt.Chart(pd.DataFrame({'y': [0]})).mark_rule(color='red', strokeDash=[5, 5]).encode(y='y:Q')
-        st.altair_chart((up_chart + zero_line_upload).interactive(), use_container_width=True)
-    
-    with tab_upload2:
-        col_stat1, col_stat2, col_stat3 = st.columns(3)
-        with col_stat1:
-            st.metric("Mean Active Return", f"{dfu['a'].mean()*100:.3f}%")
-        with col_stat2:
-            st.metric("Min Active Return", f"{dfu['a'].min()*100:.3f}%")
-        with col_stat3:
-            st.metric("Max Active Return", f"{dfu['a'].max()*100:.3f}%")
-        
-        st.markdown("**Distribution of Active Returns:**")
-        hist_data = pd.DataFrame({'a': dfu['a']})
-        hist_chart = (
-            alt.Chart(hist_data)
-            .mark_bar(color="#27ae60")
-            .encode(
-                alt.X("a:Q", bin=alt.Bin(maxbins=50), title="Active Return"),
-                alt.Y("count()", title="Frequency"),
-                tooltip=[alt.Tooltip("count()", title="Count")]
-            )
-            .properties(height=300)
-        )
-        st.altair_chart(hist_chart, use_container_width=True)
-
-    if freq == "Daily":
-        st.markdown("---")
-        st.subheader("📅 Daily → Monthly Aggregation")
-        
-        # Aggregate daily to monthly (sum of arithmetic daily returns per month)
-        dfm2 = dfu["a"].resample("M").sum().to_frame("a_m")
-        te_m2 = (dfm2["a_m"] - dfm2["a_m"].mean()).std(ddof=1)
-        te_m2_ann = te_m2 * np.sqrt(12)
-        
-        ratio_uploaded = te_m2_ann / te_ann if te_ann > 0 else 1.0
-
-        col_agg1, col_agg2 = st.columns(2)
-        with col_agg1:
-            st.metric("Monthly TE (from daily)", f"{te_m2_ann*100:.2f}%")
-        with col_agg2:
-            st.metric("Ratio (Monthly/Daily)", f"{ratio_uploaded:.3f}")
-        
-        if ratio_uploaded > 1.1:
-            st.info(f"📈 Monthly TE is {(ratio_uploaded-1)*100:.1f}% higher → suggests positive autocorrelation (persistent drift)")
-        elif ratio_uploaded < 0.9:
-            st.info(f"📉 Monthly TE is {(1-ratio_uploaded)*100:.1f}% lower → suggests negative autocorrelation (mean reversion)")
-        else:
-            st.success("✅ Monthly and daily TE are consistent → minimal serial correlation")
-
-        # Altair bar chart for monthly aggregated active returns
-        monthly_chart = (
-            alt.Chart(dfm2.reset_index())
-            .mark_bar(color="#9b59b6")
-            .encode(
-                x=alt.X("date:T", title="Month"),
-                y=alt.Y("a_m:Q", title="Monthly Active Return"),
-                tooltip=[
-                    alt.Tooltip("date:T", title="Month", format="%Y-%m"), 
-                    alt.Tooltip("a_m:Q", title="Active Return", format=".5f")
-                ],
-            )
-            .properties(height=350)
-        )
-        st.altair_chart(monthly_chart.interactive(), use_container_width=True)
-
-# --- Sidebar ---
-st.sidebar.title("📚 Learn More")
-
-st.sidebar.markdown("""
-### Documentation
-- [Overview](https://tejasviswa.github.io/tracking-error-lab/)
-- [Intuitive Math](https://tejasviswa.github.io/tracking-error-lab/intuitive_math.html)
-- [Technical Math](https://tejasviswa.github.io/tracking-error-lab/technical_math.html)
-
-### External Links
-- [GitHub Repository](https://github.com/TejasViswa/tracking-error-lab)
-
----
-
-### 💡 Quick Tips
-
-**Positive φ (e.g., 0.3-0.5)**  
-Momentum/growth portfolios - Tech, FAANG  
-→ Monthly TE > Daily TE
-
-**Negative φ (e.g., -0.2 to -0.4)**  
-Mean-reverting - Energy, Value stocks  
-→ Monthly TE < Daily TE
-
-**φ ≈ 0**  
-Random walk - ESG screens, broad index  
-→ Monthly TE ≈ Daily TE
-
----
-
-### 🎯 Preset Scenarios
-
-Try these φ values:
-- **+0.5** → Strong momentum
-- **+0.2** → Mild persistence
-- **0.0** → Random walk
-- **-0.2** → Mild reversion
-- **-0.5** → Strong reversion
-""")
+<div style='text-align: center; color: #7f8c8d; font-size: 0.9rem;'>
+    <p>Built by <a href='https://www.linkedin.com/in/tejasviswa/' target='_blank'>Tejas Viswanath</a> • 
+    <a href='https://github.com/TejasViswa/tracking-error-lab' target='_blank'>View Source</a> • 
+    <a href='https://tejasviswa.github.io/tracking-error-lab/' target='_blank'>Read Documentation</a></p>
+    <p>Based on rigorous time-series theory and portfolio risk management principles</p>
+</div>
+""", unsafe_allow_html=True)

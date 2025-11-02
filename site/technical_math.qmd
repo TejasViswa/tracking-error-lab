@@ -187,7 +187,7 @@ $$
 \rho(h) = \frac{\gamma(h)}{\gamma(0)} = \phi^{|h|}
 $$
 
-This shows exponential decay (or growth if $\phi < 0$) of correlations with lag.
+This shows exponential decay in magnitude with lag. When $\phi < 0$, correlations decay with alternating signs.
 
 ### 4.3 Variance of m-period sum
 
@@ -250,15 +250,19 @@ $$
 \hat{\gamma}(h) = \frac{1}{T}\sum_{t=1}^{T-h}(a_t - \bar{a})(a_{t+h} - \bar{a})
 $$
 
+::: {.callout-note}
+**Note on conventions:** Some texts use $1/(T-h)$ instead of $1/T$ in the denominator. Both conventions are asymptotically equivalent, and $1/T$ is commonly used in long-run variance estimation.
+:::
+
 ### 5.4 Bandwidth selection
 
-Common rules of thumb:
+Common rules of thumb for choosing the lag truncation parameter $L$:
 
-- **Andrews (1991):** $L \approx \lfloor 4(T/100)^{2/9} \rfloor$ for AR(1) processes
-- **Newey-West (1994):** $L \approx \lfloor 4(T/100)^{1/4} \rfloor$ for general processes
-- **Rule of thumb:** $L \approx T^{1/3}$
+- **Simple power rules:** $L \approx T^{1/4}$ or $L \approx 0.75 T^{1/3}$
+- **Data-dependent (Andrews 1991):** Plug-in automatic bandwidth selection based on estimated autocorrelation structure
+- **Conservative choice:** $L \approx \lfloor 4(T/100)^{2/9} \rfloor$ often recommended for AR-type processes
 
-For daily data with $T=252$, typical choices: $L \in [6, 10]$
+For daily financial data with $T=252$, typical choices: $L \in [6, 10]$
 
 ### 5.5 Annualized tracking error (Newey-West)
 

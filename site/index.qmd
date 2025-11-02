@@ -179,7 +179,7 @@ print("\n" + "=" * 70)
 print("TE Ratio: Monthly Annualized / Daily Annualized")
 print("=" * 70)
 print(f"Persistent drift (φ=+0.5):   {ratio_persistent:.4f}  → Monthly TE is {(ratio_persistent-1)*100:+.1f}% vs daily")
-print(f"Random walk (φ=0):            {ratio_random:.4f}  → Monthly TE matches daily")
+print(f"Random walk (φ=0):            {ratio_random:.4f}  → Monthly TE ≈ daily (±sampling noise)")
 print(f"Mean reversion (φ=-0.5):      {ratio_revert:.4f}  → Monthly TE is {(ratio_revert-1)*100:+.1f}% vs daily")
 print("=" * 70)
 ```
@@ -187,7 +187,7 @@ print("=" * 70)
 **Interpretation:**
 
 - **Persistent drift** (red): Cumulative return trends away from zero. Monthly TE is 15-30% higher than daily TE predicts.
-- **Random walk** (blue): Cumulative return meanders without strong trend. Monthly TE matches daily TE × √21.
+- **Random walk** (blue): Cumulative return meanders without strong trend. Monthly TE ≈ daily TE × √21 (up to sampling noise).
 - **Mean reversion** (green): Cumulative return oscillates tightly around zero. Monthly TE is 10-20% lower than daily TE predicts.
 
 ---

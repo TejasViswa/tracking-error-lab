@@ -296,6 +296,10 @@ $$
 = \sum_{i,j} \mathbb{E}[\Delta w_{i,t}\,\Delta w_{j,t+k}]\,\mathrm{Cov}(r_{i,t}, r_{j,t+k})
 $$
 
+::: {.callout-note}
+**Assumptions:** This decomposition assumes zero-mean returns (or is written in deviation-from-mean form) and that portfolio weights and returns have sufficient independence properties. In practice, this provides useful intuition for understanding the sources of autocorrelation.
+:::
+
 This shows that $\gamma_k$ depends on:
 
 1. **Persistence of active weights** ($\Delta w_{i,t}$ vs $\Delta w_{j,t+k}$)
