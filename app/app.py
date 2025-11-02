@@ -68,6 +68,7 @@ st.markdown("""
         padding: 0.75rem 1rem !important;
         font-weight: 500 !important;
         font-size: 0.95rem !important;
+        position: relative !important;
     }
     
     .streamlit-expanderHeader:hover {
@@ -88,28 +89,45 @@ st.markdown("""
         background-color: white !important;
     }
     
-    /* Hide the keyboard shortcut text that overlaps */
-    .streamlit-expanderHeader svg {
+    /* Aggressively hide ALL keyboard shortcuts and overlapping elements */
+    .streamlit-expanderHeader svg,
+    .streamlit-expanderHeader kbd,
+    .streamlit-expanderHeader [class*="badge"],
+    .streamlit-expanderHeader [class*="shortcut"],
+    .streamlit-expanderHeader [class*="hint"],
+    .streamlit-expanderHeader::before,
+    .streamlit-expanderHeader::after,
+    [data-testid="stExpander"] svg,
+    [data-testid="stExpander"] kbd,
+    [data-testid="stExpander"] [data-testid*="keyboard"],
+    [data-testid="stExpander"] [class*="StyledShortcutLabel"],
+    [data-testid="stExpander"] label[class*="shortcut"] {
         display: none !important;
-    }
-    
-    .streamlit-expanderHeader::after {
-        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        position: absolute !important;
+        left: -9999px !important;
     }
     
     /* Ensure expander header text doesn't get overlapped */
-    .streamlit-expanderHeader p {
+    .streamlit-expanderHeader p,
+    .streamlit-expanderHeader span,
+    .streamlit-expanderHeader div {
         margin: 0 !important;
         padding: 0 !important;
-        width: 100% !important;
+        z-index: 10 !important;
     }
     
-    /* Remove any keyboard hints or badges */
-    [data-testid="stExpander"] .st-emotion-cache-* [class*="badge"] {
+    /* Hide the arrow icon that might be causing issues */
+    .streamlit-expanderHeader > div > svg {
         display: none !important;
     }
     
-    [data-testid="stExpander"] kbd {
+    /* Target the specific Streamlit expander icon */
+    button[data-testid="stExpander"] svg,
+    summary svg {
         display: none !important;
     }
     
