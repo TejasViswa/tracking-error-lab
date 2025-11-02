@@ -78,13 +78,129 @@ with st.expander("ℹ️ What This Tool Does", expanded=False):
     [Technical Details](https://tejasviswa.github.io/tracking-error-lab/technical_math.html)
     """)
 
-# --- Main Configuration ---
-st.header("🎯 Select Portfolio Regimes to Compare")
+# --- Mode Selection ---
+st.header("🎯 Choose Analysis Mode")
 
-st.markdown("""
-Choose which autocorrelation regimes to explore. By default, all three are shown so you can 
-see how different portfolio behaviors affect tracking error annualization.
-""")
+analysis_mode = st.radio(
+    "Select how you want to explore tracking error:",
+    ["📊 Simulated Regimes", "📁 Upload Your Portfolio Data", "🔀 Both (Compare Uploaded vs Simulated)"],
+    index=0,
+    help="Choose to work with simulated data, your own portfolio data, or both"
+)
+
+st.markdown("---")
+
+# --- Portfolio Upload Section ---
+uploaded_portfolio_data = None
+uploaded_portfolio_name = None
+
+if analysis_mode in ["📁 Upload Your Portfolio Data", "🔀 Both (Compare Uploaded vs Simulated)"]:
+    st.header("📁 Upload Portfolio Data")
+    
+    st.markdown("""
+    Upload your portfolio's **active returns** (portfolio return - benchmark return) as a CSV or Excel file.
+    The file should have two columns: **Date** and **Active Return** (in decimal form, e.g., 0.0015 for 15 bps).
+    """)
+    
+    col_upload, col_example = st.columns([2, 1])
+    
+    with col_upload:
+        uploaded_file = st.file_uploader(
+            "Choose a file (CSV or Excel)",
+            type=["csv", "xlsx", "xls"],
+            help="File should contain Date and Active Return columns"
+        )
+    
+    with col_example:
+        st.markdown("**Example format:**")
+        st.code("""Date,Active Return
+2023-01-03,0.0012
+2023-01-04,-0.0008
+2023-01-05,0.0015""", language="csv")
+    
+    if uploaded_file is not None:
+        try:
+            # Read file
+            if uploaded_file.name.endswith('.csv'):
+                df_upload = pd.read_csv(uploaded_file)
+            else:
+                df_upload = pd.read_excel(uploaded_file)
+            
+            # Display raw data preview
+            with st.expander("📋 Preview uploaded data", expanded=False):
+                st.dataframe(df_upload.head(10), use_container_width=True)
+            
+            # Parse columns
+            st.subheader("🔧 Configure Data Mapping")
+            col_date_select, col_return_select = st.columns(2)
+            
+            with col_date_select:
+                date_column = st.selectbox(
+                    "Select Date column:",
+                    options=df_upload.columns.tolist(),
+                    index=0
+                )
+            
+            with col_return_select:
+                return_column = st.selectbox(
+                    "Select Active Return column:",
+                    options=df_upload.columns.tolist(),
+                    index=min(1, len(df_upload.columns) - 1)
+                )
+            
+            # Portfolio name
+            uploaded_portfolio_name = st.text_input(
+                "Portfolio name (for charts):",
+                value="My Portfolio",
+                help="Give your portfolio a name for the analysis"
+            )
+            
+            # Parse and validate
+            df_clean = df_upload[[date_column, return_column]].copy()
+            df_clean.columns = ["date", "active_return"]
+            
+            # Convert date
+            df_clean["date"] = pd.to_datetime(df_clean["date"])
+            df_clean = df_clean.sort_values("date").reset_index(drop=True)
+            
+            # Convert returns to float
+            df_clean["active_return"] = pd.to_numeric(df_clean["active_return"], errors="coerce")
+            
+            # Drop NaN
+            df_clean = df_clean.dropna()
+            
+            if len(df_clean) < 50:
+                st.error("⚠️ Need at least 50 observations for meaningful analysis. Please upload more data.")
+            else:
+                uploaded_portfolio_data = df_clean["active_return"].values
+                
+                # Show summary statistics
+                st.success(f"✅ Successfully loaded {len(df_clean)} observations from {df_clean['date'].min().strftime('%Y-%m-%d')} to {df_clean['date'].max().strftime('%Y-%m-%d')}")
+                
+                col_stats1, col_stats2, col_stats3, col_stats4 = st.columns(4)
+                with col_stats1:
+                    st.metric("Observations", f"{len(df_clean)}")
+                with col_stats2:
+                    st.metric("Mean Active Return", f"{np.mean(uploaded_portfolio_data)*100:.2f}%")
+                with col_stats3:
+                    st.metric("Std Dev", f"{np.std(uploaded_portfolio_data, ddof=1)*100:.2f}%")
+                with col_stats4:
+                    st.metric("Min / Max", f"{np.min(uploaded_portfolio_data)*100:.2f}% / {np.max(uploaded_portfolio_data)*100:.2f}%")
+        
+        except Exception as e:
+            st.error(f"❌ Error reading file: {str(e)}")
+            st.info("Please ensure your file has Date and Active Return columns.")
+    
+    st.markdown("---")
+
+# --- Main Configuration ---
+if analysis_mode in ["📊 Simulated Regimes", "🔀 Both (Compare Uploaded vs Simulated)"]:
+    st.header("🎯 Select Simulated Regimes to Compare")
+    
+    st.markdown("""
+    Choose which autocorrelation regimes to explore. By default, all three are shown so you can 
+    see how different portfolio behaviors affect tracking error annualization.
+    """)
 
 # Define regime presets
 regime_presets = {
@@ -108,45 +224,57 @@ regime_presets = {
     }
 }
 
-# Regime selector (multiselect)
-selected_regimes = st.multiselect(
-    "Select regimes to compare:",
-    options=list(regime_presets.keys()),
-    default=list(regime_presets.keys()),  # All selected by default
-    help="Choose one or more regimes to simulate and compare"
-)
+if analysis_mode in ["📊 Simulated Regimes", "🔀 Both (Compare Uploaded vs Simulated)"]:
+    # Regime selector (multiselect)
+    selected_regimes = st.multiselect(
+        "Select regimes to compare:",
+        options=list(regime_presets.keys()),
+        default=list(regime_presets.keys()),  # All selected by default
+        help="Choose one or more regimes to simulate and compare"
+    )
 
-if not selected_regimes:
-    st.warning("⚠️ Please select at least one regime to continue.")
-    st.stop()
+    if not selected_regimes and analysis_mode != "📁 Upload Your Portfolio Data":
+        st.warning("⚠️ Please select at least one regime to continue.")
+        st.stop()
+else:
+    selected_regimes = []
 
-# --- Simulation Parameters ---
-st.subheader("⚙️ Simulation Parameters")
+if analysis_mode in ["📊 Simulated Regimes", "🔀 Both (Compare Uploaded vs Simulated)"]:
+    # --- Simulation Parameters ---
+    st.subheader("⚙️ Simulation Parameters")
 
-col_days, col_te, col_seed = st.columns(3)
-with col_days:
-    T_days = st.slider("Trading days", 252, 2520, 756, 252, help="Number of trading days (~252 per year)")
-with col_te:
-    target_annual_te_bps = st.slider("Target annual TE (bps)", 100, 1500, 500, 50, help="Target annualized tracking error in basis points")
-with col_seed:
-    seed = st.number_input("Random seed", 0, 10_000, 42, help="Set seed for reproducibility")
+    col_days, col_te, col_seed = st.columns(3)
+    with col_days:
+        T_days = st.slider("Trading days", 252, 2520, 756, 252, help="Number of trading days (~252 per year)")
+    with col_te:
+        target_annual_te_bps = st.slider("Target annual TE (bps)", 100, 1500, 500, 50, help="Target annualized tracking error in basis points")
+    with col_seed:
+        seed = st.number_input("Random seed", 0, 10_000, 42, help="Set seed for reproducibility")
 
-# Advanced regime customization
-with st.expander("🔧 Customize Regime Parameters", expanded=False):
-    st.markdown("Override default φ (autocorrelation) values for each selected regime:")
-    
+    # Advanced regime customization
+    if selected_regimes:
+        with st.expander("🔧 Customize Regime Parameters", expanded=False):
+            st.markdown("Override default φ (autocorrelation) values for each selected regime:")
+            
+            custom_phi = {}
+            cols = st.columns(len(selected_regimes))
+            for i, regime in enumerate(selected_regimes):
+                with cols[i]:
+                    st.markdown(f"**{regime}**")
+                    default_phi = regime_presets[regime]["phi"]
+                    custom_phi[regime] = st.slider(
+                        f"φ for {regime.split('(')[0].strip()}",
+                        -0.7, 0.7, default_phi, 0.05,
+                        key=f"phi_{regime}",
+                        help="AR(1) coefficient: positive = momentum, negative = mean reversion"
+                    )
+    else:
+        custom_phi = {}
+else:
+    T_days = 756
+    target_annual_te_bps = 500
+    seed = 42
     custom_phi = {}
-    cols = st.columns(len(selected_regimes))
-    for i, regime in enumerate(selected_regimes):
-        with cols[i]:
-            st.markdown(f"**{regime}**")
-            default_phi = regime_presets[regime]["phi"]
-            custom_phi[regime] = st.slider(
-                f"φ for {regime.split('(')[0].strip()}",
-                -0.7, 0.7, default_phi, 0.05,
-                key=f"phi_{regime}",
-                help="AR(1) coefficient: positive = momentum, negative = mean reversion"
-            )
 
 # --- Helper Functions ---
 def generate_realistic_ar1(phi, target_annual_te_bps, T_days, seed):
@@ -240,13 +368,125 @@ def newey_west_lrv(a, L=None):
     
     return max(lrv, 0)  # Ensure non-negative
 
+def estimate_ar1_parameters(a):
+    """
+    Estimate AR(1) parameters (φ, σ_ε) from observed active returns using OLS.
+    
+    AR(1): a_t = φ * a_{t-1} + ε_t
+    
+    Returns:
+        phi: Estimated AR(1) coefficient
+        sigma_eps: Estimated innovation std dev
+        r_squared: R² of the AR(1) fit
+    """
+    # Demean the data
+    a_demean = a - np.mean(a)
+    
+    # OLS regression: a_t on a_{t-1}
+    y = a_demean[1:]  # a_t
+    X = a_demean[:-1]  # a_{t-1}
+    
+    # Estimate φ
+    phi_hat = np.dot(X, y) / np.dot(X, X)
+    
+    # Ensure stationarity
+    phi_hat = np.clip(phi_hat, -0.99, 0.99)
+    
+    # Residuals
+    residuals = y - phi_hat * X
+    sigma_eps = np.std(residuals, ddof=1)
+    
+    # R²
+    ss_res = np.sum(residuals**2)
+    ss_tot = np.sum((y - np.mean(y))**2)
+    r_squared = 1 - ss_res / ss_tot if ss_tot > 0 else 0
+    
+    return phi_hat, sigma_eps, r_squared
+
 # --- Generate Data for Selected Regimes ---
 st.markdown("---")
 st.header("📊 Results & Analysis")
 
-dates = pd.bdate_range(end=pd.Timestamp.today().normalize(), periods=T_days)
+# Check if we have any data to analyze
+if not selected_regimes and uploaded_portfolio_data is None:
+    st.warning("⚠️ Please select at least one regime or upload portfolio data to continue.")
+    st.stop()
+
 all_data = {}
 all_metrics = []
+
+# --- Analyze Uploaded Portfolio (if present) ---
+if uploaded_portfolio_data is not None:
+    st.subheader("📁 Your Portfolio Analysis")
+    
+    a_uploaded = uploaded_portfolio_data
+    T_uploaded = len(a_uploaded)
+    
+    # Calculate metrics
+    # 1. Daily TE (empirical)
+    te_daily_up = np.std(a_uploaded, ddof=1)
+    te_daily_ann_up = te_daily_up * np.sqrt(252)
+    
+    # 2. Monthly TE (empirical)
+    # Estimate monthly periods (assuming ~21 trading days per month)
+    days_per_month = 21
+    n_months = T_uploaded // days_per_month
+    if n_months >= 2:
+        monthly_returns_up = [np.sum(a_uploaded[i*days_per_month:(i+1)*days_per_month]) 
+                             for i in range(n_months)]
+        te_monthly_up = np.std(monthly_returns_up, ddof=1)
+        te_monthly_ann_up = te_monthly_up * np.sqrt(12)
+    else:
+        te_monthly_ann_up = te_daily_ann_up  # Fallback
+    
+    # 3. Estimate AR(1) parameters
+    phi_estimated, sigma_eps_estimated, r_squared = estimate_ar1_parameters(a_uploaded)
+    
+    # 4. AR(1) Theoretical (using estimated φ)
+    te_monthly_ar1_up = calculate_ar1_theoretical_te(phi_estimated, te_daily_up, D=21)
+    te_monthly_ar1_ann_up = te_monthly_ar1_up * np.sqrt(12)
+    
+    # 5. Newey-West LRV
+    lrv_nw_up = newey_west_lrv(a_uploaded, L=int(np.floor(4 * (T_uploaded/100)**(2/9))))
+    te_annual_nw_up = np.sqrt(252 * lrv_nw_up)
+    
+    # Display uploaded portfolio metrics
+    col_info1, col_info2, col_info3 = st.columns(3)
+    with col_info1:
+        st.metric("Estimated φ (AR(1))", f"{phi_estimated:+.3f}", 
+                 help="Autocorrelation coefficient estimated from your data")
+    with col_info2:
+        st.metric("AR(1) R²", f"{r_squared:.3f}",
+                 help="How well AR(1) model fits your data (higher is better)")
+    with col_info3:
+        if phi_estimated > 0.1:
+            behavior = "📈 Persistent Drift"
+        elif phi_estimated < -0.1:
+            behavior = "↩️ Mean Reversion"
+        else:
+            behavior = "🎲 Random Walk"
+        st.metric("Detected Behavior", behavior)
+    
+    # Store uploaded portfolio data and metrics
+    all_data[uploaded_portfolio_name] = a_uploaded
+    all_metrics.append({
+        "Regime": f"{uploaded_portfolio_name} (Uploaded)",
+        "φ (actual)": f"{phi_estimated:+.2f}",
+        "Daily TE (ann)": f"{te_daily_ann_up*100:.2f}%",
+        "Monthly TE (ann, empirical)": f"{te_monthly_ann_up*100:.2f}%",
+        "Monthly TE (ann, AR(1) formula)": f"{te_monthly_ar1_ann_up*100:.2f}%",
+        "Annual TE (Newey-West)": f"{te_annual_nw_up*100:.2f}%",
+        "Ratio (Monthly/Daily)": f"{te_monthly_ann_up/te_daily_ann_up:.3f}",
+        "Effect": f"{(te_monthly_ann_up/te_daily_ann_up - 1)*100:+.1f}%"
+    })
+    
+    st.markdown("---")
+
+# --- Simulated Regimes ---
+if selected_regimes:
+    st.subheader("🎲 Simulated Regimes Analysis")
+
+dates = pd.bdate_range(end=pd.Timestamp.today().normalize(), periods=T_days)
 
 for regime in selected_regimes:
     # Get phi (custom or default)
@@ -308,14 +548,26 @@ st.dataframe(metrics_df, use_container_width=True, hide_index=True)
 # Key insights
 st.markdown("**💡 Key Insights:**")
 for idx, row in metrics_df.iterrows():
-    regime = row["Regime"]
-    color = regime_presets[regime]["color"]
-    icon = regime_presets[regime]["icon"]
+    regime_name = row["Regime"]
     effect = row["Effect"]
+    
+    # Check if it's uploaded or simulated
+    if "(Uploaded)" in regime_name:
+        color = "#9b59b6"  # Purple for uploaded
+        icon = "📁"
+        clean_name = regime_name.replace(" (Uploaded)", "")
+    elif regime_name in regime_presets:
+        color = regime_presets[regime_name]["color"]
+        icon = regime_presets[regime_name]["icon"]
+        clean_name = regime_name
+    else:
+        color = "#34495e"
+        icon = "📊"
+        clean_name = regime_name
     
     st.markdown(
         f"<div style='border-left: 4px solid {color}; padding-left: 1rem; margin-bottom: 0.5rem;'>"
-        f"{icon} <strong>{regime}:</strong> Monthly TE is <strong>{effect}</strong> compared to daily TE prediction"
+        f"{icon} <strong>{clean_name}:</strong> Monthly TE is <strong>{effect}</strong> compared to daily TE prediction"
         f"</div>",
         unsafe_allow_html=True
     )
@@ -325,9 +577,34 @@ st.markdown("---")
 st.subheader("📉 Visual Comparison")
 
 # Prepare data for visualization
-df_all = pd.DataFrame({"date": dates})
+# Create separate dataframes for uploaded and simulated data (they may have different lengths)
+viz_data = []
+
+# Add uploaded portfolio data
+if uploaded_portfolio_data is not None:
+    T_up = len(uploaded_portfolio_data)
+    dates_up = pd.bdate_range(end=pd.Timestamp.today().normalize(), periods=T_up)
+    for i, (date, value) in enumerate(zip(dates_up, uploaded_portfolio_data)):
+        viz_data.append({
+            "date": date,
+            "regime": uploaded_portfolio_name,
+            "value": value,
+            "index": i,
+            "is_uploaded": True
+        })
+
+# Add simulated regime data
 for regime in selected_regimes:
-    df_all[regime] = all_data[regime]
+    for i, (date, value) in enumerate(zip(dates, all_data[regime])):
+        viz_data.append({
+            "date": date,
+            "regime": regime,
+            "value": value,
+            "index": i,
+            "is_uploaded": False
+        })
+
+df_viz = pd.DataFrame(viz_data)
 
 # Tab layout for different views
 tab1, tab2, tab3, tab4 = st.tabs([
@@ -340,31 +617,31 @@ tab1, tab2, tab3, tab4 = st.tabs([
 with tab1:
     st.markdown("**Cumulative active returns show how portfolio drift accumulates over time**")
     
-    # Calculate cumulative returns
-    df_cumulative = df_all.copy()
-    for regime in selected_regimes:
-        df_cumulative[regime] = df_cumulative[regime].cumsum()
+    # Calculate cumulative returns by regime
+    df_cum = df_viz.copy()
+    df_cum = df_cum.sort_values(["regime", "index"])
+    df_cum["cumulative"] = df_cum.groupby("regime")["value"].cumsum()
     
-    # Melt for Altair
-    df_cum_long = df_cumulative.melt(id_vars=["date"], var_name="Regime", value_name="Cumulative Return")
+    # Color mapping (include uploaded portfolio)
+    all_regime_names = list(regime_presets.keys())
+    all_colors = [regime_presets[r]["color"] for r in regime_presets.keys()]
+    if uploaded_portfolio_data is not None:
+        all_regime_names.append(uploaded_portfolio_name)
+        all_colors.append("#9b59b6")  # Purple for uploaded
     
-    # Color mapping
-    color_scale = alt.Scale(
-        domain=list(regime_presets.keys()),
-        range=[regime_presets[r]["color"] for r in regime_presets.keys()]
-    )
+    color_scale = alt.Scale(domain=all_regime_names, range=all_colors)
     
     chart_cum = (
-        alt.Chart(df_cum_long)
+        alt.Chart(df_cum)
         .mark_line(strokeWidth=2.5)
         .encode(
             x=alt.X("date:T", title="Date"),
-            y=alt.Y("Cumulative Return:Q", title="Cumulative Active Return"),
-            color=alt.Color("Regime:N", scale=color_scale, legend=alt.Legend(title="Regime", orient="bottom")),
+            y=alt.Y("cumulative:Q", title="Cumulative Active Return"),
+            color=alt.Color("regime:N", scale=color_scale, legend=alt.Legend(title="Regime", orient="bottom")),
             tooltip=[
                 alt.Tooltip("date:T", title="Date", format="%Y-%m-%d"),
-                alt.Tooltip("Regime:N", title="Regime"),
-                alt.Tooltip("Cumulative Return:Q", title="Cumulative Return", format=".4f")
+                alt.Tooltip("regime:N", title="Regime"),
+                alt.Tooltip("cumulative:Q", title="Cumulative Return", format=".4f")
             ]
         )
         .properties(height=400)
@@ -378,24 +655,23 @@ with tab1:
     - **Persistent drift** (red): Cumulative return trends away from zero → positive autocorrelation
     - **Random walk** (blue): Cumulative return meanders with no clear trend → zero autocorrelation
     - **Mean reversion** (green): Cumulative return oscillates around zero → negative autocorrelation
+    - **Your portfolio** (purple): Compare against theoretical regimes
     """)
 
 with tab2:
     st.markdown("**Daily active returns show the raw volatility and patterns**")
     
-    df_daily_long = df_all.melt(id_vars=["date"], var_name="Regime", value_name="Daily Return")
-    
     chart_daily = (
-        alt.Chart(df_daily_long)
+        alt.Chart(df_viz)
         .mark_line(strokeWidth=1.5, opacity=0.7)
         .encode(
             x=alt.X("date:T", title="Date"),
-            y=alt.Y("Daily Return:Q", title="Daily Active Return"),
-            color=alt.Color("Regime:N", scale=color_scale, legend=alt.Legend(title="Regime", orient="bottom")),
+            y=alt.Y("value:Q", title="Daily Active Return"),
+            color=alt.Color("regime:N", scale=color_scale, legend=alt.Legend(title="Regime", orient="bottom")),
             tooltip=[
                 alt.Tooltip("date:T", title="Date", format="%Y-%m-%d"),
-                alt.Tooltip("Regime:N", title="Regime"),
-                alt.Tooltip("Daily Return:Q", title="Daily Return", format=".4f")
+                alt.Tooltip("regime:N", title="Regime"),
+                alt.Tooltip("value:Q", title="Daily Return", format=".4f")
             ]
         )
         .properties(height=400)
@@ -407,12 +683,13 @@ with tab2:
 with tab3:
     st.markdown("**Autocorrelation function (ACF) shows serial correlation structure**")
     
-    # Calculate ACF for each regime
-    max_lag = min(50, T_days // 10)
+    # Calculate ACF for each regime (including uploaded)
     acf_data = []
     
-    for regime in selected_regimes:
-        a = all_data[regime]
+    # Calculate for all regimes in all_data
+    for regime_name, regime_data in all_data.items():
+        a = regime_data
+        max_lag = min(50, len(a) // 10)
         a_demean = a - np.mean(a)
         gamma_0 = np.dot(a_demean, a_demean) / len(a)
         
@@ -424,7 +701,7 @@ with tab3:
                 acf = gamma_h / gamma_0
             
             acf_data.append({
-                "Regime": regime,
+                "Regime": regime_name,
                 "Lag": lag,
                 "ACF": acf
             })
