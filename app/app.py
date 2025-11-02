@@ -88,6 +88,31 @@ st.markdown("""
         background-color: white !important;
     }
     
+    /* Hide the keyboard shortcut text that overlaps */
+    .streamlit-expanderHeader svg {
+        display: none !important;
+    }
+    
+    .streamlit-expanderHeader::after {
+        display: none !important;
+    }
+    
+    /* Ensure expander header text doesn't get overlapped */
+    .streamlit-expanderHeader p {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+    
+    /* Remove any keyboard hints or badges */
+    [data-testid="stExpander"] .st-emotion-cache-* [class*="badge"] {
+        display: none !important;
+    }
+    
+    [data-testid="stExpander"] kbd {
+        display: none !important;
+    }
+    
     /* Remove default streamlit branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
