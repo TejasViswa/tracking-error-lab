@@ -40,6 +40,28 @@ st.markdown("""
         padding: 1rem 1.5rem;
     }
     
+    /* Hide ALL keyboard shortcuts in sidebar */
+    [data-testid="stSidebar"] kbd,
+    [data-testid="stSidebar"] [class*="shortcut"],
+    [data-testid="stSidebar"] [class*="StyledShortcutLabel"],
+    [data-testid="stSidebar"] [data-testid*="keyboard"],
+    [data-testid="stSidebar"] label[class*="shortcut"],
+    [data-testid="stSidebar"] span[class*="shortcut"],
+    [data-testid="stSidebar"] div[class*="shortcut"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+    
+    /* Hide keyboard shortcuts on hover */
+    [data-testid="stSidebar"] *:hover kbd,
+    [data-testid="stSidebar"] *:hover [class*="shortcut"],
+    [data-testid="stSidebar"] *:hover [class*="StyledShortcutLabel"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+    }
+    
     /* Sidebar section headers */
     .sidebar-section {
         font-size: 0.75rem;
@@ -129,6 +151,35 @@ st.markdown("""
     button[data-testid="stExpander"] svg,
     summary svg {
         display: none !important;
+    }
+    
+    /* GLOBAL: Hide ALL keyboard shortcuts everywhere */
+    kbd,
+    [class*="shortcut"],
+    [class*="StyledShortcutLabel"],
+    [data-testid*="keyboard"],
+    label[class*="shortcut"],
+    span[class*="shortcut"],
+    div[class*="shortcut"],
+    [class*="st-emotion-cache"] kbd,
+    [class*="st-emotion-cache"] [class*="shortcut"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        left: -9999px !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Hide keyboard shortcuts on ANY hover */
+    *:hover kbd,
+    *:hover [class*="shortcut"],
+    *:hover [class*="StyledShortcutLabel"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
     }
     
     /* Remove default streamlit branding */
