@@ -94,108 +94,73 @@ with st.expander("Understanding Portfolio Behaviors: Momentum, Random Walk, and 
     with col1:
         st.markdown("#### Persistent Drift (Momentum)")
         st.markdown("""
-        **What it means:** Yesterday's winners keep winning. When your portfolio outperforms today, 
-        it's more likely to outperform tomorrow too.
+        **What it means:** Yesterday's winners keep winning. Trends persist over time.
         
         **Why it happens:**
-        - **Momentum strategies**: Deliberately betting on recent winners
-        - **Concentrated positions**: Heavy tech/growth allocations that trend together
-        - **Factor persistence**: Value, quality, or growth factors stay "in favor" for extended periods
-        - **Slow rebalancing**: Positions drift and winners compound
+        - Momentum strategies betting on recent winners
+        - Concentrated positions in trending sectors
+        - Slow rebalancing allowing positions to drift
         
         **Real examples:**
-        - Tech-heavy growth fund during 2020-2021 bull run
-        - Momentum ETF (MTUM) - by design follows trending stocks
-        - VC-style portfolio with concentrated bets on winners
+        - Tech-heavy growth fund (2020-2021)
+        - Momentum ETF (MTUM)
+        - Concentrated sector bets
         
-        **Impact on TE:**
-        - Monthly TE can be **15-40% higher** than daily TE predicts
-        - Your risk is underestimated if you only look at daily data
-        - Position sizes compound over time, increasing divergence
-        
-        **What advisors should know:** If your portfolio consistently drifts in one direction 
-        (systematic overweights in winning sectors), you're probably understating your tracking error.
+        **Impact:** Monthly TE can be **15-40% higher** than daily TE predicts
         """)
     
     with col2:
         st.markdown("#### Random Walk")
         st.markdown("""
-        **What it means:** Past performance tells you nothing about future performance. 
-        Each day is independent - a coin flip.
+        **What it means:** Past performance doesn't predict future performance. Each day is independent.
         
         **Why it happens:**
-        - **Well-diversified index tracking**: Many small, uncorrelated bets
-        - **Algorithmic rebalancing**: Frequent systematic adjustments
-        - **Market-neutral strategies**: Long/short balanced portfolios
-        - **Random stock selection**: No systematic tilts or momentum
+        - Well-diversified portfolios
+        - Frequent algorithmic rebalancing
+        - Many small, uncorrelated bets
         
         **Real examples:**
-        - Core S&P 500 index fund with tight tracking
-        - Enhanced index fund with small, diversified tilts
-        - Smart beta ETF with frequent rebalancing
-        - Multi-factor portfolio with offsetting exposures
+        - S&P 500 index fund
+        - Enhanced index with small tilts
+        - Balanced multi-factor portfolio
         
-        **Impact on TE:**
-        - Monthly TE **matches** daily TE × √21
-        - The square-root-of-time rule actually works!
-        - Your risk estimates are consistent across time horizons
-        
-        **What advisors should know:** This is the "textbook case" that most risk models assume. 
-        If your portfolio truly behaves this way, standard tracking error calculations are reliable.
+        **Impact:** Monthly TE **matches** daily TE × √21 (textbook case)
         """)
     
     with col3:
         st.markdown("#### Mean Reversion")
         st.markdown("""
-        **What it means:** What goes up, comes down. When your portfolio outperforms today, 
-        it's more likely to underperform tomorrow.
+        **What it means:** What goes up tends to come down. Returns oscillate around zero.
         
         **Why it happens:**
-        - **Contrarian strategies**: Buying losers, selling winners
-        - **Active rebalancing**: Constantly trimming winners, adding to losers
-        - **Value investing**: Betting on "cheap" stocks that oscillate around fair value
-        - **Pairs trading**: Long/short positions that converge over time
+        - Contrarian/value strategies
+        - Active rebalancing (trim winners, buy losers)
+        - Pairs trading strategies
         
         **Real examples:**
-        - Deep value fund - buys beaten-down stocks that bounce back
-        - Energy sector fund during 2020-2022 (boom-bust-boom cycle)
-        - Rebalanced 60/40 portfolio (sells winners, buys losers)
-        - Mean-reversion hedge fund strategies
+        - Deep value fund
+        - Energy sector (boom-bust cycles)
+        - Rebalanced 60/40 portfolio
         
-        **Impact on TE:**
-        - Monthly TE can be **10-30% lower** than daily TE predicts
-        - Your risk is overestimated if you only look at daily data
-        - Daily volatility overstates long-term divergence
-        
-        **What advisors should know:** If you're actively rebalancing or running a contrarian strategy, 
-        daily TE might make your portfolio look riskier than it really is over longer horizons.
+        **Impact:** Monthly TE can be **10-30% lower** than daily TE predicts
         """)
     
     st.divider()
     
-    st.markdown("### Real-World Insights")
+    st.markdown("### Real-World Examples")
     
     st.markdown("""
-    **Most portfolios aren't purely one type** - they're a mix:
+    Most portfolios exhibit some combination of these behaviors:
     
-    - **Tech fund in 2021**: Strong momentum (φ ≈ +0.4 to +0.6)
-    - **Diversified global equity fund**: Near random walk (φ ≈ -0.1 to +0.1)
-    - **Value fund in volatile markets**: Mild mean reversion (φ ≈ -0.2 to -0.3)
-    - **Your portfolio**: Upload your data to find out!
+    - **Tech fund (2021)**: Strong momentum (φ ≈ +0.4 to +0.6)
+    - **Diversified equity fund**: Near random walk (φ ≈ -0.1 to +0.1)
+    - **Value fund**: Mild mean reversion (φ ≈ -0.2 to -0.3)
     
-    **Why this matters for risk reporting:**
-    
-    1. **Compliance reports** often use daily TE × √252 - this only works for random walks
-    2. **Client expectations** can be wrong if you quote the wrong TE number
-    3. **Risk budgets** need adjustment based on autocorrelation structure
-    4. **Manager evaluation** should account for different behaviors (momentum managers will have inflated daily TE)
-    
-    **The bottom line:** There's no single "correct" tracking error - it depends on your measurement frequency 
-    AND your portfolio's autocorrelation structure. This tool helps you understand both.
+    **Key insight:** Standard TE calculations (daily TE × √252) only work for random walks. 
+    If your portfolio has momentum or mean reversion, you need different methods like AR(1) formulas or Newey-West.
     """)
     
-    st.info("💡 **Try it yourself:** Upload your portfolio's daily active returns to see which behavior type you have, "
-            "or explore the simulated regimes to understand the differences.")
+    st.info("💡 Upload your portfolio data to discover which behavior type you have!")
 
 # --- Portfolio Upload Section ---
 uploaded_portfolio_data = None
@@ -524,15 +489,49 @@ for regime in selected_regimes:
 # Display metrics
 st.markdown("**Comparison of Estimation Methods**")
 
-with st.expander("Understanding the metrics"):
-    st.markdown("""
-    - **Daily TE (ann)**: Empirical daily std × √252
-    - **Monthly TE (ann)**: Empirical monthly std × √12
-    - **AR(1) Formula**: Theoretical prediction using closed-form solution
-    - **Newey-West**: Robust long-run variance estimator
-    - **Ratio**: Monthly TE / Daily TE
-    - **Effect**: Percentage difference
-    """)
+col_explain1, col_explain2 = st.columns(2)
+
+with col_explain1:
+    with st.expander("Understanding the metrics"):
+        st.markdown("""
+        - **Daily TE (ann)**: Empirical daily std × √252
+        - **Monthly TE (ann)**: Empirical monthly std × √12
+        - **AR(1) Formula**: Theoretical prediction using closed-form solution
+        - **Newey-West**: Robust long-run variance estimator
+        - **Ratio**: Monthly TE / Daily TE
+        - **Effect**: Percentage difference
+        """)
+
+with col_explain2:
+    with st.expander("Mathematical methods explained"):
+        st.markdown("""
+        **1. Square-Root-of-Time Rule**
+        
+        Assumes i.i.d. returns (no autocorrelation):
+        
+        TE_monthly,ann = TE_daily × √252
+        
+        Valid when φ = 0 (random walk)
+        
+        ---
+        
+        **2. AR(1) Closed-Form Solution**
+        
+        Assumes AR(1) process: a_t = φa_(t-1) + ε_t
+        
+        Exact formula accounts for autocorrelation structure.
+        Valid when returns follow first-order autoregressive process.
+        
+        ---
+        
+        **3. Newey-West Long-Run Variance**
+        
+        Robust approach with no parametric assumptions.
+        Uses Bartlett kernel weights to estimate long-run variance.
+        Most reliable for real data with unknown autocorrelation.
+        
+        See [Technical Math](https://tejasviswa.github.io/tracking-error-lab/technical_math.html) for full derivations.
+        """)
 
 metrics_df = pd.DataFrame(all_metrics)
 st.dataframe(metrics_df, use_container_width=True, hide_index=True)
@@ -553,47 +552,25 @@ for idx, row in metrics_df.iterrows():
     
     st.markdown(f"• **{portfolio_name}**: Monthly TE is **{effect}** compared to daily TE prediction{interpretation}")
 
-with st.expander("What do these results mean for your portfolio?"):
+with st.expander("Interpreting your results"):
     st.markdown("""
-    ### Interpreting Your Results
-    
     **If your Effect is positive (+10% to +40%):**
-    - Your portfolio exhibits **momentum** (persistent drift)
-    - Winners keep winning, losers keep losing
+    - Momentum behavior: trends persist
     - Monthly risk is **higher** than daily risk suggests
-    - **Action**: Consider using monthly TE or Newey-West for more accurate risk reporting
-    - **Examples**: Tech funds, growth strategies, concentrated portfolios
+    - Consider using Newey-West or monthly TE for more accurate estimates
     
     **If your Effect is near zero (-5% to +5%):**
-    - Your portfolio is a **random walk** (no serial correlation)
-    - Past performance doesn't predict future performance
+    - Random walk behavior: no serial correlation
     - Monthly and daily TE are **consistent**
-    - **Action**: Standard tracking error calculations work well
-    - **Examples**: Diversified index funds, balanced multi-factor portfolios
+    - Standard calculations (daily TE × √252) work well
     
     **If your Effect is negative (-10% to -30%):**
-    - Your portfolio exhibits **mean reversion** (contrarian behavior)
-    - What goes up tends to come down (and vice versa)
+    - Mean reversion behavior: returns oscillate
     - Monthly risk is **lower** than daily risk suggests
-    - **Action**: Daily TE may overstate your long-term risk
-    - **Examples**: Value funds, actively rebalanced portfolios, pairs trading
+    - Daily TE may overstate your long-term tracking error
     
-    ### Practical Implications
-    
-    **For risk reporting:**
-    - Don't blindly trust daily TE × √252 if you have strong autocorrelation
-    - Use Newey-West estimator for robust annualization
-    - Consider reporting both daily and monthly TE
-    
-    **For client communication:**
-    - Explain whether their portfolio is momentum, random, or mean-reverting
-    - Set appropriate expectations for tracking behavior
-    - Adjust risk budgets based on actual autocorrelation structure
-    
-    **For compliance:**
-    - Document your TE calculation methodology
-    - If using daily TE, test for autocorrelation
-    - Consider multiple estimation methods for validation
+    **Bottom line:** Don't blindly trust daily TE × √252 if you have strong autocorrelation. 
+    Use multiple methods (AR(1), Newey-West) to validate your risk estimates.
     """)
 
 
@@ -623,7 +600,7 @@ if uploaded_portfolio_data is not None:
 
 color_scale = alt.Scale(domain=all_regime_names, range=all_colors)
 
-tab1, tab2, tab3, tab4 = st.tabs(["Cumulative Drift", "Daily Returns", "Autocorrelation", "Methods Explained"])
+tab1, tab2, tab3 = st.tabs(["Cumulative Drift", "Daily Returns", "Autocorrelation"])
 
 with tab1:
     st.markdown("Cumulative active returns show how portfolio drift accumulates over time.")
@@ -720,23 +697,6 @@ with tab3:
         - **Negative ACF** at lags 1-5: Mean reversion
         - **ACF ≈ 0** at all lags: Random walk
         """)
-
-with tab4:
-    st.markdown("### Mathematical Methods for TE Estimation")
-    
-    st.markdown("**1. Square-Root-of-Time Rule**")
-    st.markdown("Assumes i.i.d. returns (no autocorrelation)")
-    st.latex(r"TE_{\text{monthly,ann}} = TE_{\text{daily}} \times \sqrt{252}")
-    
-    st.markdown("**2. AR(1) Closed-Form Solution**")
-    st.markdown("Assumes AR(1) process: $a_t = \\phi a_{t-1} + \\varepsilon_t$")
-    st.latex(r"TE_m = \sqrt{D \cdot \gamma(0) \left[1 + \frac{2\phi}{1-\phi}\left(1 - \frac{1-\phi^D}{D(1-\phi)}\right)\right]}")
-    
-    st.markdown("**3. Newey-West Long-Run Variance**")
-    st.markdown("Robust approach with no parametric assumptions")
-    st.latex(r"\widehat{\sigma}^2_{LR} = \hat{\gamma}(0) + 2\sum_{h=1}^{L}\left(1 - \frac{h}{L+1}\right)\hat{\gamma}(h)")
-    
-    st.markdown("See [Technical Math](https://tejasviswa.github.io/tracking-error-lab/technical_math.html) for derivations.")
 
 # Footer
 st.divider()
