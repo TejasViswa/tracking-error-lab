@@ -10,326 +10,66 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS matching Quarto site
+# Simple, clean CSS - only essentials
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
     
-    /* Global font */
-    html, body, [class*="css"], .stMarkdown, p, span, div {
-        font-family: 'IBM Plex Sans', sans-serif !important;
-        font-weight: 400;
-        color: #2c3e50;
+    /* Font */
+    html, body, [class*="css"] {
+        font-family: 'IBM Plex Sans', sans-serif;
     }
     
-    h1, h2, h3, h4, h5, h6 {
-        font-family: 'IBM Plex Sans', sans-serif !important;
-        font-weight: 600;
-        letter-spacing: 0em;
-        color: #2c3e50;
-    }
-    
-    /* Sidebar styling */
-    [data-testid="stSidebar"] {
-        background-color: #f8f9fa;
-        border-right: 1px solid #e8eaed;
-        padding-top: 2rem;
-    }
-    
-    [data-testid="stSidebar"] > div:first-child {
-        padding: 1rem 1.5rem;
-    }
-    
-    /* Hide ALL keyboard shortcuts in sidebar */
-    [data-testid="stSidebar"] kbd,
-    [data-testid="stSidebar"] [class*="shortcut"],
-    [data-testid="stSidebar"] [class*="StyledShortcutLabel"],
-    [data-testid="stSidebar"] [data-testid*="keyboard"],
-    [data-testid="stSidebar"] label[class*="shortcut"],
-    [data-testid="stSidebar"] span[class*="shortcut"],
-    [data-testid="stSidebar"] div[class*="shortcut"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-    }
-    
-    /* Hide keyboard shortcuts on hover */
-    [data-testid="stSidebar"] *:hover kbd,
-    [data-testid="stSidebar"] *:hover [class*="shortcut"],
-    [data-testid="stSidebar"] *:hover [class*="StyledShortcutLabel"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-    }
-    
-    /* Sidebar section headers */
-    .sidebar-section {
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: #7f8c8d;
-        margin-top: 1.5rem;
-        margin-bottom: 0.75rem;
-        padding-left: 0.5rem;
-    }
-    
-    /* Sidebar description */
-    .sidebar-description {
-        font-size: 0.9rem;
-        color: #5a6c7d;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-    }
-    
-    /* Expander styling - fix the fucked up look */
-    .streamlit-expanderHeader {
-        background-color: #f8f9fa !important;
-        border: 1px solid #e8eaed !important;
-        border-radius: 0.375rem !important;
-        padding: 0.75rem 1rem !important;
-        font-weight: 500 !important;
-        font-size: 0.95rem !important;
-        position: relative !important;
-    }
-    
-    .streamlit-expanderHeader:hover {
-        background-color: #e8eaed !important;
-        border-color: #d0d5dd !important;
-    }
-    
-    [data-testid="stExpander"] {
-        border: none !important;
-        box-shadow: none !important;
-    }
-    
-    [data-testid="stExpanderDetails"] {
-        padding: 1rem !important;
-        border: 1px solid #e8eaed !important;
-        border-top: none !important;
-        border-radius: 0 0 0.375rem 0.375rem !important;
-        background-color: white !important;
-    }
-    
-    /* Aggressively hide ALL keyboard shortcuts and overlapping elements */
-    .streamlit-expanderHeader svg,
-    .streamlit-expanderHeader kbd,
-    .streamlit-expanderHeader [class*="badge"],
-    .streamlit-expanderHeader [class*="shortcut"],
-    .streamlit-expanderHeader [class*="hint"],
-    .streamlit-expanderHeader::before,
-    .streamlit-expanderHeader::after,
-    [data-testid="stExpander"] svg,
-    [data-testid="stExpander"] kbd,
-    [data-testid="stExpander"] [data-testid*="keyboard"],
-    [data-testid="stExpander"] [class*="StyledShortcutLabel"],
-    [data-testid="stExpander"] label[class*="shortcut"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        width: 0 !important;
-        height: 0 !important;
-        position: absolute !important;
-        left: -9999px !important;
-    }
-    
-    /* Ensure expander header text doesn't get overlapped */
-    .streamlit-expanderHeader p,
-    .streamlit-expanderHeader span,
-    .streamlit-expanderHeader div {
-        margin: 0 !important;
-        padding: 0 !important;
-        z-index: 10 !important;
-    }
-    
-    /* Hide the arrow icon that might be causing issues */
-    .streamlit-expanderHeader > div > svg {
-        display: none !important;
-    }
-    
-    /* Target the specific Streamlit expander icon */
-    button[data-testid="stExpander"] svg,
-    summary svg {
-        display: none !important;
-    }
-    
-    /* GLOBAL: Hide ALL keyboard shortcuts everywhere */
-    kbd,
-    [class*="shortcut"],
-    [class*="StyledShortcutLabel"],
-    [data-testid*="keyboard"],
-    label[class*="shortcut"],
-    span[class*="shortcut"],
-    div[class*="shortcut"],
-    [class*="st-emotion-cache"] kbd,
-    [class*="st-emotion-cache"] [class*="shortcut"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        position: absolute !important;
-        left: -9999px !important;
-        width: 0 !important;
-        height: 0 !important;
-        overflow: hidden !important;
-    }
-    
-    /* Hide keyboard shortcuts on ANY hover */
-    *:hover kbd,
-    *:hover [class*="shortcut"],
-    *:hover [class*="StyledShortcutLabel"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-    }
-    
-    /* Remove default streamlit branding */
+    /* Hide Streamlit branding */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    /* Metrics styling */
-    .stMetric {
-        background-color: #f8f9fa;
-        padding: 1rem;
-        border-radius: 0.375rem;
-        border-left: 3px solid #4a90e2;
-    }
-    
-    /* Buttons */
-    .stButton button {
-        background-color: #4a90e2;
-        color: white;
-        border: none;
-        border-radius: 0.375rem;
-        padding: 0.5rem 1.5rem;
-        font-weight: 500;
-        transition: background-color 0.2s;
-    }
-    
-    .stButton button:hover {
-        background-color: #3498db;
-    }
-    
-    /* File uploader */
-    [data-testid="stFileUploader"] {
-        background-color: #f8f9fa;
-        border: 2px dashed #d0d5dd;
-        border-radius: 0.375rem;
-        padding: 1.5rem;
-    }
-    
-    /* Info cards */
-    .info-card {
-        background-color: #f8f9fa;
-        padding: 1.5rem;
-        border-radius: 0.375rem;
-        border-left: 3px solid #3498db;
-        margin-bottom: 1rem;
-    }
-    
-    .info-card h4 {
-        margin-top: 0;
-        margin-bottom: 0.5rem;
-        color: #2c3e50;
-    }
-    
-    .info-card p {
-        margin: 0;
-        color: #5a6c7d;
-        line-height: 1.6;
-    }
-    
-    /* Footer */
-    .custom-footer {
-        margin-top: 4rem;
-        padding-top: 2rem;
-        border-top: 1px solid #e8eaed;
-        text-align: center;
-        color: #7f8c8d;
-        font-size: 0.9rem;
-    }
-    
-    .custom-footer a {
-        color: #5a6c7d;
-        text-decoration: none;
-    }
-    
-    .custom-footer a:hover {
-        color: #3498db;
-    }
-    
-    /* Radio buttons */
-    .stRadio > label {
-        font-weight: 500;
-        font-size: 0.95rem;
-    }
-    
-    /* Slider labels */
-    .stSlider > label {
-        font-weight: 500;
-        font-size: 0.9rem;
-    }
-    
-    /* Tables */
-    .dataframe {
-        font-size: 0.9rem;
+    /* Clean metrics */
+    [data-testid="stMetricValue"] {
+        font-size: 1.5rem;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Sidebar Configuration
+# Sidebar
 with st.sidebar:
     st.markdown("### Interactive Simulator")
-    st.markdown('<p class="sidebar-description">Configure parameters and data sources for tracking error analysis.</p>', unsafe_allow_html=True)
+    st.markdown("Configure parameters and data sources for tracking error analysis.")
     
-    st.markdown("---")
+    st.divider()
     
-    # Analysis mode
-    st.markdown('<div class="sidebar-section">Data Source</div>', unsafe_allow_html=True)
+    st.markdown("##### Data Source")
     analysis_mode = st.radio(
-        "",
+        "Choose data source",
         ["Simulated Portfolios", "Upload Your Data", "Compare Both"],
         index=0,
-        label_visibility="collapsed",
-        help="Choose between simulated regimes or your own portfolio data"
+        label_visibility="collapsed"
     )
     
-    st.markdown("---")
+    st.divider()
     
-    # Links section
-    st.markdown('<div class="sidebar-section">Documentation</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div style="padding-left: 0.5rem;">
-        <p style="margin-bottom: 0.5rem;"><a href="https://tejasviswa.github.io/tracking-error-lab/" target="_blank" style="color: #5a6c7d; text-decoration: none;">Overview</a></p>
-        <p style="margin-bottom: 0.5rem;"><a href="https://tejasviswa.github.io/tracking-error-lab/intuitive_math.html" target="_blank" style="color: #5a6c7d; text-decoration: none;">Intuitive Math</a></p>
-        <p style="margin-bottom: 0.5rem;"><a href="https://tejasviswa.github.io/tracking-error-lab/technical_math.html" target="_blank" style="color: #5a6c7d; text-decoration: none;">Technical Details</a></p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("##### Documentation")
+    st.page_link("https://tejasviswa.github.io/tracking-error-lab/", label="Overview")
+    st.page_link("https://tejasviswa.github.io/tracking-error-lab/intuitive_math.html", label="Intuitive Math")
+    st.page_link("https://tejasviswa.github.io/tracking-error-lab/technical_math.html", label="Technical Details")
     
-    st.markdown("---")
+    st.divider()
     
-    st.markdown('<div class="sidebar-section">Resources</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div style="padding-left: 0.5rem;">
-        <p style="margin-bottom: 0.5rem;"><a href="https://github.com/TejasViswa/tracking-error-lab" target="_blank" style="color: #5a6c7d; text-decoration: none;">Source Code</a></p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("##### Resources")
+    st.page_link("https://github.com/TejasViswa/tracking-error-lab", label="Source Code")
     
-    st.markdown("---")
+    st.divider()
     
-    st.markdown('<div class="sidebar-section">Contact</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div style="padding-left: 0.5rem;">
-        <p style="margin-bottom: 0.5rem;"><a href="https://www.linkedin.com/in/tejasviswa/" target="_blank" style="color: #5a6c7d; text-decoration: none;">LinkedIn</a></p>
-        <p style="margin-bottom: 0.5rem;"><a href="https://github.com/TejasViswa/" target="_blank" style="color: #5a6c7d; text-decoration: none;">GitHub</a></p>
-        <p style="margin-bottom: 0.5rem;"><a href="mailto:tejasviswa@gmail.com" style="color: #5a6c7d; text-decoration: none;">Email</a></p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("##### Contact")
+    st.page_link("https://www.linkedin.com/in/tejasviswa/", label="LinkedIn")
+    st.page_link("https://github.com/TejasViswa/", label="GitHub")
+    st.markdown("[Email](mailto:tejasviswa@gmail.com)")
 
 # Main content
 st.title("Tracking Error Lab: Interactive Simulator")
 st.markdown("Explore how autocorrelation in active returns affects tracking error estimation across different time horizons.")
 
-st.markdown("---")
+st.divider()
 
 # Introduction
 with st.expander("About This Tool"):
@@ -352,22 +92,18 @@ uploaded_portfolio_name = None
 if analysis_mode in ["Upload Your Data", "Compare Both"]:
     st.subheader("Upload Your Portfolio Data")
     
-    st.markdown("""
-    <div class="info-card">
-        <h4>Upload Active Returns Data</h4>
-        <p>Upload a CSV or Excel file containing your portfolio's <strong>active returns</strong> 
-        (portfolio return minus benchmark return). The file should have two columns: Date and Active Return 
-        in decimal format (e.g., 0.0015 for 15 basis points).</p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.info("""
+    **Upload Active Returns Data**: Upload a CSV or Excel file containing your portfolio's active returns 
+    (portfolio return minus benchmark return). The file should have two columns: Date and Active Return 
+    in decimal format (e.g., 0.0015 for 15 basis points).
+    """)
     
     col_upload, col_example = st.columns([2, 1])
     
     with col_upload:
         uploaded_file = st.file_uploader(
             "Choose CSV or Excel file",
-            type=["csv", "xlsx", "xls"],
-            help="Upload your portfolio's daily active returns"
+            type=["csv", "xlsx", "xls"]
         )
     
     with col_example:
@@ -379,31 +115,27 @@ if analysis_mode in ["Upload Your Data", "Compare Both"]:
     
     if uploaded_file is not None:
         try:
-            # Read file
             if uploaded_file.name.endswith('.csv'):
                 df_upload = pd.read_csv(uploaded_file)
             else:
                 df_upload = pd.read_excel(uploaded_file)
             
-            # Display raw data preview
             with st.expander("Preview uploaded data"):
                 st.dataframe(df_upload.head(10), use_container_width=True)
             
-            # Column mapping
             st.markdown("**Map your columns:**")
-            col_date_select, col_return_select, col_name = st.columns(3)
+            col_date, col_return, col_name = st.columns(3)
             
-            with col_date_select:
+            with col_date:
                 date_column = st.selectbox("Date column", options=df_upload.columns.tolist(), index=0)
             
-            with col_return_select:
+            with col_return:
                 return_column = st.selectbox("Active Return column", options=df_upload.columns.tolist(), 
                                             index=min(1, len(df_upload.columns) - 1))
             
             with col_name:
                 uploaded_portfolio_name = st.text_input("Portfolio name", value="My Portfolio")
             
-            # Parse and validate
             df_clean = df_upload[[date_column, return_column]].copy()
             df_clean.columns = ["date", "active_return"]
             df_clean["date"] = pd.to_datetime(df_clean["date"])
@@ -416,23 +148,18 @@ if analysis_mode in ["Upload Your Data", "Compare Both"]:
             else:
                 uploaded_portfolio_data = df_clean["active_return"].values
                 
-                # Summary statistics
                 st.success(f"Loaded {len(df_clean)} observations from {df_clean['date'].min().strftime('%Y-%m-%d')} to {df_clean['date'].max().strftime('%Y-%m-%d')}")
                 
-                col_s1, col_s2, col_s3, col_s4 = st.columns(4)
-                with col_s1:
-                    st.metric("Observations", f"{len(df_clean)}")
-                with col_s2:
-                    st.metric("Mean Return", f"{np.mean(uploaded_portfolio_data)*100:.2f}%")
-                with col_s3:
-                    st.metric("Std Dev", f"{np.std(uploaded_portfolio_data, ddof=1)*100:.2f}%")
-                with col_s4:
-                    st.metric("Range", f"{np.min(uploaded_portfolio_data)*100:.2f}% / {np.max(uploaded_portfolio_data)*100:.2f}%")
+                col1, col2, col3, col4 = st.columns(4)
+                col1.metric("Observations", f"{len(df_clean)}")
+                col2.metric("Mean Return", f"{np.mean(uploaded_portfolio_data)*100:.2f}%")
+                col3.metric("Std Dev", f"{np.std(uploaded_portfolio_data, ddof=1)*100:.2f}%")
+                col4.metric("Range", f"{np.min(uploaded_portfolio_data)*100:.2f}% / {np.max(uploaded_portfolio_data)*100:.2f}%")
         
         except Exception as e:
             st.error(f"Error reading file: {str(e)}")
     
-    st.markdown("---")
+    st.divider()
 
 # --- Regime Configuration ---
 regime_presets = {
@@ -445,13 +172,10 @@ selected_regimes = []
 if analysis_mode in ["Simulated Portfolios", "Compare Both"]:
     st.subheader("Configure Simulated Portfolios")
     
-    st.markdown("Select which autocorrelation regimes to simulate and analyze:")
-    
     selected_regimes = st.multiselect(
-        "Select regimes",
+        "Select which autocorrelation regimes to simulate and analyze:",
         options=list(regime_presets.keys()),
-        default=list(regime_presets.keys()),
-        label_visibility="collapsed"
+        default=list(regime_presets.keys())
     )
     
     if not selected_regimes and analysis_mode != "Upload Your Data":
@@ -461,18 +185,14 @@ if analysis_mode in ["Simulated Portfolios", "Compare Both"]:
     if selected_regimes:
         st.markdown("**Simulation parameters:**")
         
-        col_days, col_te, col_seed = st.columns(3)
-        with col_days:
-            T_days = st.slider("Trading days", 252, 2520, 756, 252, 
-                              help="Number of trading days to simulate (~252 per year)")
-        with col_te:
-            target_annual_te_bps = st.slider("Target annual TE (bps)", 100, 1500, 500, 50,
-                                            help="Target annualized tracking error in basis points")
-        with col_seed:
-            seed = st.number_input("Random seed", 0, 10_000, 42, 
-                                  help="For reproducibility")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            T_days = st.slider("Trading days", 252, 2520, 756, 252)
+        with col2:
+            target_annual_te_bps = st.slider("Target annual TE (bps)", 100, 1500, 500, 50)
+        with col3:
+            seed = st.number_input("Random seed", 0, 10_000, 42)
         
-        # Advanced customization
         with st.expander("Advanced: Customize φ (autocorrelation) values"):
             st.markdown("Override the default autocorrelation coefficients for each regime:")
             custom_phi = {}
@@ -483,8 +203,7 @@ if analysis_mode in ["Simulated Portfolios", "Compare Both"]:
                     custom_phi[regime] = st.slider(
                         f"{regime.split('(')[0].strip()}",
                         -0.7, 0.7, default_phi, 0.05,
-                        key=f"phi_{regime}",
-                        help="AR(1) coefficient: positive = momentum, negative = mean reversion"
+                        key=f"phi_{regime}"
                     )
     else:
         custom_phi = {}
@@ -497,7 +216,7 @@ else:
     seed = 42
     custom_phi = {}
 
-st.markdown("---")
+st.divider()
 
 # --- Helper Functions ---
 def generate_realistic_ar1(phi, target_annual_te_bps, T_days, seed):
@@ -518,7 +237,6 @@ def generate_realistic_ar1(phi, target_annual_te_bps, T_days, seed):
     for t in range(1, T_days):
         a[t] = phi * a[t-1] + eps[t]
     
-    # Add realistic features
     n_jumps = max(1, int(T_days / 252 * 2))
     jump_indices = rng.choice(T_days, size=n_jumps, replace=False)
     jump_sizes = rng.normal(0, target_daily_std * 3, n_jumps)
@@ -601,7 +319,6 @@ if uploaded_portfolio_data is not None:
     a_uploaded = uploaded_portfolio_data
     T_uploaded = len(a_uploaded)
     
-    # Calculate metrics
     te_daily_up = np.std(a_uploaded, ddof=1)
     te_daily_ann_up = te_daily_up * np.sqrt(252)
     
@@ -622,22 +339,16 @@ if uploaded_portfolio_data is not None:
     lrv_nw_up = newey_west_lrv(a_uploaded, L=int(np.floor(4 * (T_uploaded/100)**(2/9))))
     te_annual_nw_up = np.sqrt(252 * lrv_nw_up)
     
-    # Display metrics
-    col_info1, col_info2, col_info3 = st.columns(3)
-    with col_info1:
-        st.metric("Estimated φ (AR(1))", f"{phi_estimated:+.3f}",
-                 help="Autocorrelation coefficient estimated from your data")
-    with col_info2:
-        st.metric("AR(1) R²", f"{r_squared:.3f}",
-                 help="How well the AR(1) model fits your data")
-    with col_info3:
-        if phi_estimated > 0.1:
-            behavior = "Persistent Drift"
-        elif phi_estimated < -0.1:
-            behavior = "Mean Reversion"
-        else:
-            behavior = "Random Walk"
-        st.metric("Detected Behavior", behavior)
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Estimated φ (AR(1))", f"{phi_estimated:+.3f}")
+    col2.metric("AR(1) R²", f"{r_squared:.3f}")
+    if phi_estimated > 0.1:
+        behavior = "Persistent Drift"
+    elif phi_estimated < -0.1:
+        behavior = "Mean Reversion"
+    else:
+        behavior = "Random Walk"
+    col3.metric("Detected Behavior", behavior)
     
     all_data[uploaded_portfolio_name] = a_uploaded
     all_metrics.append({
@@ -651,7 +362,7 @@ if uploaded_portfolio_data is not None:
         "Effect": f"{(te_monthly_ann_up/te_daily_ann_up - 1)*100:+.1f}%"
     })
     
-    st.markdown("---")
+    st.divider()
 
 # Simulated regimes
 if selected_regimes:
@@ -665,7 +376,6 @@ for regime in selected_regimes:
     a = generate_realistic_ar1(phi, target_annual_te_bps, T_days, regime_seed)
     all_data[regime] = a
     
-    # Calculate metrics
     te_daily = np.std(a, ddof=1)
     te_daily_ann = te_daily * np.sqrt(252)
     
@@ -691,34 +401,31 @@ for regime in selected_regimes:
         "Effect": f"{(te_monthly_ann/te_daily_ann - 1)*100:+.1f}%"
     })
 
-# Display metrics table
+# Display metrics
 st.markdown("**Comparison of Estimation Methods**")
 
 with st.expander("Understanding the metrics"):
     st.markdown("""
-    - **Daily TE (ann)**: Empirical daily standard deviation × √252
-    - **Monthly TE (ann)**: Empirical monthly standard deviation × √12
-    - **AR(1) Formula**: Theoretical prediction using closed-form AR(1) solution
-    - **Newey-West**: Robust long-run variance estimator (handles unknown autocorrelation)
-    - **Ratio**: Monthly TE / Daily TE (how much they differ)
-    - **Effect**: Percentage difference between monthly and daily estimates
+    - **Daily TE (ann)**: Empirical daily std × √252
+    - **Monthly TE (ann)**: Empirical monthly std × √12
+    - **AR(1) Formula**: Theoretical prediction using closed-form solution
+    - **Newey-West**: Robust long-run variance estimator
+    - **Ratio**: Monthly TE / Daily TE
+    - **Effect**: Percentage difference
     """)
 
 metrics_df = pd.DataFrame(all_metrics)
 st.dataframe(metrics_df, use_container_width=True, hide_index=True)
 
-# Key insights
 st.markdown("**Key Insights:**")
 for idx, row in metrics_df.iterrows():
-    portfolio_name = row["Portfolio"]
-    effect = row["Effect"]
-    st.markdown(f"• **{portfolio_name}**: Monthly TE is **{effect}** compared to daily TE prediction")
+    st.markdown(f"• **{row['Portfolio']}**: Monthly TE is **{row['Effect']}** compared to daily TE prediction")
 
 # --- Visualizations ---
-st.markdown("---")
+st.divider()
 st.subheader("Visualizations")
 
-# Prepare visualization data
+# Prepare data
 viz_data = []
 if uploaded_portfolio_data is not None:
     T_up = len(uploaded_portfolio_data)
@@ -732,7 +439,6 @@ for regime in selected_regimes:
 
 df_viz = pd.DataFrame(viz_data)
 
-# Color mapping
 all_regime_names = list(regime_presets.keys())
 all_colors = [regime_presets[r]["color"] for r in regime_presets.keys()]
 if uploaded_portfolio_data is not None:
@@ -741,7 +447,6 @@ if uploaded_portfolio_data is not None:
 
 color_scale = alt.Scale(domain=all_regime_names, range=all_colors)
 
-# Tabs for different views
 tab1, tab2, tab3, tab4 = st.tabs(["Cumulative Drift", "Daily Returns", "Autocorrelation", "Methods Explained"])
 
 with tab1:
@@ -835,42 +540,29 @@ with tab3:
     
     with st.expander("How to interpret the ACF"):
         st.markdown("""
-        **Positive ACF at lags 1-5**: Momentum/persistence in returns (yesterday's positive return → today's positive return)
-        
-        **Negative ACF at lags 1-5**: Mean reversion in returns (yesterday's positive return → today's negative return)
-        
-        **ACF ≈ 0 at all lags**: No serial correlation (random walk behavior)
+        - **Positive ACF** at lags 1-5: Momentum/persistence
+        - **Negative ACF** at lags 1-5: Mean reversion
+        - **ACF ≈ 0** at all lags: Random walk
         """)
 
 with tab4:
     st.markdown("### Mathematical Methods for TE Estimation")
     
     st.markdown("**1. Square-Root-of-Time Rule**")
-    st.markdown("Assumes active returns are independent and identically distributed (i.i.d.).")
-    st.latex(r"TE_{\text{monthly,ann}} = TE_{\text{daily}} \times \sqrt{252} = TE_{\text{monthly}} \times \sqrt{12}")
-    st.markdown("Valid when φ = 0 (no autocorrelation).")
+    st.markdown("Assumes i.i.d. returns (no autocorrelation)")
+    st.latex(r"TE_{\text{monthly,ann}} = TE_{\text{daily}} \times \sqrt{252}")
     
     st.markdown("**2. AR(1) Closed-Form Solution**")
-    st.markdown("Assumes active returns follow first-order autoregressive process: $a_t = \\phi a_{t-1} + \\varepsilon_t$")
+    st.markdown("Assumes AR(1) process: $a_t = \\phi a_{t-1} + \\varepsilon_t$")
     st.latex(r"TE_m = \sqrt{D \cdot \gamma(0) \left[1 + \frac{2\phi}{1-\phi}\left(1 - \frac{1-\phi^D}{D(1-\phi)}\right)\right]}")
-    st.markdown("Where D = days per month (typically 21), γ(0) = variance of daily returns.")
     
     st.markdown("**3. Newey-West Long-Run Variance**")
-    st.markdown("Robust approach with no parametric assumptions about autocorrelation structure.")
+    st.markdown("Robust approach with no parametric assumptions")
     st.latex(r"\widehat{\sigma}^2_{LR} = \hat{\gamma}(0) + 2\sum_{h=1}^{L}\left(1 - \frac{h}{L+1}\right)\hat{\gamma}(h)")
-    st.latex(r"TE_{\text{annual,NW}} = \sqrt{252 \cdot \widehat{\sigma}^2_{LR}}")
-    st.markdown("Where L = bandwidth parameter (lag truncation), typically $L \\approx T^{1/4}$ or automatic selection.")
     
-    st.markdown("---")
-    st.markdown("For complete derivations and proofs, see the [Technical Math](https://tejasviswa.github.io/tracking-error-lab/technical_math.html) page.")
+    st.markdown("See [Technical Math](https://tejasviswa.github.io/tracking-error-lab/technical_math.html) for derivations.")
 
 # Footer
-st.markdown("""
-<div class="custom-footer">
-    <p>© 2025 Tejas Viswanath • 
-    <a href="https://www.linkedin.com/in/tejasviswa/" target="_blank">LinkedIn</a> • 
-    <a href="https://github.com/TejasViswa/" target="_blank">GitHub</a> • 
-    <a href="mailto:tejasviswa@gmail.com">Email</a></p>
-    <p>Built with Streamlit • <a href="https://github.com/TejasViswa/tracking-error-lab" target="_blank">View Source</a></p>
-</div>
-""", unsafe_allow_html=True)
+st.divider()
+st.markdown("© 2025 Tejas Viswanath • [LinkedIn](https://www.linkedin.com/in/tejasviswa/) • [GitHub](https://github.com/TejasViswa/) • [Email](mailto:tejasviswa@gmail.com)")
+st.caption("Built with Streamlit • [View Source](https://github.com/TejasViswa/tracking-error-lab)")
