@@ -29,6 +29,9 @@ st.markdown("""
         font-size: 1.5rem;
     }
 </style>
+
+<!-- Privacy-friendly analytics (no cookies, no personal data) -->
+<script src="https://cdn.counter.dev/script.js" data-id="a1415d18-b90b-45df-ac84-45ddeb23fa8f" data-utcoffset="-6"></script>
 """, unsafe_allow_html=True)
 
 # Sidebar
@@ -701,4 +704,4 @@ with tab3:
 # Footer
 st.divider()
 st.markdown("© 2025 Tejas Viswanath • [LinkedIn](https://www.linkedin.com/in/tejasviswa/) • [GitHub](https://github.com/TejasViswa/) • [Email](mailto:tejasviswa@gmail.com)")
-st.caption("Built with Streamlit • [View Source](https://github.com/TejasViswa/tracking-error-lab)")
+st.caption("Built with Streamlit • [View Source](https://github.com/TejasViswa/tracking-error-lab) • Privacy-friendly analytics (no cookies, no personal data)")

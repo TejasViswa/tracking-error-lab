@@ -103,6 +103,17 @@ Then open http://localhost:8501 in your browser.
 
 Released under the MIT License.
 
+## 🔒 Privacy
+
+This project uses [Counter.dev](https://counter.dev/) for privacy-friendly analytics:
+- ✅ No cookies
+- ✅ No personal data collection
+- ✅ No tracking across sites
+- ✅ Fully GDPR compliant
+- ✅ Open-source analytics
+
+We only collect anonymous page view counts to understand which resources are most helpful.
+
 ## ✨ Author
 
 Tejas Viswanath
