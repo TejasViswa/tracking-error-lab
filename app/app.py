@@ -2,12 +2,22 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import altair as alt
+import streamlit.components.v1 as components
 
 st.set_page_config(
     page_title="Tracking Error Lab - Interactive Simulator", 
     page_icon="📊", 
     layout="wide",
     initial_sidebar_state="expanded"
+)
+
+# Privacy-friendly analytics (no cookies, no personal data)
+components.html(
+    """
+    <script src="https://cdn.counter.dev/script.js" data-id="a1415d18-b90b-45df-ac84-45ddeb23fa8f" data-utcoffset="-6"></script>
+    """,
+    height=0,
+    width=0
 )
 
 # Simple, clean CSS - only essentials
@@ -29,9 +39,6 @@ st.markdown("""
         font-size: 1.5rem;
     }
 </style>
-
-<!-- Privacy-friendly analytics (no cookies, no personal data) -->
-<script src="https://cdn.counter.dev/script.js" data-id="a1415d18-b90b-45df-ac84-45ddeb23fa8f" data-utcoffset="-6"></script>
 """, unsafe_allow_html=True)
 
 # Sidebar
